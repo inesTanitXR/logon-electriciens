@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Trouvez un électricien disponible près de chez vous à Nabeul et appelez-le directement. Par Log-ON lighting.">
+<meta name="theme-color" content="#161616">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Log-ON">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>:root{color-scheme:light dark}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Log-ON Électriciens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Dancing+Script:wght@600&display=swap">
+<style>
+:root{
+  --bg-outer:#E9E9E4; --bg:#F4F4F1; --surface:#FFFFFF; --surface-2:#ECECE7; --ink:#171717; --ink-2:#45453F; --muted:#7A7A73; --line:#DEDED8;
+  --accent:#F2B233; --accent-ink:#171717; --accent-soft:#FFF1D0;
+  --ok:#1B9457; --ok-soft:#E1F4E8; --off:#CF4038; --off-soft:#FBE6E4;
+  --brand:#161616; --brand-fg:#FFFFFF;
+  --shadow:0 1px 2px rgba(23,23,23,.05),0 10px 28px rgba(23,23,23,.07);
+  --radius:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg-outer:#0C0C0C; --bg:#131312; --surface:#1C1C1B; --surface-2:#262624; --ink:#F1F1EC; --ink-2:#C6C6BE; --muted:#8F8F87; --line:#2D2D2A;
+    --accent:#F2B233; --accent-ink:#171717; --accent-soft:#3A2D10;
+    --ok:#3ECB7D; --ok-soft:#143726; --off:#F1685F; --off-soft:#421C19;
+    --brand:#0E0E0E; --brand-fg:#FFFFFF;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg-outer:#0C0C0C; --bg:#131312; --surface:#1C1C1B; --surface-2:#262624; --ink:#F1F1EC; --ink-2:#C6C6BE; --muted:#8F8F87; --line:#2D2D2A;
+  --accent:#F2B233; --accent-ink:#171717; --accent-soft:#3A2D10;
+  --ok:#3ECB7D; --ok-soft:#143726; --off:#F1685F; --off-soft:#421C19;
+  --brand:#0E0E0E; --brand-fg:#FFFFFF;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg-outer);color:var(--ink);font-family:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ic{width:18px;height:18px;flex:none;vertical-align:-3px}
+.ic.fill{fill:currentColor;stroke:none}
+.ic.sm{width:14px;height:14px}
+
+.app{max-width:480px;margin:0 auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+@media (min-width:720px){.app{border-inline:1px solid var(--line)}}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.logo{width:42px;height:42px;flex:none;border-radius:50%;box-shadow:0 0 0 1px var(--line)}
+.wordmark{font-family:Outfit,"Nunito Sans",sans-serif;font-weight:700;font-size:18px;letter-spacing:-.01em;line-height:1.1}
+.wordmark small{display:block;font-family:"Nunito Sans",sans-serif;font-weight:600;font-size:11.5px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
+.locbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 10px 7px 9px;font-weight:700;font-size:13px;max-width:46%;white-space:nowrap}
+.locbtn span{overflow:hidden;text-overflow:ellipsis}
+.locbtn .ic{width:15px;height:15px;color:var(--accent)}
+
+main{padding:16px;display:flex;flex-direction:column;gap:14px}
+h1,h2,h3{font-family:Outfit,"Nunito Sans",sans-serif;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:24px;line-height:1.15;font-weight:700}
+h2{font-size:18px;font-weight:600}
+h3{font-size:15px;font-weight:600}
+p{margin:0}
+.lead{color:var(--ink-2)}
+.eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+
+/* segmented + chips */
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface-2);border-radius:12px;padding:3px;gap:3px}
+.seg button{border:0;background:transparent;border-radius:9px;padding:8px 10px;font-weight:700;font-size:13.5px;color:var(--muted);display:flex;justify-content:center;align-items:center;gap:6px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 16px 4px;margin:0 -16px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700;white-space:nowrap;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips.wrap{flex-wrap:wrap;overflow:visible;margin:0;padding:0}
+.chip.sel[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink);border-color:var(--accent)}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.list{display:flex;flex-direction:column;gap:10px}
+.el{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start}
+.el.off{opacity:.72}
+.avatar{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-family:Outfit,sans-serif;font-weight:700;font-size:18px;color:#fff;overflow:hidden;background:var(--h,#5B6B7A)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar.lg{width:72px;height:72px;font-size:26px;border-radius:20px}
+.el-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.name{font-family:Outfit,sans-serif;font-weight:600;font-size:16px;line-height:1.2}
+.name .you{font-family:"Nunito Sans",sans-serif;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:2px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;border-radius:999px;padding:4px 9px 4px 7px;white-space:nowrap;flex:none}
+.status.ok{background:var(--ok-soft);color:var(--ok)}
+.status.off{background:var(--off-soft);color:var(--off)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px color-mix(in srgb,currentColor 22%,transparent)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:13px;color:var(--ink-2);margin-top:4px;font-variant-numeric:tabular-nums}
+.meta b{color:var(--ink);font-weight:800}
+.meta .ic{width:14px;height:14px;color:var(--accent)}
+.meta .ic.pin{color:var(--muted)}
+.skills{font-size:13px;color:var(--muted);margin-top:4px}
+.actions{display:flex;gap:8px;margin-top:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:12px;padding:10px 14px;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;flex:1;min-height:42px;transition:transform .08s ease}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--off);border-color:color-mix(in srgb,var(--off) 40%,transparent)}
+.btn.block{width:100%}
+.btn.lg{padding:14px 16px;font-size:15.5px;border-radius:14px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.note{font-size:12.5px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--surface-2)}
+.note .ic{color:var(--accent);margin-top:1px}
+.empty{text-align:center;padding:28px 16px;color:var(--muted)}
+.empty h3{color:var(--ink);margin-bottom:6px}
+.count{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:11.5px;font-weight:800;padding:0 6px}
+.seg button[aria-pressed="true"] .count{background:var(--ok);color:#fff}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start}
+.step .n{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:Outfit,sans-serif;font-weight:700;font-size:14px}
+.step b{display:block;font-weight:800}
+.step span{color:var(--ink-2);font-size:14px}
+
+/* form */
+.form{display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:800;color:var(--ink-2)}
+.field label em{font-style:normal;font-weight:600;color:var(--muted)}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 12px;font-size:15px;color:var(--ink)}
+.field textarea{min-height:88px;resize:vertical}
+.field .err{color:var(--off);font-size:12.5px;font-weight:700;display:none}
+.field.invalid .err{display:block}
+.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--off)}
+.photo-row{display:flex;align-items:center;gap:12px}
+.photo-row input{display:none}
+.photo-row .btn{flex:none}
+.tel-wrap{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.tel-wrap span{padding:11px 10px;background:var(--surface-2);font-weight:800;color:var(--muted);border-right:1px solid var(--line)}
+.tel-wrap input{border:0 !important;border-radius:0 !important}
+
+/* switch card */
+.statuscard{border-radius:20px;padding:18px;color:#fff;background:var(--off);transition:background .25s ease}
+.statuscard.on{background:var(--ok)}
+.statuscard .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.statuscard .big{font-family:Outfit,sans-serif;font-weight:700;font-size:26px;line-height:1.05;display:flex;align-items:center;gap:10px}
+.statuscard .big .dot{width:12px;height:12px;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
+.statuscard p{opacity:.92;margin-top:8px;font-size:14px}
+.switch{width:64px;height:36px;border-radius:999px;border:0;background:rgba(0,0,0,.28);position:relative;flex:none;transition:background .2s}
+.switch::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:transform .2s ease;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.switch[aria-checked="true"]{background:rgba(255,255,255,.35)}
+.switch[aria-checked="true"]::after{transform:translateX(28px)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center}
+.stat b{display:block;font-family:Outfit,sans-serif;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted);font-weight:700}
+
+/* store */
+.storehead{display:flex;gap:14px;align-items:center}
+.storehead .logo{width:72px;height:72px}
+.rows{display:flex;flex-direction:column}
+.rows a,.rows div{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);text-decoration:none;font-weight:600}
+.rows a:first-child,.rows div:first-child{border-top:0}
+.rows .ic{color:var(--accent)}
+.rows .arrow{margin-left:auto;color:var(--muted);transform:rotate(-90deg)}
+.soon{display:flex;flex-direction:column;gap:10px}
+.soon div{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;color:var(--ink-2);font-size:14px}
+.soon .ic{color:var(--accent);margin-top:2px}
+.soon b{color:var(--ink)}
+
+/* tab bar */
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:6px 8px calc(8px + env(safe-area-inset-bottom,0px));z-index:6}
+@media (min-width:720px){.tabbar{border-inline:1px solid var(--line)}}
+.tabbar button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:12px;font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.01em}
+.tabbar button .ic{width:22px;height:22px}
+.tabbar button[aria-pressed="true"]{color:var(--ink)}
+.tabbar button[aria-pressed="true"] .ic{color:var(--accent)}
+
+/* dialogs */
+dialog{border:0;padding:0;background:var(--surface);color:var(--ink);width:100%;max-width:480px;margin:auto auto 0;border-radius:22px 22px 0 0;max-height:92dvh;box-shadow:var(--shadow)}
+dialog[open]{display:flex;flex-direction:column}
+dialog::backdrop{background:rgba(10,10,10,.5)}
+@media (min-width:720px){dialog{margin:auto;border-radius:22px;max-height:86dvh}}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:8px auto 0}
+.sheet-body{overflow:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:14px}
+.sheet-foot{display:flex;gap:8px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--surface)}
+.close{border:0;background:var(--surface-2);width:34px;height:34px;border-radius:50%;display:grid;place-items:center}
+.phead{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center}
+.review{border-top:1px solid var(--line);padding:10px 0}
+.review:first-of-type{border-top:0;padding-top:0}
+.review .who{display:flex;justify-content:space-between;font-size:13px;font-weight:800}
+.review .who span{color:var(--muted);font-weight:600}
+.review p{margin-top:3px;font-size:14px;color:var(--ink-2)}
+.stars{color:var(--accent);display:inline-flex;gap:1px}
+.stars .ic{width:14px;height:14px}
+.stars .ic.dim{opacity:.25}
+.starpick{display:flex;gap:4px}
+.starpick button{border:0;background:transparent;padding:2px;color:var(--line)}
+.starpick button.on{color:var(--accent)}
+.starpick .ic{width:28px;height:28px}
+.citylist{display:flex;flex-direction:column}
+.citylist button{border:0;background:transparent;text-align:left;padding:13px 4px;border-top:1px solid var(--line);font-weight:700;display:flex;align-items:center;gap:10px}
+.citylist button .ic{color:var(--muted)}
+.citylist button.on .ic{color:var(--ok)}
+.citylist button:first-child{border-top:0}
+
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:12px;font-weight:700;font-size:13.5px;max-width:min(440px,calc(100% - 32px));opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20;text-align:center;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Log-ON lighting">
+        <circle cx="32" cy="32" r="32" fill="#161616"/>
+        <text x="34.5" y="34" text-anchor="end" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff" letter-spacing=".2">Log-</text>
+        <g transform="translate(35.2 23.5) scale(.5)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z"/><path d="M9.6 21h4.8"/>
+        </g>
+        <text x="48.2" y="34" text-anchor="start" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff">N</text>
+        <text x="33" y="47" text-anchor="middle" font-family="'Dancing Script', cursive" font-weight="600" font-size="11" fill="#fff">lighting</text>
+      </svg>
+      <div class="wordmark">Électriciens<small>par Log-ON · Nabeul</small></div>
+    </div>
+    <button class="locbtn" id="locbtn" type="button" aria-haspopup="dialog">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      <span id="locname">Nabeul</span>
+      <svg class="ic" style="color:var(--muted);width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </header>
+
+  <main id="view-clients">
+    <div>
+      <h1>Un électricien disponible, près de chez vous.</h1>
+      <p class="lead">Voyez qui est libre en ce moment et appelez directement.</p>
+    </div>
+    <div class="seg" role="group" aria-label="Filtrer par disponibilité">
+      <button type="button" id="mode-dispo" aria-pressed="true">Disponibles maintenant <span class="count" id="cnt-dispo">0</span></button>
+      <button type="button" id="mode-all" aria-pressed="false">Tous <span class="count" id="cnt-all">0</span></button>
+    </div>
+    <div class="chips" id="skillchips"></div>
+    <div class="list" id="list"></div>
+    <div class="note" id="demonote"></div>
+  </main>
+
+  <main id="view-pro" hidden></main>
+
+  <main id="view-store" hidden>
+    <div class="card">
+      <div class="storehead">
+        <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Log-ON lighting">
+          <circle cx="32" cy="32" r="32" fill="#161616"/>
+          <text x="34.5" y="34" text-anchor="end" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff" letter-spacing=".2">Log-</text>
+          <g transform="translate(35.2 23.5) scale(.5)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z"/><path d="M9.6 21h4.8"/></g>
+          <text x="48.2" y="34" text-anchor="start" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff">N</text>
+          <text x="33" y="47" text-anchor="middle" font-family="'Dancing Script', cursive" font-weight="600" font-size="11" fill="#fff">lighting</text>
+        </svg>
+        <div>
+          <h2>Log-ON lighting</h2>
+          <p class="lead small">Vente de matériel électrique, éclairage et décoration. Distributeur EGLO.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rows" id="storerows"></div>
+    </div>
+    <div class="card">
+      <p class="eyebrow" style="margin-bottom:10px">Bientôt dans l'app</p>
+      <div class="soon" id="soon"></div>
+    </div>
+  </main>
+
+  <nav class="tabbar" aria-label="Navigation">
+    <button type="button" data-tab="clients" aria-pressed="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>Électriciens</button>
+    <button type="button" data-tab="pro" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Espace pro</button>
+    <button type="button" data-tab="store" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9M3 9h18M3 9v11h18V9M9 20v-6h6v6"/></svg>Log-ON</button>
+  </nav>
+</div>
+
+<dialog id="profile" aria-label="Profil de l'électricien"></dialog>
+<dialog id="locdlg" aria-label="Choisir une zone">
+  <div class="grab"></div>
+  <div class="sheet-head"><h2>Où êtes-vous ?</h2><button class="close" type="button" data-close="locdlg" aria-label="Fermer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sheet-body">
+    <button class="btn dark lg" type="button" id="geobtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Utiliser ma position</button>
+    <p class="eyebrow">Ou choisir une ville</p>
+    <div class="citylist" id="citylist"></div>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ---------- data ---------- */
+const CITIES=[
+ {id:'nabeul',name:'Nabeul',lat:36.4561,lng:10.7376},
+ {id:'darchaabane',name:'Dar Chaabane El Fehri',lat:36.4700,lng:10.7500},
+ {id:'hammamet',name:'Hammamet',lat:36.4000,lng:10.6167},
+ {id:'benikhiar',name:'Béni Khiar',lat:36.4700,lng:10.7833},
+ {id:'korba',name:'Korba',lat:36.5786,lng:10.8581},
+ {id:'grombalia',name:'Grombalia',lat:36.6000,lng:10.5000},
+ {id:'kelibia',name:'Kélibia',lat:36.8475,lng:11.0939},
+ {id:'tunis',name:'Tunis',lat:36.8065,lng:10.1815},
+ {id:'sousse',name:'Sousse',lat:35.8256,lng:10.6369},
+];
+const SKILLS=['Dépannage','Installation','Tableau électrique','Éclairage','Climatisation','Domotique','Interphone & vidéo','Mise en conformité'];
+const now=Date.now();
+const ago=m=>now-m*60000;
+const DEMO=[
+ {id:'d1',demo:true,name:'Ahmed Ben Salah',zone:'Dar Chaabane El Fehri',lat:36.4712,lng:10.7468,skills:['Dépannage','Installation','Tableau électrique'],desc:'Électricien bâtiment depuis 12 ans. Dépannage rapide sur Nabeul et environs, installations neuves et rénovation.',rating:4.8,count:23,available:true,since:ago(95),reviews:[{who:'Rim B.',stars:5,text:'Venu en 30 minutes pour une panne de tableau. Sérieux et propre.',date:'Il y a 3 jours'},{who:'Khaled M.',stars:5,text:'Installation complète de mon appartement, travail soigné.',date:'Il y a 2 semaines'},{who:'Sana T.',stars:4,text:'Bon travail, un peu en retard mais il a prévenu.',date:'Il y a 1 mois'}]},
+ {id:'d2',demo:true,name:'Mohamed Trabelsi',zone:'Nabeul centre',lat:36.4530,lng:10.7330,skills:['Dépannage','Éclairage'],desc:'Dépannage électrique 7j/7, pose de luminaires et éclairage extérieur.',rating:4.6,count:15,available:true,since:ago(40),reviews:[{who:'Amine K.',stars:5,text:'Rapide et prix correct pour un court-circuit un dimanche.',date:'Il y a 5 jours'},{who:'Leila H.',stars:4,text:'Éclairage du jardin très bien installé.',date:'Il y a 3 semaines'}]},
+ {id:'d3',demo:true,name:'Sami Gharbi',zone:'Hammamet',lat:36.4030,lng:10.6180,skills:['Installation','Domotique','Éclairage'],desc:'Spécialisé villas et maisons connectées : éclairage intelligent, volets, interphone.',rating:4.9,count:31,available:true,since:ago(180),reviews:[{who:'Nadia S.',stars:5,text:'Domotique de toute la villa, explications claires.',date:'Il y a 1 semaine'},{who:'Tarek B.',stars:5,text:'Très professionnel.',date:'Il y a 1 mois'}]},
+ {id:'d4',demo:true,name:'Walid Jlassi',zone:'Béni Khiar',lat:36.4690,lng:10.7820,skills:['Dépannage','Climatisation'],desc:'Dépannage électrique et installation de climatiseurs. Devis gratuit.',rating:4.3,count:8,available:false,since:0,reviews:[{who:'Mounir A.',stars:4,text:'Clim installée dans la journée.',date:'Il y a 2 mois'}]},
+ {id:'d5',demo:true,name:'Karim Mejri',zone:'Nabeul (Mrezga)',lat:36.4400,lng:10.7100,skills:['Tableau électrique','Mise en conformité','Installation'],desc:'Mise aux normes, remplacement de tableaux, attestations pour la STEG.',rating:4.7,count:12,available:true,since:ago(20),reviews:[{who:'Olfa R.',stars:5,text:'Tableau refait proprement, dossier STEG accepté.',date:'Il y a 2 semaines'}]},
+ {id:'d6',demo:true,name:'Houssem Ayari',zone:'Korba',lat:36.5780,lng:10.8570,skills:['Dépannage','Installation'],desc:'Électricien général, disponible le soir et le week-end.',rating:4.5,count:9,available:false,since:0,reviews:[{who:'Fares D.',stars:5,text:'Ponctuel et efficace.',date:'Il y a 1 mois'}]},
+ {id:'d7',demo:true,name:'Électricité Nabil & Fils',zone:'Hammamet Nord',lat:36.4210,lng:10.6620,skills:['Installation','Éclairage','Interphone & vidéo'],desc:'Entreprise familiale, 2 équipes. Chantiers neufs, hôtels et commerces.',rating:4.4,count:19,available:true,since:ago(240),reviews:[{who:'Hédi C.',stars:4,text:'Bonne équipe pour un local commercial.',date:'Il y a 3 semaines'}]},
+ {id:'d8',demo:true,name:'Anis Chaabane',zone:'Grombalia',lat:36.5990,lng:10.5010,skills:['Dépannage','Installation','Climatisation'],desc:'Interventions Grombalia, Bou Argoub et Nabeul.',rating:4.2,count:6,available:true,since:ago(60),reviews:[{who:'Souad M.',stars:4,text:'Correct.',date:'Il y a 2 mois'}]},
+ {id:'d9',demo:true,name:'Yassine Hamdi',zone:'Nabeul (Sidi Amor)',lat:36.4600,lng:10.7300,skills:['Éclairage','Domotique'],desc:'Éclairage design et LED, conseils pour salons et façades.',rating:5.0,count:4,available:false,since:0,reviews:[{who:'Ines L.',stars:5,text:'Superbe éclairage LED du salon.',date:'Il y a 1 semaine'}]},
+];
+const STORE={name:'Log-ON lighting',addr:'Avenue Hédi Nouira, Nabeul',tel:'72 231 330',telE164:'+21672231330',mail:'ste@log-on.tn',site:'log-on.tn',fb:'https://www.facebook.com/LOGONTN/',ig:'https://www.instagram.com/logontn/',maps:'https://maps.google.com/?q=Log-ON+Avenue+Hedi+Nouira+Nabeul'};
+
+/* ---------- icons ---------- */
+const I={
+ pin:'<path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
+ phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+ star:'<path d="M12 2.5l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.4l-6 3.4 1.3-6.7-5-4.6 6.8-.8z"/>',
+ bolt:'<path d="M13 2L4 14h6l-1 8 9-12h-6z"/>',
+ chev:'<path d="M6 9l6 6 6-6"/>',
+ chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/>',
+ check:'<path d="M5 12l5 5 9-11"/>',
+ x:'<path d="M6 6l12 12M18 6L6 18"/>',
+ edit:'<path d="M4 20h4l10-10-4-4L4 16z"/>',
+ map:'<path d="M9 4l6 2 6-2v14l-6 2-6-2-6 2V6z M9 4v14 M15 6v14"/>',
+ mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+ bulb:'<path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z M9.5 21h5"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+ cam:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+ target:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+ tag:'<path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="8" cy="8" r="1.5"/>',
+ box:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z M3 7l9 4 9-4M12 11v10"/>',
+ shield:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/>',
+};
+const ic=(n,cls='')=>`<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+
+/* ---------- storage ---------- */
+const K={my:'logon.my',rev:'logon.reviews',loc:'logon.loc',stats:'logon.stats'};
+const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+
+/* ---------- state ---------- */
+const state={
+  tab:'clients', mode:'dispo', skill:'Tous',
+  origin:null,
+  my:load(K.my,null),
+  reviews:load(K.rev,{}),
+  stats:load(K.stats,{views:0,calls:0}),
+  editing:false,
+};
+(function initOrigin(){
+  const s=load(K.loc,null);
+  if(s&&s.lat){state.origin=s;return}
+  state.origin={...CITIES[0],label:CITIES[0].name};
+})();
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function km(a,b){const R=6371,dLat=(b.lat-a.lat)*Math.PI/180,dLng=(b.lng-a.lng)*Math.PI/180,la1=a.lat*Math.PI/180,la2=b.lat*Math.PI/180;const h=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+const fmtKm=d=>d<1?`${Math.round(d*100)*10} m`:d<10?`${d.toFixed(1).replace('.',',')} km`:`${Math.round(d)} km`;
+const fmtTime=t=>new Date(t).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+const initials=n=>n.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const HUES=['#5B6B7A','#6E5B7A','#5B7A6A','#7A6A5B','#4F6F8F','#8A5E5E','#5E7A8A'];
+const hue=n=>HUES[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%HUES.length];
+const digits=s=>String(s||'').replace(/\D/g,'');
+const fmtTel=d=>d.length===8?`${d.slice(0,2)} ${d.slice(2,5)} ${d.slice(5)}`:d;
+let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200)}
+
+function allElectricians(){
+  const list=DEMO.map(e=>({...e}));
+  if(state.my) list.push({...state.my,mine:true});
+  return list.map(e=>{
+    const extra=state.reviews[e.id]||[];
+    const base=(e.rating||0)*(e.count||0);
+    const sum=extra.reduce((a,r)=>a+r.stars,0);
+    const count=(e.count||0)+extra.length;
+    return {...e,dist:km(state.origin,e),count,rating:count?(base+sum)/count:0,reviews:[...extra.map(r=>({...r,date:'Vous · à l’instant'})),...(e.reviews||[])]};
+  });
+}
+const avatar=(e,lg='')=>`<div class="avatar ${lg}" style="--h:${hue(e.name)}">${e.photo?`<img src="${e.photo}" alt="">`:esc(initials(e.name))}</div>`;
+const statusPill=e=>e.available?`<span class="status ok"><span class="dot"></span>Disponible</span>`:`<span class="status off"><span class="dot"></span>Indisponible</span>`;
+const starRow=r=>`<span class="stars" aria-label="${r} sur 5">${[1,2,3,4,5].map(i=>ic('star','fill'+(i<=r?'':' dim'))).join('')}</span>`;
+
+/* ---------- client list ---------- */
+function renderSkillChips(){
+  $('#skillchips').innerHTML=['Tous',...SKILLS].map(s=>`<button type="button" class="chip" data-skill="${esc(s)}" aria-pressed="${state.skill===s}">${esc(s)}</button>`).join('');
+}
+function renderList(){
+  const all=allElectricians();
+  const dispo=all.filter(e=>e.available);
+  $('#cnt-dispo').textContent=dispo.length;$('#cnt-all').textContent=all.length;
+  $('#mode-dispo').setAttribute('aria-pressed',state.mode==='dispo');
+  $('#mode-all').setAttribute('aria-pressed',state.mode==='all');
+  let items=(state.mode==='dispo'?dispo:all).filter(e=>state.skill==='Tous'||e.skills.includes(state.skill));
+  items.sort((a,b)=>(b.available-a.available)||(a.dist-b.dist));
+  const far=items.length&&Math.min(...items.map(e=>e.dist))>120;
+  $('#list').innerHTML=items.length?items.map(cardHTML).join(''):`<div class="empty">${ic('bolt')}<h3>Personne n’est disponible pour « ${esc(state.skill)} » en ce moment</h3><p>Essayez « Tous » pour voir aussi les électriciens indisponibles, ou changez de zone.</p></div>`;
+  $('#demonote').innerHTML=far
+    ?`${ic('info')}<span>Vous êtes loin de la zone de démonstration (Nabeul). Les distances affichées sont calculées depuis ${esc(state.origin.label)}.</span>`
+    :`${ic('info')}<span>Profils fictifs pour la démonstration. Créez le vôtre dans <b>Espace pro</b> : il apparaîtra ici, avec un vrai bouton d’appel.</span>`;
+}
+function cardHTML(e){
+  return `<article class="card el ${e.available?'':'off'}" data-id="${e.id}">
+    ${avatar(e)}
+    <div>
+      <div class="el-head"><div class="name">${esc(e.name)}${e.mine?'<span class="you">Vous</span>':''}</div>${statusPill(e)}</div>
+      <div class="meta">${e.count?`<span>${ic('star','fill')} <b>${e.rating.toFixed(1).replace('.',',')}</b> <span class="muted">(${e.count})</span></span>`:`<span class="muted">Nouveau</span>`}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
+      <div class="skills">${e.skills.map(esc).join(' · ')}</div>
+      <div class="actions">${callBtn(e,'primary')}<button type="button" class="btn" data-open="${e.id}">Voir le profil</button></div>
+    </div>
+  </article>`;
+}
+function callBtn(e,cls,label='Appeler'){
+  if(e.demo) return `<button type="button" class="btn ${cls}" data-call="${e.id}">${ic('phone')}${label}</button>`;
+  return `<a class="btn ${cls}" href="tel:${e.telE164}" data-mycall="1">${ic('phone')}${label}</a>`;
+}
+
+/* ---------- profile sheet ---------- */
+function openProfile(id){
+  const e=allElectricians().find(x=>x.id===id); if(!e) return;
+  if(e.mine){state.stats.views++;save(K.stats,state.stats)}
+  const d=$('#profile');
+  const tel=e.demo?'5• ••• •••':fmtTel(digits(e.phone));
+  d.innerHTML=`<div class="grab"></div>
+  <div class="sheet-head"><span class="eyebrow">Profil</span><button class="close" type="button" data-close="profile" aria-label="Fermer">${ic('x')}</button></div>
+  <div class="sheet-body">
+    <div class="phead">${avatar(e,'lg')}<div><h2>${esc(e.name)}${e.mine?'<span class="you" style="font-family:Nunito Sans,sans-serif;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-soft);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:3px">Vous</span>':''}</h2>
+      <div style="margin-top:6px">${statusPill(e)}${e.available&&e.since?`<span class="small muted" style="margin-left:8px">depuis ${fmtTime(e.since)}</span>`:''}</div>
+      <div class="meta">${e.count?`<span>${ic('star','fill')} <b>${e.rating.toFixed(1).replace('.',',')}</b> <span class="muted">· ${e.count} avis</span></span>`:`<span class="muted">Pas encore d’avis</span>`}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
+    </div></div>
+    <p class="lead">${esc(e.desc)||'<span class="muted">Aucune description.</span>'}</p>
+    <div><p class="eyebrow" style="margin-bottom:8px">Compétences</p><div class="chips wrap">${e.skills.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div></div>
+    <div class="card" style="padding:12px 14px"><div style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Téléphone</span><b style="font-variant-numeric:tabular-nums">${tel}</b></div>${e.demo?'<p class="small muted" style="margin-top:4px">Numéro masqué sur les profils de démonstration.</p>':''}</div>
+    <div><p class="eyebrow" style="margin-bottom:8px">Avis (${e.reviews.length})</p>
+      ${e.reviews.length?e.reviews.map(r=>`<div class="review"><div class="who"><span style="color:var(--ink)">${esc(r.who)}</span><span>${esc(r.date)}</span></div>${starRow(r.stars)}<p>${esc(r.text)}</p></div>`).join(''):'<p class="small muted">Soyez le premier à laisser un avis après une intervention.</p>'}
+    </div>
+    ${e.mine?'':`<div class="card" style="padding:14px">
+      <h3>Laisser un avis</h3><p class="small muted" style="margin:4px 0 10px">Après une intervention, notez ${esc(e.name.split(' ')[0])} pour aider les prochains clients.</p>
+      <div class="starpick" id="starpick" role="radiogroup" aria-label="Note">${[1,2,3,4,5].map(i=>`<button type="button" data-star="${i}" aria-label="${i} étoile${i>1?'s':''}">${ic('star','fill')}</button>`).join('')}</div>
+      <div class="field" style="margin-top:10px"><textarea id="revtext" placeholder="Ponctuel, propre, prix correct…" rows="2"></textarea></div>
+      <button type="button" class="btn dark block" id="revsend" style="margin-top:10px" disabled>Publier l’avis</button>
+    </div>`}
+  </div>
+  <div class="sheet-foot">${callBtn(e,'primary lg')}${e.demo?`<button type="button" class="btn lg" data-wa="${e.id}">${ic('chat')}WhatsApp</button>`:`<a class="btn lg" href="https://wa.me/${digits(e.telE164)}" target="_blank" rel="noopener">${ic('chat')}WhatsApp</a>`}</div>`;
+  let stars=0;
+  d.querySelectorAll('[data-star]').forEach(b=>b.addEventListener('click',()=>{stars=+b.dataset.star;d.querySelectorAll('[data-star]').forEach(x=>x.classList.toggle('on',+x.dataset.star<=stars));d.querySelector('#revsend').disabled=false}));
+  d.querySelector('#revsend')?.addEventListener('click',()=>{
+    const text=d.querySelector('#revtext').value.trim()||'Bonne intervention.';
+    (state.reviews[id]=state.reviews[id]||[]).unshift({who:'Vous',stars,text});
+    save(K.rev,state.reviews);toast('Merci, votre avis est publié.');renderList();openProfile(id);
+  });
+  if(!d.open) d.showModal();
+  d.querySelector('.sheet-body').scrollTop=0;
+}
+
+/* ---------- pro space ---------- */
+function renderPro(){
+  const v=$('#view-pro');
+  if(state.my&&!state.editing){
+    const me=allElectricians().find(e=>e.mine);
+    v.innerHTML=`
+      <div class="statuscard ${me.available?'on':''}">
+        <div class="row"><div class="big"><span class="dot"></span>${me.available?'Disponible':'Indisponible'}</div><button type="button" class="switch" id="switch" role="switch" aria-checked="${me.available}" aria-label="Changer ma disponibilité"></button></div>
+        <p>${me.available?`Les clients à proximité vous voient en vert et peuvent vous appeler.${me.since?` Disponible depuis ${fmtTime(me.since)}.`:''}`:'Vous n’apparaissez pas dans la liste « Disponibles maintenant ». Activez quand vous êtes prêt à intervenir.'}</p>
+      </div>
+      <div class="stats"><div class="stat"><b>${state.stats.calls}</b><span>Appels reçus</span></div><div class="stat"><b>${state.stats.views}</b><span>Vues du profil</span></div><div class="stat"><b>${me.count?me.rating.toFixed(1).replace('.',','):'—'}</b><span>Note</span></div></div>
+      <div><p class="eyebrow" style="margin-bottom:8px">Votre fiche, vue par les clients</p><div class="list">${cardHTML(me)}</div></div>
+      <div style="display:flex;gap:8px"><button type="button" class="btn" id="editbtn">${ic('edit')}Modifier mon profil</button><button type="button" class="btn ghost danger" id="delbtn">Supprimer</button></div>
+      <div class="note">${ic('info')}<span>Démo : votre profil est enregistré sur cet appareil uniquement. Dans la vraie app, il sera visible par tous les clients de votre zone.</span></div>`;
+    $('#switch').addEventListener('click',()=>{state.my.available=!state.my.available;state.my.since=state.my.available?Date.now():0;save(K.my,state.my);renderPro();renderList();toast(state.my.available?'Vous êtes maintenant visible comme Disponible.':'Vous êtes passé en Indisponible.')});
+    $('#editbtn').addEventListener('click',()=>{state.editing=true;renderPro();window.scrollTo({top:0})});
+    $('#delbtn').addEventListener('click',()=>{if(confirm('Supprimer votre profil de cet appareil ?')){state.my=null;save(K.my,null);state.stats={views:0,calls:0};save(K.stats,state.stats);renderPro();renderList()}});
+    return;
+  }
+  const m=state.my||{name:'',phone:'',zone:'nabeul',skills:[],desc:'',photo:''};
+  v.innerHTML=`
+    ${state.editing?'':`<div><h1>Recevez des appels quand vous êtes disponible.</h1><p class="lead">Gratuit. Pas de commission, pas d’intermédiaire : le client vous appelle directement.</p></div>
+    <div class="card steps">
+      <div class="step"><span class="n">1</span><div><b>Créez votre profil</b><span>Deux minutes, depuis votre téléphone.</span></div></div>
+      <div class="step"><span class="n">2</span><div><b>Passez en Disponible</b><span>Quand vous êtes prêt à prendre un chantier ou un dépannage.</span></div></div>
+      <div class="step"><span class="n">3</span><div><b>Recevez des appels</b><span>Les clients à proximité vous voient en premier.</span></div></div>
+    </div>`}
+    <form class="form card" id="proform" novalidate>
+      <h2>${state.editing?'Modifier mon profil':'Créer mon profil'}</h2>
+      <div class="photo-row"><div class="avatar lg" id="photoprev" style="--h:${hue(m.name||'Vous')}">${m.photo?`<img src="${m.photo}" alt="">`:(m.name?esc(initials(m.name)):ic('cam'))}</div><label class="btn" for="f-photo" tabindex="0">${ic('cam')}Photo de profil</label><input type="file" id="f-photo" accept="image/*"></div>
+      <div class="field" id="fw-name"><label for="f-name">Nom ou nom de l’entreprise</label><input id="f-name" value="${esc(m.name)}" placeholder="Ex. Ahmed Ben Salah" autocomplete="name"><span class="err">Indiquez votre nom.</span></div>
+      <div class="field" id="fw-phone"><label for="f-phone">Téléphone <em>· les clients vous appellent sur ce numéro</em></label><div class="tel-wrap"><span>+216</span><input id="f-phone" inputmode="tel" value="${esc(fmtTel(digits(m.phone)))}" placeholder="5x xxx xxx" autocomplete="tel-national"></div><span class="err">Numéro tunisien à 8 chiffres.</span></div>
+      <div class="field"><label for="f-zone">Zone d’intervention</label><select id="f-zone">${CITIES.map(c=>`<option value="${c.id}" ${c.id===m.zone?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
+      <div class="field" id="fw-skills"><label>Types de travaux</label><div class="chips wrap" id="fskills">${SKILLS.map(s=>`<button type="button" class="chip sel" data-fs="${esc(s)}" aria-pressed="${m.skills.includes(s)}">${esc(s)}</button>`).join('')}</div><span class="err">Choisissez au moins un type de travaux.</span></div>
+      <div class="field"><label for="f-desc">Courte description <em>· optionnel</em></label><textarea id="f-desc" placeholder="Ex. Électricien depuis 10 ans, dépannage rapide sur Nabeul et Hammamet.">${esc(m.desc)}</textarea></div>
+      <div style="display:flex;gap:8px"><button type="submit" class="btn primary lg">${ic('check')}${state.editing?'Enregistrer':'Créer mon profil'}</button>${state.editing?'<button type="button" class="btn lg" id="cancel">Annuler</button>':''}</div>
+    </form>`;
+  let photo=m.photo||'';
+  $('#f-photo').addEventListener('change',ev=>{const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas'),s=Math.min(img.width,img.height),S=192;c.width=c.height=S;c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,S,S);photo=c.toDataURL('image/jpeg',.8);$('#photoprev').innerHTML=`<img src="${photo}" alt="">`};img.src=r.result};r.readAsDataURL(f)});
+  $('#f-name').addEventListener('input',e=>{if(!photo){const p=$('#photoprev');p.style.setProperty('--h',hue(e.target.value||'Vous'));p.innerHTML=e.target.value?esc(initials(e.target.value)):ic('cam')}});
+  $('#fskills').addEventListener('click',e=>{const b=e.target.closest('[data-fs]');if(b)b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true')});
+  $('#cancel')?.addEventListener('click',()=>{state.editing=false;renderPro()});
+  $('#proform').addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=$('#f-name').value.trim(),ph=digits($('#f-phone').value),skills=[...document.querySelectorAll('#fskills [aria-pressed="true"]')].map(b=>b.dataset.fs);
+    let ok=true;
+    $('#fw-name').classList.toggle('invalid',!name);ok&&=!!name;
+    $('#fw-phone').classList.toggle('invalid',ph.length!==8);ok&&=ph.length===8;
+    $('#fw-skills').classList.toggle('invalid',!skills.length);ok&&=!!skills.length;
+    if(!ok){toast('Complétez les champs en rouge.');return}
+    const c=CITIES.find(x=>x.id===$('#f-zone').value);
+    const prev=state.my||{};
+    state.my={id:'me',name,phone:ph,telE164:'+216'+ph,zone:c.name,lat:c.lat+(Math.random()-.5)*.01,lng:c.lng+(Math.random()-.5)*.01,skills,desc:$('#f-desc').value.trim(),photo,rating:0,count:0,reviews:[],available:prev.available??true,since:prev.since??Date.now()};
+    save(K.my,state.my);state.editing=false;renderPro();renderList();
+    toast(prev.name?'Profil mis à jour.':'Profil créé. Vous êtes Disponible.');window.scrollTo({top:0});
+  });
+}
+
+/* ---------- store tab ---------- */
+function renderStore(){
+  $('#storerows').innerHTML=`
+    <a href="${STORE.maps}" target="_blank" rel="noopener">${ic('pin')}<span>${esc(STORE.addr)}</span>${ic('chev','arrow')}</a>
+    <a href="tel:${STORE.telE164}">${ic('phone')}<span>${STORE.tel}</span>${ic('chev','arrow')}</a>
+    <a href="mailto:${STORE.mail}">${ic('mail')}<span>${STORE.mail}</span>${ic('chev','arrow')}</a>
+    <a href="https://${STORE.site}" target="_blank" rel="noopener">${ic('globe')}<span>${STORE.site}</span>${ic('chev','arrow')}</a>
+    <a href="${STORE.fb}" target="_blank" rel="noopener">${ic('globe')}<span>Facebook · Log-ON</span>${ic('chev','arrow')}</a>
+    <a href="${STORE.ig}" target="_blank" rel="noopener">${ic('globe')}<span>Instagram · @logontn</span>${ic('chev','arrow')}</a>`;
+  $('#soon').innerHTML=`
+    <div>${ic('shield')}<span><b>Électricien partenaire Log-ON</b> — badge de confiance pour les pros vérifiés par le magasin.</span></div>
+    <div>${ic('box')}<span><b>Matériel prêt en magasin</b> — l’électricien commande depuis l’app, passe le récupérer Avenue Hédi Nouira.</span></div>
+    <div>${ic('bulb')}<span><b>Catalogue éclairage</b> — choisissez vos luminaires EGLO et faites-les installer par un électricien disponible.</span></div>
+    <div>${ic('tag')}<span><b>Avantages pros</b> — remises et points fidélité pour les électriciens actifs sur l’app.</span></div>`;
+}
+
+/* ---------- location ---------- */
+function setOrigin(o){state.origin=o;save(K.loc,o);$('#locname').textContent=o.label;renderList();renderCities()}
+function renderCities(){
+  $('#citylist').innerHTML=CITIES.map(c=>`<button type="button" data-city="${c.id}" class="${state.origin.id===c.id?'on':''}">${ic(state.origin.id===c.id?'check':'pin')}${esc(c.name)}</button>`).join('');
+}
+$('#locbtn').addEventListener('click',()=>{renderCities();$('#locdlg').showModal()});
+$('#citylist').addEventListener('click',e=>{const b=e.target.closest('[data-city]');if(!b)return;const c=CITIES.find(x=>x.id===b.dataset.city);setOrigin({...c,label:c.name});$('#locdlg').close()});
+$('#geobtn').addEventListener('click',()=>{
+  if(!navigator.geolocation){toast('Géolocalisation indisponible sur cet appareil.');return}
+  const b=$('#geobtn');b.disabled=true;b.textContent='Recherche de votre position…';
+  const reset=()=>{b.disabled=false;b.innerHTML=`${ic('target')}Utiliser ma position`};
+  navigator.geolocation.getCurrentPosition(p=>{reset();setOrigin({id:'gps',lat:p.coords.latitude,lng:p.coords.longitude,label:'Ma position'});$('#locdlg').close();toast('Distances calculées depuis votre position.')},()=>{reset();toast('Position refusée ou indisponible — choisissez une ville.')},{timeout:8000,maximumAge:60000});
+});
+
+/* ---------- global events ---------- */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button,a');if(!t)return;
+  if(t.dataset.tab){setTab(t.dataset.tab);return}
+  if(t.dataset.skill){state.skill=t.dataset.skill;renderSkillChips();renderList();return}
+  if(t.id==='mode-dispo'){state.mode='dispo';renderList();return}
+  if(t.id==='mode-all'){state.mode='all';renderList();return}
+  if(t.dataset.open){openProfile(t.dataset.open);return}
+  if(t.dataset.close){$('#'+t.dataset.close).close();return}
+  if(t.dataset.call){const el=DEMO.find(x=>x.id===t.dataset.call);toast(`Démo : dans la vraie app, ceci ouvre le téléphone avec le numéro de ${el.name.split(' ')[0]}.`);return}
+  if(t.dataset.wa){toast('Démo : ceci ouvrirait WhatsApp avec l’électricien.');return}
+  if(t.dataset.mycall){state.stats.calls++;save(K.stats,state.stats);if(state.tab==='pro')renderPro()}
+});
+document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
+function setTab(t){
+  state.tab=t;
+  document.querySelectorAll('.tabbar [data-tab]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tab===t));
+  $('#view-clients').hidden=t!=='clients';$('#view-pro').hidden=t!=='pro';$('#view-store').hidden=t!=='store';
+  if(t==='pro')renderPro();
+  window.scrollTo({top:0});
+}
+
+/* ---------- boot ---------- */
+$('#locname').textContent=state.origin.label;
+renderSkillChips();renderList();renderStore();
+</script>
+
+</body>
+</html>
