@@ -11,75 +11,129 @@
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
-<style>:root{color-scheme:light dark}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Log-ON Électriciens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Dancing+Script:wght@600&display=swap">
 <style>
 :root{
-  --bg-outer:#E9E9E4; --bg:#F4F4F1; --surface:#FFFFFF; --surface-2:#ECECE7; --ink:#171717; --ink-2:#45453F; --muted:#7A7A73; --line:#DEDED8;
+  color-scheme:light dark;
+  --bg-outer:#E7E7E2; --bg:#F4F4F1; --surface:#FFFFFF; --surface-2:#ECECE7; --ink:#171717; --ink-2:#45453F; --muted:#7A7A73; --line:#DEDED8;
   --accent:#F2B233; --accent-ink:#171717; --accent-soft:#FFF1D0;
   --ok:#1B9457; --ok-soft:#E1F4E8; --off:#CF4038; --off-soft:#FBE6E4;
-  --brand:#161616; --brand-fg:#FFFFFF;
-  --shadow:0 1px 2px rgba(23,23,23,.05),0 10px 28px rgba(23,23,23,.07);
+  --hdr:#161616; --hdr-fg:#FFFFFF; --hdr-sub:rgba(255,255,255,.62); --hdr-line:rgba(255,255,255,.12); --hdr-pill:rgba(255,255,255,.1);
+  --shadow:0 1px 2px rgba(23,23,23,.05),0 10px 28px rgba(23,23,23,.08);
   --radius:16px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg-outer:#0C0C0C; --bg:#131312; --surface:#1C1C1B; --surface-2:#262624; --ink:#F1F1EC; --ink-2:#C6C6BE; --muted:#8F8F87; --line:#2D2D2A;
+    --bg-outer:#0A0A0A; --bg:#131312; --surface:#1C1C1B; --surface-2:#262624; --ink:#F1F1EC; --ink-2:#C6C6BE; --muted:#8F8F87; --line:#2D2D2A;
     --accent:#F2B233; --accent-ink:#171717; --accent-soft:#3A2D10;
     --ok:#3ECB7D; --ok-soft:#143726; --off:#F1685F; --off-soft:#421C19;
-    --brand:#0E0E0E; --brand-fg:#FFFFFF;
+    --hdr:#0E0E0E; --hdr-fg:#FFFFFF; --hdr-sub:rgba(255,255,255,.6); --hdr-line:rgba(255,255,255,.12); --hdr-pill:rgba(255,255,255,.1);
     --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
   }
 }
 :root[data-theme="dark"]{
-  --bg-outer:#0C0C0C; --bg:#131312; --surface:#1C1C1B; --surface-2:#262624; --ink:#F1F1EC; --ink-2:#C6C6BE; --muted:#8F8F87; --line:#2D2D2A;
+  --bg-outer:#0A0A0A; --bg:#131312; --surface:#1C1C1B; --surface-2:#262624; --ink:#F1F1EC; --ink-2:#C6C6BE; --muted:#8F8F87; --line:#2D2D2A;
   --accent:#F2B233; --accent-ink:#171717; --accent-soft:#3A2D10;
   --ok:#3ECB7D; --ok-soft:#143726; --off:#F1685F; --off-soft:#421C19;
-  --brand:#0E0E0E; --brand-fg:#FFFFFF;
+  --hdr:#0E0E0E; --hdr-fg:#FFFFFF; --hdr-sub:rgba(255,255,255,.6); --hdr-line:rgba(255,255,255,.12); --hdr-pill:rgba(255,255,255,.1);
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--bg-outer);color:var(--ink);font-family:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ic{width:18px;height:18px;flex:none;vertical-align:-3px}
 .ic.fill{fill:currentColor;stroke:none}
-.ic.sm{width:14px;height:14px}
-
-.app{max-width:480px;margin:0 auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
-@media (min-width:720px){.app{border-inline:1px solid var(--line)}}
-
-/* header */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;gap:12px}
-.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-.logo{width:42px;height:42px;flex:none;border-radius:50%;box-shadow:0 0 0 1px var(--line)}
-.wordmark{font-family:Outfit,"Nunito Sans",sans-serif;font-weight:700;font-size:18px;letter-spacing:-.01em;line-height:1.1}
-.wordmark small{display:block;font-family:"Nunito Sans",sans-serif;font-weight:600;font-size:11.5px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
-.locbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 10px 7px 9px;font-weight:700;font-size:13px;max-width:46%;white-space:nowrap}
-.locbtn span{overflow:hidden;text-overflow:ellipsis}
-.locbtn .ic{width:15px;height:15px;color:var(--accent)}
-
-main{padding:16px;display:flex;flex-direction:column;gap:14px}
 h1,h2,h3{font-family:Outfit,"Nunito Sans",sans-serif;text-wrap:balance;margin:0;letter-spacing:-.01em}
-h1{font-size:24px;line-height:1.15;font-weight:700}
-h2{font-size:18px;font-weight:600}
-h3{font-size:15px;font-weight:600}
+h1{font-size:26px;line-height:1.12;font-weight:700}
+h2{font-size:19px;font-weight:600;line-height:1.2}
+h3{font-size:15.5px;font-weight:600}
 p{margin:0}
 .lead{color:var(--ink-2)}
 .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .muted{color:var(--muted)}
 .small{font-size:13px}
+.tnum{font-variant-numeric:tabular-nums}
+
+.app{max-width:480px;margin:0 auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column}
+.app.tabs{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+@media (min-width:720px){.app{border-inline:1px solid var(--line)}}
+
+/* ---------- welcome ---------- */
+.welcome{flex:1;background:var(--hdr);color:var(--hdr-fg);display:flex;flex-direction:column;gap:22px;padding:28px 20px 28px;background-image:radial-gradient(60% 40% at 50% 0%,rgba(242,178,51,.22),transparent 70%)}
+.welcome .glow{position:relative;width:96px;height:96px;margin:10px auto 0;display:grid;place-items:center;color:var(--accent)}
+.welcome .glow::before{content:"";position:absolute;inset:-34px;border-radius:50%;background:radial-gradient(circle,rgba(242,178,51,.38),transparent 62%)}
+.welcome .glow .ic{width:72px;height:72px;position:relative;filter:drop-shadow(0 0 14px rgba(242,178,51,.55))}
+.welcome .titles{text-align:center}
+.welcome .titles .by{font-family:"Dancing Script",cursive;font-size:20px;color:var(--accent);display:block;margin-bottom:2px}
+.welcome h1{font-size:30px}
+.welcome .tag{color:var(--hdr-sub);margin-top:8px;font-size:15px}
+.door{background:var(--hdr-pill);border:1px solid var(--hdr-line);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.door h2{color:#fff;display:flex;align-items:center;gap:10px}
+.door h2 .ic{color:var(--accent);width:22px;height:22px}
+.door p{color:var(--hdr-sub);font-size:14px}
+.door .row{display:flex;gap:8px;margin-top:4px}
+.welcome .foot{text-align:center;color:var(--hdr-sub);font-size:13.5px;margin-top:auto}
+.welcome .foot button{border:0;background:none;color:#fff;font-weight:800;text-decoration:underline;text-underline-offset:3px;padding:4px}
+
+/* ---------- auth ---------- */
+.authbar{display:flex;align-items:center;gap:8px;padding:12px 12px 4px}
+.authbar button{border:0;background:var(--surface-2);width:38px;height:38px;border-radius:50%;display:grid;place-items:center}
+.auth{padding:12px 20px 32px;display:flex;flex-direction:column;gap:18px}
+.auth .form{gap:16px}
+.codebox{font-family:Outfit,sans-serif;font-size:32px;letter-spacing:.5em;text-align:center;padding:14px 0 14px .5em !important;font-weight:600}
+.hint{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:var(--accent-soft);font-size:13.5px;color:var(--ink)}
+.hint .ic{color:var(--accent);margin-top:1px}
+.hint b{font-family:Outfit,sans-serif;letter-spacing:.15em;font-size:15px}
+.linkrow{display:flex;justify-content:center;gap:18px;font-size:13.5px}
+.linkrow button{border:0;background:none;font-weight:800;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;padding:4px}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--hdr);color:var(--hdr-fg);padding:10px 16px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.logo{width:40px;height:40px;flex:none;border-radius:50%;box-shadow:0 0 0 1px var(--hdr-line)}
+.wordmark{font-family:Outfit,"Nunito Sans",sans-serif;font-weight:700;font-size:18px;letter-spacing:-.01em;line-height:1.1}
+.wordmark small{display:block;font-family:"Nunito Sans",sans-serif;font-weight:700;font-size:11px;color:var(--hdr-sub);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.acctbtn{border:1px solid var(--hdr-line);background:var(--hdr-pill);color:#fff;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:Outfit,sans-serif;font-weight:700;font-size:14px;flex:none;overflow:hidden}
+.acctbtn img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- client home ---------- */
+.darkblock{background:var(--hdr);color:var(--hdr-fg);padding:4px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.darkblock .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.darkblock .count{font-family:Outfit,sans-serif;font-weight:600;font-size:17px;line-height:1.2}
+.darkblock .count b{color:var(--ok);font-weight:700}
+.darkblock .count span{display:block;font-family:"Nunito Sans",sans-serif;font-size:13px;color:var(--hdr-sub);font-weight:600}
+.locbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--hdr-line);background:var(--hdr-pill);color:#fff;border-radius:999px;padding:8px 10px 8px 9px;font-weight:700;font-size:13px;max-width:52%;white-space:nowrap}
+.locbtn span{overflow:hidden;text-overflow:ellipsis}
+.locbtn .ic{width:15px;height:15px;color:var(--accent)}
+.locbtn .chev{color:var(--hdr-sub);width:13px;height:13px}
+.radar{width:100%;height:auto;display:block;border-radius:18px;background:radial-gradient(circle at 50% 52%,rgba(242,178,51,.10),rgba(255,255,255,.02) 70%);border:1px solid var(--hdr-line)}
+.radar .ring{fill:none;stroke:rgba(255,255,255,.14)}
+.radar .lbl{fill:rgba(255,255,255,.55);font-size:9.5px;font-weight:700;font-family:"Nunito Sans",sans-serif}
+.radar .sweep{transform-box:view-box;transform-origin:160px 112px;animation:spin 9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.radar .dot{cursor:pointer}
+.radar .dot text{fill:#fff;font-size:8.5px;font-weight:800;font-family:"Nunito Sans",sans-serif;pointer-events:none}
+.radar .dot .halo{fill:var(--ok);opacity:.22}
+.radar .dot.off circle.core{fill:#6E6E68}
+.radar .dot.off .halo{display:none}
+.radar .dot.mine circle.core{stroke:var(--accent);stroke-width:2}
+.content{padding:16px;display:flex;flex-direction:column;gap:14px}
 
 /* segmented + chips */
 .seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface-2);border-radius:12px;padding:3px;gap:3px}
 .seg button{border:0;background:transparent;border-radius:9px;padding:8px 10px;font-weight:700;font-size:13.5px;color:var(--muted);display:flex;justify-content:center;align-items:center;gap:6px}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.cnt{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:11.5px;font-weight:800;padding:0 6px}
+.seg button[aria-pressed="true"] .cnt{background:var(--ok);color:#fff}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 16px 4px;margin:0 -16px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700;white-space:nowrap;color:var(--ink-2)}
@@ -90,14 +144,18 @@ p{margin:0}
 /* cards */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
 .list{display:flex;flex-direction:column;gap:10px}
-.el{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start}
-.el.off{opacity:.72}
-.avatar{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-family:Outfit,sans-serif;font-weight:700;font-size:18px;color:#fff;overflow:hidden;background:var(--h,#5B6B7A)}
+.el{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:start;cursor:pointer;transition:transform .08s ease,box-shadow .15s ease}
+.el:active{transform:scale(.99)}
+@media (hover:hover){.el:hover{box-shadow:var(--shadow)}}
+.el.off{opacity:.7}
+.avatar{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-family:Outfit,sans-serif;font-weight:700;font-size:18px;color:#fff;overflow:hidden;background:var(--h,#5B6B7A);position:relative}
 .avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .avatar.lg{width:72px;height:72px;font-size:26px;border-radius:20px}
+.avatar .pip{position:absolute;right:-2px;bottom:-2px;width:14px;height:14px;border-radius:50%;background:var(--ok);border:2.5px solid var(--surface)}
+.avatar .pip.off{background:var(--off)}
 .el-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .name{font-family:Outfit,sans-serif;font-weight:600;font-size:16px;line-height:1.2}
-.name .you{font-family:"Nunito Sans",sans-serif;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:2px}
+.you{font-family:"Nunito Sans",sans-serif;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:2px}
 .status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;border-radius:999px;padding:4px 9px 4px 7px;white-space:nowrap;flex:none}
 .status.ok{background:var(--ok-soft);color:var(--ok)}
 .status.off{background:var(--off-soft);color:var(--off)}
@@ -112,6 +170,8 @@ p{margin:0}
 .btn:active{transform:scale(.98)}
 .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .btn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.light{background:#fff;color:#171717;border-color:#fff}
+.btn.onDark{background:var(--hdr-pill);color:#fff;border-color:var(--hdr-line)}
 .btn.ghost{background:transparent}
 .btn.danger{color:var(--off);border-color:color-mix(in srgb,var(--off) 40%,transparent)}
 .btn.block{width:100%}
@@ -119,10 +179,10 @@ p{margin:0}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .note{font-size:12.5px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--surface-2)}
 .note .ic{color:var(--accent);margin-top:1px}
+.note b{color:var(--ink-2)}
 .empty{text-align:center;padding:28px 16px;color:var(--muted)}
 .empty h3{color:var(--ink);margin-bottom:6px}
-.count{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:11.5px;font-weight:800;padding:0 6px}
-.seg button[aria-pressed="true"] .count{background:var(--ok);color:#fff}
+.empty .ic{width:28px;height:28px;color:var(--accent);margin-bottom:6px}
 
 /* steps */
 .steps{display:flex;flex-direction:column;gap:10px}
@@ -136,25 +196,27 @@ p{margin:0}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:13px;font-weight:800;color:var(--ink-2)}
 .field label em{font-style:normal;font-weight:600;color:var(--muted)}
-.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 12px;font-size:15px;color:var(--ink)}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 12px;font-size:16px;color:var(--ink)}
 .field textarea{min-height:88px;resize:vertical}
 .field .err{color:var(--off);font-size:12.5px;font-weight:700;display:none}
 .field.invalid .err{display:block}
-.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--off)}
+.field.invalid input,.field.invalid select,.field.invalid textarea,.field.invalid .tel-wrap{border-color:var(--off)}
 .photo-row{display:flex;align-items:center;gap:12px}
 .photo-row input{display:none}
 .photo-row .btn{flex:none}
 .tel-wrap{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
-.tel-wrap span{padding:11px 10px;background:var(--surface-2);font-weight:800;color:var(--muted);border-right:1px solid var(--line)}
-.tel-wrap input{border:0 !important;border-radius:0 !important}
+.tel-wrap span{padding:12px 12px;background:var(--surface-2);font-weight:800;color:var(--muted);border-right:1px solid var(--line)}
+.tel-wrap input{border:0 !important;border-radius:0 !important;letter-spacing:.04em}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:14px}
+.kv b{font-variant-numeric:tabular-nums}
 
-/* switch card */
-.statuscard{border-radius:20px;padding:18px;color:#fff;background:var(--off);transition:background .25s ease}
-.statuscard.on{background:var(--ok)}
+/* status card */
+.statuscard{border-radius:20px;padding:18px;color:#fff;background:var(--off);transition:background .25s ease;background-image:radial-gradient(70% 60% at 100% 0%,rgba(255,255,255,.14),transparent 70%)}
+.statuscard.on{background-color:var(--ok)}
 .statuscard .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .statuscard .big{font-family:Outfit,sans-serif;font-weight:700;font-size:26px;line-height:1.05;display:flex;align-items:center;gap:10px}
 .statuscard .big .dot{width:12px;height:12px;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
-.statuscard p{opacity:.92;margin-top:8px;font-size:14px}
+.statuscard p{opacity:.94;margin-top:8px;font-size:14px}
 .switch{width:64px;height:36px;border-radius:999px;border:0;background:rgba(0,0,0,.28);position:relative;flex:none;transition:background .2s}
 .switch::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:transform .2s ease;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .switch[aria-checked="true"]{background:rgba(255,255,255,.35)}
@@ -164,33 +226,41 @@ p{margin:0}
 .stat b{display:block;font-family:Outfit,sans-serif;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
 .stat span{font-size:12px;color:var(--muted);font-weight:700}
 
-/* store */
-.storehead{display:flex;gap:14px;align-items:center}
-.storehead .logo{width:72px;height:72px}
+/* rows (store, account) */
 .rows{display:flex;flex-direction:column}
-.rows a,.rows div{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);text-decoration:none;font-weight:600}
-.rows a:first-child,.rows div:first-child{border-top:0}
+.rows a,.rows button,.rows div.r{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--line);text-decoration:none;font-weight:700;border-left:0;border-right:0;border-bottom:0;background:none;text-align:left;width:100%;font-size:14.5px}
+.rows > :first-child{border-top:0}
 .rows .ic{color:var(--accent)}
 .rows .arrow{margin-left:auto;color:var(--muted);transform:rotate(-90deg)}
+.rows .sub{margin-left:auto;color:var(--muted);font-weight:600;font-size:13px}
+.rows .danger{color:var(--off)}
+.rows .danger .ic{color:var(--off)}
+.storehead{display:flex;gap:14px;align-items:center}
+.storehead .logo{width:72px;height:72px;box-shadow:0 0 0 1px var(--line)}
 .soon{display:flex;flex-direction:column;gap:10px}
 .soon div{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;color:var(--ink-2);font-size:14px}
 .soon .ic{color:var(--accent);margin-top:2px}
 .soon b{color:var(--ink)}
+.acct-head{display:flex;gap:14px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:3px 9px;background:var(--surface-2);color:var(--ink-2)}
+.pill.pro{background:var(--accent-soft)}
 
 /* tab bar */
-.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:6px 8px calc(8px + env(safe-area-inset-bottom,0px));z-index:6}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-auto-flow:column;grid-auto-columns:1fr;padding:6px 8px calc(8px + env(safe-area-inset-bottom,0px));z-index:6}
 @media (min-width:720px){.tabbar{border-inline:1px solid var(--line)}}
-.tabbar button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:12px;font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.01em}
+.tabbar button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:12px;font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.01em;position:relative}
 .tabbar button .ic{width:22px;height:22px}
 .tabbar button[aria-pressed="true"]{color:var(--ink)}
 .tabbar button[aria-pressed="true"] .ic{color:var(--accent)}
+.tabbar .live{position:absolute;top:6px;right:calc(50% - 16px);width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 2px var(--surface)}
 
 /* dialogs */
 dialog{border:0;padding:0;background:var(--surface);color:var(--ink);width:100%;max-width:480px;margin:auto auto 0;border-radius:22px 22px 0 0;max-height:92dvh;box-shadow:var(--shadow)}
-dialog[open]{display:flex;flex-direction:column}
+dialog[open]{display:flex;flex-direction:column;animation:up .26s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
 dialog::backdrop{background:rgba(10,10,10,.5)}
 @media (min-width:720px){dialog{margin:auto;border-radius:22px;max-height:86dvh}}
-.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 0}
 .grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:8px auto 0}
 .sheet-body{overflow:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:14px}
 .sheet-foot{display:flex;gap:8px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--surface)}
@@ -207,7 +277,7 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
 .starpick{display:flex;gap:4px}
 .starpick button{border:0;background:transparent;padding:2px;color:var(--line)}
 .starpick button.on{color:var(--accent)}
-.starpick .ic{width:28px;height:28px}
+.starpick .ic{width:30px;height:30px}
 .citylist{display:flex;flex-direction:column}
 .citylist button{border:0;background:transparent;text-align:left;padding:13px 4px;border-top:1px solid var(--line);font-weight:700;display:flex;align-items:center;gap:10px}
 .citylist button .ic{color:var(--muted)}
@@ -217,79 +287,102 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
 .toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:12px;font-weight:700;font-size:13.5px;max-width:min(440px,calc(100% - 32px));opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20;text-align:center;box-shadow:var(--shadow)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
 </style>
 </head>
 <body>
+<div class="app" id="app">
 
-<div class="app">
-  <header class="top">
-    <div class="brand">
-      <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Log-ON lighting">
-        <circle cx="32" cy="32" r="32" fill="#161616"/>
-        <text x="34.5" y="34" text-anchor="end" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff" letter-spacing=".2">Log-</text>
-        <g transform="translate(35.2 23.5) scale(.5)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z"/><path d="M9.6 21h4.8"/>
-        </g>
-        <text x="48.2" y="34" text-anchor="start" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff">N</text>
-        <text x="33" y="47" text-anchor="middle" font-family="'Dancing Script', cursive" font-weight="600" font-size="11" fill="#fff">lighting</text>
-      </svg>
-      <div class="wordmark">Électriciens<small>par Log-ON · Nabeul</small></div>
+  <!-- ===== welcome ===== -->
+  <section id="s-welcome" class="welcome" hidden>
+    <div class="glow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z"/><path d="M9.5 21h5"/><path d="M12 7.5v4"/></svg></div>
+    <div class="titles">
+      <span class="by">par Log-ON lighting</span>
+      <h1>Un électricien disponible,<br>près de chez vous.</h1>
+      <p class="tag">Nabeul et tout le Cap Bon. Appelez directement, sans intermédiaire.</p>
     </div>
-    <button class="locbtn" id="locbtn" type="button" aria-haspopup="dialog">
-      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
-      <span id="locname">Nabeul</span>
-      <svg class="ic" style="color:var(--muted);width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-    </button>
-  </header>
-
-  <main id="view-clients">
-    <div>
-      <h1>Un électricien disponible, près de chez vous.</h1>
-      <p class="lead">Voyez qui est libre en ce moment et appelez directement.</p>
+    <div class="door">
+      <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg>Je cherche un électricien</h2>
+      <p>Voyez qui est libre en ce moment autour de vous et appelez-le. Aucun compte nécessaire.</p>
+      <div class="row"><button type="button" class="btn primary lg" data-guest>Voir qui est disponible</button></div>
     </div>
-    <div class="seg" role="group" aria-label="Filtrer par disponibilité">
-      <button type="button" id="mode-dispo" aria-pressed="true">Disponibles maintenant <span class="count" id="cnt-dispo">0</span></button>
-      <button type="button" id="mode-all" aria-pressed="false">Tous <span class="count" id="cnt-all">0</span></button>
+    <div class="door">
+      <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>Je suis électricien</h2>
+      <p>Recevez des appels quand vous êtes disponible. Gratuit, pas de commission.</p>
+      <div class="row"><button type="button" class="btn light lg" data-auth="signup:pro">Créer mon compte</button><button type="button" class="btn onDark lg" data-auth="login:pro">Se connecter</button></div>
     </div>
-    <div class="chips" id="skillchips"></div>
-    <div class="list" id="list"></div>
-    <div class="note" id="demonote"></div>
-  </main>
+    <p class="foot">Déjà un compte client ? <button type="button" data-auth="login:client">Se connecter</button></p>
+  </section>
 
-  <main id="view-pro" hidden></main>
+  <!-- ===== auth ===== -->
+  <section id="s-auth" hidden>
+    <div class="authbar"><button type="button" id="auth-back" aria-label="Retour"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button></div>
+    <div class="auth" id="auth-body"></div>
+  </section>
 
-  <main id="view-store" hidden>
-    <div class="card">
-      <div class="storehead">
+  <!-- ===== main ===== -->
+  <div id="s-main" hidden>
+    <header class="top">
+      <div class="brand">
         <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Log-ON lighting">
           <circle cx="32" cy="32" r="32" fill="#161616"/>
           <text x="34.5" y="34" text-anchor="end" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff" letter-spacing=".2">Log-</text>
-          <g transform="translate(35.2 23.5) scale(.5)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z"/><path d="M9.6 21h4.8"/></g>
+          <g transform="translate(35.2 23.5) scale(.5)" fill="none" stroke="#F2B233" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z"/><path d="M9.6 21h4.8"/></g>
           <text x="48.2" y="34" text-anchor="start" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff">N</text>
           <text x="33" y="47" text-anchor="middle" font-family="'Dancing Script', cursive" font-weight="600" font-size="11" fill="#fff">lighting</text>
         </svg>
-        <div>
-          <h2>Log-ON lighting</h2>
-          <p class="lead small">Vente de matériel électrique, éclairage et décoration. Distributeur EGLO.</p>
+        <div class="wordmark">Électriciens<small>par Log-ON · Nabeul</small></div>
+      </div>
+      <button class="acctbtn" id="acctbtn" type="button" aria-label="Mon compte"></button>
+    </header>
+
+    <main id="view-clients" hidden>
+      <div class="darkblock">
+        <div class="row">
+          <div class="count" id="radar-count"></div>
+          <button class="locbtn" id="locbtn" type="button" aria-haspopup="dialog">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span id="locname">Nabeul</span>
+            <svg class="ic chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+        <svg class="radar" id="radar" viewBox="0 0 320 224" role="img" aria-label="Électriciens autour de vous"></svg>
+      </div>
+      <div class="content">
+        <div class="seg" role="group" aria-label="Filtrer par disponibilité">
+          <button type="button" id="mode-dispo" aria-pressed="true">Disponibles maintenant <span class="cnt" id="cnt-dispo">0</span></button>
+          <button type="button" id="mode-all" aria-pressed="false">Tous <span class="cnt" id="cnt-all">0</span></button>
+        </div>
+        <div class="chips" id="skillchips"></div>
+        <div class="list" id="list"></div>
+        <div class="note" id="demonote"></div>
+      </div>
+    </main>
+
+    <main id="view-activite" hidden><div class="content" id="activite"></div></main>
+
+    <main id="view-store" hidden><div class="content">
+      <div class="card">
+        <div class="storehead">
+          <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Log-ON lighting">
+            <circle cx="32" cy="32" r="32" fill="#161616"/>
+            <text x="34.5" y="34" text-anchor="end" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff" letter-spacing=".2">Log-</text>
+            <g transform="translate(35.2 23.5) scale(.5)" fill="none" stroke="#F2B233" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z"/><path d="M9.6 21h4.8"/></g>
+            <text x="48.2" y="34" text-anchor="start" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff">N</text>
+            <text x="33" y="47" text-anchor="middle" font-family="'Dancing Script', cursive" font-weight="600" font-size="11" fill="#fff">lighting</text>
+          </svg>
+          <div><h2>Log-ON lighting</h2><p class="lead small">Vente de matériel électrique, éclairage et décoration. Distributeur EGLO.</p></div>
         </div>
       </div>
-    </div>
-    <div class="card">
-      <div class="rows" id="storerows"></div>
-    </div>
-    <div class="card">
-      <p class="eyebrow" style="margin-bottom:10px">Bientôt dans l'app</p>
-      <div class="soon" id="soon"></div>
-    </div>
-  </main>
+      <div class="card"><div class="rows" id="storerows"></div></div>
+      <div class="card"><p class="eyebrow" style="margin-bottom:10px">Bientôt dans l'app</p><div class="soon" id="soon"></div></div>
+    </div></main>
 
-  <nav class="tabbar" aria-label="Navigation">
-    <button type="button" data-tab="clients" aria-pressed="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>Électriciens</button>
-    <button type="button" data-tab="pro" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Espace pro</button>
-    <button type="button" data-tab="store" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9M3 9h18M3 9v11h18V9M9 20v-6h6v6"/></svg>Log-ON</button>
-  </nav>
+    <main id="view-account" hidden><div class="content" id="account"></div></main>
+  </div>
 </div>
+
+<nav class="tabbar" id="tabbar" aria-label="Navigation" hidden></nav>
 
 <dialog id="profile" aria-label="Profil de l'électricien"></dialog>
 <dialog id="locdlg" aria-label="Choisir une zone">
@@ -304,7 +397,7 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* ---------- data ---------- */
+/* ================= data ================= */
 const CITIES=[
  {id:'nabeul',name:'Nabeul',lat:36.4561,lng:10.7376},
  {id:'darchaabane',name:'Dar Chaabane El Fehri',lat:36.4700,lng:10.7500},
@@ -317,8 +410,7 @@ const CITIES=[
  {id:'sousse',name:'Sousse',lat:35.8256,lng:10.6369},
 ];
 const SKILLS=['Dépannage','Installation','Tableau électrique','Éclairage','Climatisation','Domotique','Interphone & vidéo','Mise en conformité'];
-const now=Date.now();
-const ago=m=>now-m*60000;
+const now=Date.now(), ago=m=>now-m*60000;
 const DEMO=[
  {id:'d1',demo:true,name:'Ahmed Ben Salah',zone:'Dar Chaabane El Fehri',lat:36.4712,lng:10.7468,skills:['Dépannage','Installation','Tableau électrique'],desc:'Électricien bâtiment depuis 12 ans. Dépannage rapide sur Nabeul et environs, installations neuves et rénovation.',rating:4.8,count:23,available:true,since:ago(95),reviews:[{who:'Rim B.',stars:5,text:'Venu en 30 minutes pour une panne de tableau. Sérieux et propre.',date:'Il y a 3 jours'},{who:'Khaled M.',stars:5,text:'Installation complète de mon appartement, travail soigné.',date:'Il y a 2 semaines'},{who:'Sana T.',stars:4,text:'Bon travail, un peu en retard mais il a prévenu.',date:'Il y a 1 mois'}]},
  {id:'d2',demo:true,name:'Mohamed Trabelsi',zone:'Nabeul centre',lat:36.4530,lng:10.7330,skills:['Dépannage','Éclairage'],desc:'Dépannage électrique 7j/7, pose de luminaires et éclairage extérieur.',rating:4.6,count:15,available:true,since:ago(40),reviews:[{who:'Amine K.',stars:5,text:'Rapide et prix correct pour un court-circuit un dimanche.',date:'Il y a 5 jours'},{who:'Leila H.',stars:4,text:'Éclairage du jardin très bien installé.',date:'Il y a 3 semaines'}]},
@@ -330,9 +422,10 @@ const DEMO=[
  {id:'d8',demo:true,name:'Anis Chaabane',zone:'Grombalia',lat:36.5990,lng:10.5010,skills:['Dépannage','Installation','Climatisation'],desc:'Interventions Grombalia, Bou Argoub et Nabeul.',rating:4.2,count:6,available:true,since:ago(60),reviews:[{who:'Souad M.',stars:4,text:'Correct.',date:'Il y a 2 mois'}]},
  {id:'d9',demo:true,name:'Yassine Hamdi',zone:'Nabeul (Sidi Amor)',lat:36.4600,lng:10.7300,skills:['Éclairage','Domotique'],desc:'Éclairage design et LED, conseils pour salons et façades.',rating:5.0,count:4,available:false,since:0,reviews:[{who:'Ines L.',stars:5,text:'Superbe éclairage LED du salon.',date:'Il y a 1 semaine'}]},
 ];
-const STORE={name:'Log-ON lighting',addr:'Avenue Hédi Nouira, Nabeul',tel:'72 231 330',telE164:'+21672231330',mail:'ste@log-on.tn',site:'log-on.tn',fb:'https://www.facebook.com/LOGONTN/',ig:'https://www.instagram.com/logontn/',maps:'https://maps.google.com/?q=Log-ON+Avenue+Hedi+Nouira+Nabeul'};
+const STORE={addr:'Avenue Hédi Nouira, Nabeul',tel:'72 231 330',telE164:'+21672231330',mail:'ste@log-on.tn',site:'log-on.tn',fb:'https://www.facebook.com/LOGONTN/',ig:'https://www.instagram.com/logontn/',maps:'https://maps.google.com/?q=Log-ON+Avenue+Hedi+Nouira+Nabeul'};
+const DEMO_CODE='1234';
 
-/* ---------- icons ---------- */
+/* ================= icons ================= */
 const I={
  pin:'<path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
  phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
@@ -343,7 +436,6 @@ const I={
  check:'<path d="M5 12l5 5 9-11"/>',
  x:'<path d="M6 6l12 12M18 6L6 18"/>',
  edit:'<path d="M4 20h4l10-10-4-4L4 16z"/>',
- map:'<path d="M9 4l6 2 6-2v14l-6 2-6-2-6 2V6z M9 4v14 M15 6v14"/>',
  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
  bulb:'<path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z M9.5 21h5"/>',
@@ -353,81 +445,210 @@ const I={
  tag:'<path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="8" cy="8" r="1.5"/>',
  box:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z M3 7l9 4 9-4M12 11v10"/>',
  shield:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+ store:'<path d="M3 9l1.5-5h15L21 9M3 9h18M3 9v11h18V9M9 20v-6h6v6"/>',
+ gauge:'<path d="M4 14a8 8 0 1 1 16 0"/><path d="M12 14l4-4"/><circle cx="12" cy="14" r="1.5"/>',
+ out:'<path d="M10 4H5v16h5M14 8l4 4-4 4M8 12h10"/>',
+ swap:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
+ lang:'<path d="M4 5h10M9 3v2c0 5-3 9-6 11M6 9c1 3 4 6 8 8M13 20l4-9 4 9M14.5 17h5"/>',
+ sms:'<rect x="3" y="4" width="18" height="14" rx="3"/><path d="M8 20l4-2 4 2M7 9h10M7 13h6"/>',
 };
 const ic=(n,cls='')=>`<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 
-/* ---------- storage ---------- */
-const K={my:'logon.my',rev:'logon.reviews',loc:'logon.loc',stats:'logon.stats'};
+/* ================= storage & state ================= */
+const K={acc:'logon.accounts',ses:'logon.session',rev:'logon.reviews',loc:'logon.loc',stats:'logon.stats'};
 const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
-
-/* ---------- state ---------- */
 const state={
-  tab:'clients', mode:'dispo', skill:'Tous',
-  origin:null,
-  my:load(K.my,null),
-  reviews:load(K.rev,{}),
-  stats:load(K.stats,{views:0,calls:0}),
-  editing:false,
+  screen:'welcome', tab:'clients', mode:'dispo', skill:'Tous', editing:false,
+  origin:load(K.loc,null)||{...CITIES[0],label:CITIES[0].name},
+  accounts:load(K.acc,{}), session:load(K.ses,null),
+  reviews:load(K.rev,{}), stats:load(K.stats,{views:0,calls:0}),
+  auth:null,
 };
-(function initOrigin(){
-  const s=load(K.loc,null);
-  if(s&&s.lat){state.origin=s;return}
-  state.origin={...CITIES[0],label:CITIES[0].name};
-})();
+const me=()=>state.session&&!state.session.guest?state.accounts[state.session.phone]||null:null;
+const isPro=()=>me()?.role==='pro';
+const myProfile=()=>me()?.profile||null;
+const persistAccounts=()=>save(K.acc,state.accounts);
 
-/* ---------- helpers ---------- */
+/* ================= helpers ================= */
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function km(a,b){const R=6371,dLat=(b.lat-a.lat)*Math.PI/180,dLng=(b.lng-a.lng)*Math.PI/180,la1=a.lat*Math.PI/180,la2=b.lat*Math.PI/180;const h=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+const R2D=Math.PI/180;
+function km(a,b){const R=6371,dLat=(b.lat-a.lat)*R2D,dLng=(b.lng-a.lng)*R2D,la1=a.lat*R2D,la2=b.lat*R2D;const h=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+function bearing(a,b){const φ1=a.lat*R2D,φ2=b.lat*R2D,Δλ=(b.lng-a.lng)*R2D;const y=Math.sin(Δλ)*Math.cos(φ2),x=Math.cos(φ1)*Math.sin(φ2)-Math.sin(φ1)*Math.cos(φ2)*Math.cos(Δλ);return Math.atan2(y,x)}
 const fmtKm=d=>d<1?`${Math.round(d*100)*10} m`:d<10?`${d.toFixed(1).replace('.',',')} km`:`${Math.round(d)} km`;
 const fmtTime=t=>new Date(t).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-const initials=n=>n.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const initials=n=>(n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
 const HUES=['#5B6B7A','#6E5B7A','#5B7A6A','#7A6A5B','#4F6F8F','#8A5E5E','#5E7A8A'];
-const hue=n=>HUES[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%HUES.length];
+const hue=n=>HUES[[...(n||'')].reduce((a,c)=>a+c.charCodeAt(0),0)%HUES.length];
 const digits=s=>String(s||'').replace(/\D/g,'');
 const fmtTel=d=>d.length===8?`${d.slice(0,2)} ${d.slice(2,5)} ${d.slice(5)}`:d;
+const firstName=n=>(n||'').split(' ')[0];
 let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200)}
 
 function allElectricians(){
   const list=DEMO.map(e=>({...e}));
-  if(state.my) list.push({...state.my,mine:true});
+  const mp=myProfile(); if(mp) list.push({...mp,mine:true});
   return list.map(e=>{
     const extra=state.reviews[e.id]||[];
-    const base=(e.rating||0)*(e.count||0);
-    const sum=extra.reduce((a,r)=>a+r.stars,0);
-    const count=(e.count||0)+extra.length;
-    return {...e,dist:km(state.origin,e),count,rating:count?(base+sum)/count:0,reviews:[...extra.map(r=>({...r,date:'Vous · à l’instant'})),...(e.reviews||[])]};
+    const base=(e.rating||0)*(e.count||0), sum=extra.reduce((a,r)=>a+r.stars,0), count=(e.count||0)+extra.length;
+    return {...e,dist:km(state.origin,e),count,rating:count?(base+sum)/count:0,reviews:[...extra.map(r=>({...r,date:'À l’instant'})),...(e.reviews||[])]};
   });
 }
-const avatar=(e,lg='')=>`<div class="avatar ${lg}" style="--h:${hue(e.name)}">${e.photo?`<img src="${e.photo}" alt="">`:esc(initials(e.name))}</div>`;
+const avatar=(e,lg='',pip=true)=>`<div class="avatar ${lg}" style="--h:${hue(e.name)}">${e.photo?`<img src="${e.photo}" alt="">`:esc(initials(e.name))}${pip?`<span class="pip ${e.available?'':'off'}"></span>`:''}</div>`;
 const statusPill=e=>e.available?`<span class="status ok"><span class="dot"></span>Disponible</span>`:`<span class="status off"><span class="dot"></span>Indisponible</span>`;
 const starRow=r=>`<span class="stars" aria-label="${r} sur 5">${[1,2,3,4,5].map(i=>ic('star','fill'+(i<=r?'':' dim'))).join('')}</span>`;
+const rating=e=>e.count?`<span>${ic('star','fill')} <b>${e.rating.toFixed(1).replace('.',',')}</b> <span class="muted">(${e.count})</span></span>`:`<span class="muted">Nouveau</span>`;
 
-/* ---------- client list ---------- */
+/* ================= screens ================= */
+function render(){
+  const s=state.screen;
+  $('#s-welcome').hidden=s!=='welcome';
+  $('#s-auth').hidden=s!=='auth';
+  $('#s-main').hidden=s!=='main';
+  $('#tabbar').hidden=s!=='main';
+  $('#app').classList.toggle('tabs',s==='main');
+  if(s==='auth') renderAuth();
+  if(s==='main'){renderTabs();renderHeader();setTab(state.tab,true)}
+  window.scrollTo({top:0});
+}
+function go(screen){state.screen=screen;render()}
+
+/* ---------- auth ---------- */
+function startAuth(mode,role){state.auth={mode,role,step:'phone',phone:'',name:''};go('auth')}
+function renderAuth(){
+  const a=state.auth, pro=a.role==='pro', b=$('#auth-body');
+  if(a.step==='phone'){
+    const title=a.mode==='signup'?(pro?'Créer mon compte électricien':'Créer mon compte'):'Se connecter';
+    b.innerHTML=`<div><h1>${title}</h1><p class="lead" style="margin-top:6px">${pro&&a.mode==='signup'?'Les clients vous appelleront sur ce numéro.':'Entrez votre numéro de téléphone, vous recevrez un code par SMS.'}</p></div>
+      <form class="form" id="f-auth" novalidate>
+        <div class="field" id="fw-aphone"><label for="a-phone">Numéro de téléphone</label><div class="tel-wrap"><span>+216</span><input id="a-phone" inputmode="tel" autocomplete="tel-national" placeholder="5x xxx xxx" value="${esc(fmtTel(a.phone))}" autofocus></div><span class="err" id="a-err">Numéro tunisien à 8 chiffres.</span></div>
+        <button type="submit" class="btn primary lg">${ic('sms')}Recevoir le code par SMS</button>
+      </form>
+      <div class="linkrow">${a.mode==='signup'?`<span class="muted">Déjà un compte ?</span><button type="button" data-switch="login">Se connecter</button>`:`<span class="muted">Pas encore de compte ?</span><button type="button" data-switch="signup">Créer un compte</button>`}</div>`;
+    $('#f-auth').addEventListener('submit',e=>{
+      e.preventDefault();
+      const ph=digits($('#a-phone').value), fw=$('#fw-aphone'), err=$('#a-err');
+      if(ph.length!==8){err.textContent='Numéro tunisien à 8 chiffres.';fw.classList.add('invalid');return}
+      const exists=!!state.accounts[ph];
+      if(a.mode==='login'&&!exists){err.textContent='Aucun compte avec ce numéro sur cet appareil. Créez un compte.';fw.classList.add('invalid');return}
+      if(a.mode==='signup'&&exists){err.textContent='Ce numéro a déjà un compte. Connectez-vous.';fw.classList.add('invalid');return}
+      fw.classList.remove('invalid');a.phone=ph;a.step='code';renderAuth();
+    });
+    b.querySelector('[data-switch]').addEventListener('click',e=>{a.mode=e.target.dataset.switch;a.phone=digits($('#a-phone').value);renderAuth()});
+  }
+  else if(a.step==='code'){
+    b.innerHTML=`<div><h1>Entrez le code</h1><p class="lead" style="margin-top:6px">Un SMS a été envoyé au <b class="tnum">+216 ${fmtTel(a.phone)}</b>.</p></div>
+      <form class="form" id="f-code" novalidate>
+        <div class="field" id="fw-code"><input id="a-code" class="codebox" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" placeholder="••••" autofocus aria-label="Code à 4 chiffres"><span class="err">Code incorrect. Réessayez.</span></div>
+        <div class="hint">${ic('info')}<span>Démo : aucun SMS n’est vraiment envoyé. Entrez le code <b>${DEMO_CODE}</b>.</span></div>
+        <button type="submit" class="btn primary lg" id="a-verify">Vérifier</button>
+      </form>
+      <div class="linkrow"><button type="button" id="a-resend">Renvoyer le code</button><button type="button" id="a-change">Changer de numéro</button></div>`;
+    const input=$('#a-code');
+    const verify=()=>{
+      if(input.value!==DEMO_CODE){$('#fw-code').classList.add('invalid');input.select();return}
+      if(a.mode==='login'){finishLogin(a.phone);return}
+      a.step='name';renderAuth();
+    };
+    input.addEventListener('input',()=>{$('#fw-code').classList.remove('invalid');if(input.value.length===4)verify()});
+    $('#f-code').addEventListener('submit',e=>{e.preventDefault();verify()});
+    $('#a-resend').addEventListener('click',()=>toast('Code renvoyé (démo : '+DEMO_CODE+').'));
+    $('#a-change').addEventListener('click',()=>{a.step='phone';renderAuth()});
+  }
+  else if(a.step==='name'){
+    b.innerHTML=`<div><h1>${pro?'Comment les clients vous appellent-ils ?':'Comment vous appelez-vous ?'}</h1><p class="lead" style="margin-top:6px">${pro?'Votre nom ou le nom de votre entreprise, tel qu’il apparaîtra dans la liste.':'Votre prénom suffit. Il apparaîtra sur vos avis.'}</p></div>
+      <form class="form" id="f-name" novalidate>
+        <div class="field" id="fw-aname"><label for="a-name">${pro?'Nom ou nom de l’entreprise':'Prénom et nom'}</label><input id="a-name" autocomplete="name" placeholder="${pro?'Ex. Ahmed Ben Salah':'Ex. Rim Bouazizi'}" value="${esc(a.name)}" autofocus><span class="err">Indiquez votre nom.</span></div>
+        <button type="submit" class="btn primary lg">${ic('check')}${pro?'Continuer vers mon profil':'Terminer'}</button>
+      </form>`;
+    $('#f-name').addEventListener('submit',e=>{
+      e.preventDefault();const name=$('#a-name').value.trim();
+      if(!name){$('#fw-aname').classList.add('invalid');return}
+      state.accounts[a.phone]={phone:a.phone,name,role:a.role,createdAt:Date.now(),profile:null};persistAccounts();
+      finishLogin(a.phone,true);
+    });
+  }
+}
+function finishLogin(phone,fresh=false){
+  state.session={phone};save(K.ses,state.session);
+  const acc=state.accounts[phone];
+  state.tab=acc.role==='pro'?'activite':'clients';state.editing=false;state.auth=null;
+  go('main');
+  toast(fresh?`Bienvenue, ${firstName(acc.name)} !`:`Content de vous revoir, ${firstName(acc.name)}.`);
+}
+function enterGuest(){state.session={guest:true};save(K.ses,state.session);state.tab='clients';go('main')}
+function logout(){state.session=null;save(K.ses,null);state.tab='clients';go('welcome')}
+
+/* ---------- main: header, tabs ---------- */
+function renderHeader(){
+  const m=me(), b=$('#acctbtn');
+  b.innerHTML=m?(m.profile?.photo?`<img src="${m.profile.photo}" alt="">`:esc(initials(m.name))):ic('user');
+  b.style.background=m?hue(m.name):'';
+}
+function tabsFor(){
+  const t=[];
+  if(isPro()) t.push({id:'activite',label:'Activité',icon:'gauge',live:!!myProfile()?.available});
+  t.push({id:'clients',label:'Électriciens',icon:'bolt'});
+  t.push({id:'store',label:'Log-ON',icon:'store'});
+  t.push({id:'account',label:'Compte',icon:'user'});
+  return t;
+}
+function renderTabs(){
+  $('#tabbar').innerHTML=tabsFor().map(t=>`<button type="button" data-tab="${t.id}" aria-pressed="${state.tab===t.id}">${ic(t.icon)}${t.label}${t.live?'<span class="live"></span>':''}</button>`).join('');
+}
+function setTab(t,silent){
+  if(!tabsFor().some(x=>x.id===t)) t='clients';
+  state.tab=t;
+  document.querySelectorAll('#tabbar [data-tab]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tab===t));
+  ['clients','activite','store','account'].forEach(v=>$('#view-'+v).hidden=v!==t);
+  if(t==='clients'){renderSkillChips();renderList()}
+  if(t==='activite')renderActivite();
+  if(t==='store')renderStore();
+  if(t==='account')renderAccount();
+  if(!silent)window.scrollTo({top:0});
+}
+
+/* ---------- client home ---------- */
 function renderSkillChips(){
   $('#skillchips').innerHTML=['Tous',...SKILLS].map(s=>`<button type="button" class="chip" data-skill="${esc(s)}" aria-pressed="${state.skill===s}">${esc(s)}</button>`).join('');
 }
 function renderList(){
-  const all=allElectricians();
-  const dispo=all.filter(e=>e.available);
+  const all=allElectricians(), dispo=all.filter(e=>e.available);
   $('#cnt-dispo').textContent=dispo.length;$('#cnt-all').textContent=all.length;
   $('#mode-dispo').setAttribute('aria-pressed',state.mode==='dispo');
   $('#mode-all').setAttribute('aria-pressed',state.mode==='all');
+  $('#locname').textContent=state.origin.label;
   let items=(state.mode==='dispo'?dispo:all).filter(e=>state.skill==='Tous'||e.skills.includes(state.skill));
   items.sort((a,b)=>(b.available-a.available)||(a.dist-b.dist));
+  const near=dispo.filter(e=>e.dist<=15).length;
+  $('#radar-count').innerHTML=`<b>${near}</b> électricien${near>1?'s':''} disponible${near>1?'s':''}<span>à moins de 15 km de ${esc(state.origin.label)}</span>`;
+  renderRadar(items);
   const far=items.length&&Math.min(...items.map(e=>e.dist))>120;
   $('#list').innerHTML=items.length?items.map(cardHTML).join(''):`<div class="empty">${ic('bolt')}<h3>Personne n’est disponible pour « ${esc(state.skill)} » en ce moment</h3><p>Essayez « Tous » pour voir aussi les électriciens indisponibles, ou changez de zone.</p></div>`;
   $('#demonote').innerHTML=far
-    ?`${ic('info')}<span>Vous êtes loin de la zone de démonstration (Nabeul). Les distances affichées sont calculées depuis ${esc(state.origin.label)}.</span>`
-    :`${ic('info')}<span>Profils fictifs pour la démonstration. Créez le vôtre dans <b>Espace pro</b> : il apparaîtra ici, avec un vrai bouton d’appel.</span>`;
+    ?`${ic('info')}<span>Vous êtes loin de la zone de démonstration (Nabeul). Les distances sont calculées depuis ${esc(state.origin.label)}.</span>`
+    :`${ic('info')}<span>Profils fictifs pour la démonstration. ${isPro()?'Votre fiche apparaît ici avec un vrai bouton d’appel.':'Un électricien inscrit apparaît ici avec un vrai bouton d’appel.'}</span>`;
+}
+function renderRadar(items){
+  const W=320,H=224,cx=160,cy=112,R=98,dmax=12;
+  const rOf=d=>R*Math.sqrt(Math.min(d,dmax)/dmax);
+  const rings=[2,5,10].map(d=>`<circle class="ring" cx="${cx}" cy="${cy}" r="${rOf(d).toFixed(1)}"/><text class="lbl" x="${cx+4}" y="${(cy-rOf(d)-3).toFixed(1)}">${d} km</text>`).join('');
+  const sweep=`<defs><linearGradient id="sw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F2B233" stop-opacity="0"/><stop offset="1" stop-color="#F2B233" stop-opacity=".22"/></linearGradient></defs><path class="sweep" d="M${cx} ${cy} L${cx} ${cy-R} A${R} ${R} 0 0 1 ${(cx+R*Math.sin(70*R2D)).toFixed(1)} ${(cy-R*Math.cos(70*R2D)).toFixed(1)} Z" fill="url(#sw)"/>`;
+  const dots=items.map(e=>{
+    const r=rOf(e.dist), θ=bearing(state.origin,e);
+    const x=cx+r*Math.sin(θ), y=cy-r*Math.cos(θ);
+    return `<g class="dot ${e.available?'':'off'} ${e.mine?'mine':''}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)}, ${fmtKm(e.dist)}"><circle class="halo" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16"/><circle class="core" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" fill="${e.available?'var(--ok)':'#6E6E68'}"/><text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" text-anchor="middle">${esc(initials(e.name))}</text></g>`;
+  }).join('');
+  $('#radar').innerHTML=`${sweep}${rings}<circle cx="${cx}" cy="${cy}" r="${R}" class="ring"/><text class="lbl" x="${cx}" y="12" text-anchor="middle">N</text>${dots}<circle cx="${cx}" cy="${cy}" r="5" fill="#F2B233"/><circle cx="${cx}" cy="${cy}" r="9" fill="none" stroke="#F2B233" stroke-opacity=".5"/><text class="lbl" x="${cx}" y="${cy+22}" text-anchor="middle" style="fill:#F2B233">Vous</text>`;
 }
 function cardHTML(e){
-  return `<article class="card el ${e.available?'':'off'}" data-id="${e.id}">
+  return `<article class="card el ${e.available?'':'off'}" data-card="${e.id}">
     ${avatar(e)}
     <div>
       <div class="el-head"><div class="name">${esc(e.name)}${e.mine?'<span class="you">Vous</span>':''}</div>${statusPill(e)}</div>
-      <div class="meta">${e.count?`<span>${ic('star','fill')} <b>${e.rating.toFixed(1).replace('.',',')}</b> <span class="muted">(${e.count})</span></span>`:`<span class="muted">Nouveau</span>`}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
+      <div class="meta">${rating(e)}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
       <div class="skills">${e.skills.map(esc).join(' · ')}</div>
       <div class="actions">${callBtn(e,'primary')}<button type="button" class="btn" data-open="${e.id}">Voir le profil</button></div>
     </div>
@@ -442,99 +663,96 @@ function callBtn(e,cls,label='Appeler'){
 function openProfile(id){
   const e=allElectricians().find(x=>x.id===id); if(!e) return;
   if(e.mine){state.stats.views++;save(K.stats,state.stats)}
-  const d=$('#profile');
+  const d=$('#profile'), m=me();
   const tel=e.demo?'5• ••• •••':fmtTel(digits(e.phone));
+  const reviewBox=e.mine?'':m
+    ?`<div class="card" style="padding:14px"><h3>Laisser un avis</h3><p class="small muted" style="margin:4px 0 10px">Après une intervention, notez ${esc(firstName(e.name))} pour aider les prochains clients.</p>
+      <div class="starpick" id="starpick" role="radiogroup" aria-label="Note">${[1,2,3,4,5].map(i=>`<button type="button" data-star="${i}" aria-label="${i} étoile${i>1?'s':''}">${ic('star','fill')}</button>`).join('')}</div>
+      <div class="field" style="margin-top:10px"><textarea id="revtext" placeholder="Ponctuel, propre, prix correct…" rows="2"></textarea></div>
+      <button type="button" class="btn dark block" id="revsend" style="margin-top:10px" disabled>Publier l’avis</button></div>`
+    :`<div class="card" style="padding:14px"><h3>Laisser un avis</h3><p class="small muted" style="margin:4px 0 10px">Créez un compte client (30 secondes) pour noter ${esc(firstName(e.name))} après une intervention.</p><button type="button" class="btn dark block" data-auth="signup:client">Créer un compte client</button></div>`;
   d.innerHTML=`<div class="grab"></div>
   <div class="sheet-head"><span class="eyebrow">Profil</span><button class="close" type="button" data-close="profile" aria-label="Fermer">${ic('x')}</button></div>
   <div class="sheet-body">
-    <div class="phead">${avatar(e,'lg')}<div><h2>${esc(e.name)}${e.mine?'<span class="you" style="font-family:Nunito Sans,sans-serif;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-soft);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:3px">Vous</span>':''}</h2>
+    <div class="phead">${avatar(e,'lg')}<div><h2>${esc(e.name)}${e.mine?'<span class="you">Vous</span>':''}</h2>
       <div style="margin-top:6px">${statusPill(e)}${e.available&&e.since?`<span class="small muted" style="margin-left:8px">depuis ${fmtTime(e.since)}</span>`:''}</div>
       <div class="meta">${e.count?`<span>${ic('star','fill')} <b>${e.rating.toFixed(1).replace('.',',')}</b> <span class="muted">· ${e.count} avis</span></span>`:`<span class="muted">Pas encore d’avis</span>`}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
     </div></div>
     <p class="lead">${esc(e.desc)||'<span class="muted">Aucune description.</span>'}</p>
     <div><p class="eyebrow" style="margin-bottom:8px">Compétences</p><div class="chips wrap">${e.skills.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div></div>
-    <div class="card" style="padding:12px 14px"><div style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Téléphone</span><b style="font-variant-numeric:tabular-nums">${tel}</b></div>${e.demo?'<p class="small muted" style="margin-top:4px">Numéro masqué sur les profils de démonstration.</p>':''}</div>
+    <div class="kv"><span class="eyebrow">Téléphone</span><b>${tel}</b></div>${e.demo?'<p class="small muted" style="margin-top:-8px">Numéro masqué sur les profils de démonstration.</p>':''}
     <div><p class="eyebrow" style="margin-bottom:8px">Avis (${e.reviews.length})</p>
       ${e.reviews.length?e.reviews.map(r=>`<div class="review"><div class="who"><span style="color:var(--ink)">${esc(r.who)}</span><span>${esc(r.date)}</span></div>${starRow(r.stars)}<p>${esc(r.text)}</p></div>`).join(''):'<p class="small muted">Soyez le premier à laisser un avis après une intervention.</p>'}
     </div>
-    ${e.mine?'':`<div class="card" style="padding:14px">
-      <h3>Laisser un avis</h3><p class="small muted" style="margin:4px 0 10px">Après une intervention, notez ${esc(e.name.split(' ')[0])} pour aider les prochains clients.</p>
-      <div class="starpick" id="starpick" role="radiogroup" aria-label="Note">${[1,2,3,4,5].map(i=>`<button type="button" data-star="${i}" aria-label="${i} étoile${i>1?'s':''}">${ic('star','fill')}</button>`).join('')}</div>
-      <div class="field" style="margin-top:10px"><textarea id="revtext" placeholder="Ponctuel, propre, prix correct…" rows="2"></textarea></div>
-      <button type="button" class="btn dark block" id="revsend" style="margin-top:10px" disabled>Publier l’avis</button>
-    </div>`}
+    ${reviewBox}
   </div>
   <div class="sheet-foot">${callBtn(e,'primary lg')}${e.demo?`<button type="button" class="btn lg" data-wa="${e.id}">${ic('chat')}WhatsApp</button>`:`<a class="btn lg" href="https://wa.me/${digits(e.telE164)}" target="_blank" rel="noopener">${ic('chat')}WhatsApp</a>`}</div>`;
   let stars=0;
   d.querySelectorAll('[data-star]').forEach(b=>b.addEventListener('click',()=>{stars=+b.dataset.star;d.querySelectorAll('[data-star]').forEach(x=>x.classList.toggle('on',+x.dataset.star<=stars));d.querySelector('#revsend').disabled=false}));
   d.querySelector('#revsend')?.addEventListener('click',()=>{
     const text=d.querySelector('#revtext').value.trim()||'Bonne intervention.';
-    (state.reviews[id]=state.reviews[id]||[]).unshift({who:'Vous',stars,text});
+    (state.reviews[id]=state.reviews[id]||[]).unshift({who:m.name,stars,text});
     save(K.rev,state.reviews);toast('Merci, votre avis est publié.');renderList();openProfile(id);
   });
   if(!d.open) d.showModal();
   d.querySelector('.sheet-body').scrollTop=0;
 }
 
-/* ---------- pro space ---------- */
-function renderPro(){
-  const v=$('#view-pro');
-  if(state.my&&!state.editing){
-    const me=allElectricians().find(e=>e.mine);
+/* ---------- pro: activité ---------- */
+function renderActivite(){
+  const v=$('#activite'), acc=me(); if(!acc) return;
+  const mp=myProfile();
+  if(mp&&!state.editing){
+    const all=allElectricians(), mine=all.find(e=>e.mine);
+    const rank=all.filter(e=>e.available).sort((a,b)=>a.dist-b.dist).findIndex(e=>e.mine)+1;
     v.innerHTML=`
-      <div class="statuscard ${me.available?'on':''}">
-        <div class="row"><div class="big"><span class="dot"></span>${me.available?'Disponible':'Indisponible'}</div><button type="button" class="switch" id="switch" role="switch" aria-checked="${me.available}" aria-label="Changer ma disponibilité"></button></div>
-        <p>${me.available?`Les clients à proximité vous voient en vert et peuvent vous appeler.${me.since?` Disponible depuis ${fmtTime(me.since)}.`:''}`:'Vous n’apparaissez pas dans la liste « Disponibles maintenant ». Activez quand vous êtes prêt à intervenir.'}</p>
+      <div class="statuscard ${mine.available?'on':''}">
+        <div class="row"><div class="big"><span class="dot"></span>${mine.available?'Disponible':'Indisponible'}</div><button type="button" class="switch" id="switch" role="switch" aria-checked="${mine.available}" aria-label="Changer ma disponibilité"></button></div>
+        <p>${mine.available?`Les clients à proximité vous voient en vert et peuvent vous appeler.${mine.since?` Disponible depuis ${fmtTime(mine.since)}.`:''}`:'Vous n’apparaissez pas dans « Disponibles maintenant ». Activez quand vous êtes prêt à intervenir.'}</p>
       </div>
-      <div class="stats"><div class="stat"><b>${state.stats.calls}</b><span>Appels reçus</span></div><div class="stat"><b>${state.stats.views}</b><span>Vues du profil</span></div><div class="stat"><b>${me.count?me.rating.toFixed(1).replace('.',','):'—'}</b><span>Note</span></div></div>
-      <div><p class="eyebrow" style="margin-bottom:8px">Votre fiche, vue par les clients</p><div class="list">${cardHTML(me)}</div></div>
-      <div style="display:flex;gap:8px"><button type="button" class="btn" id="editbtn">${ic('edit')}Modifier mon profil</button><button type="button" class="btn ghost danger" id="delbtn">Supprimer</button></div>
-      <div class="note">${ic('info')}<span>Démo : votre profil est enregistré sur cet appareil uniquement. Dans la vraie app, il sera visible par tous les clients de votre zone.</span></div>`;
-    $('#switch').addEventListener('click',()=>{state.my.available=!state.my.available;state.my.since=state.my.available?Date.now():0;save(K.my,state.my);renderPro();renderList();toast(state.my.available?'Vous êtes maintenant visible comme Disponible.':'Vous êtes passé en Indisponible.')});
-    $('#editbtn').addEventListener('click',()=>{state.editing=true;renderPro();window.scrollTo({top:0})});
-    $('#delbtn').addEventListener('click',()=>{if(confirm('Supprimer votre profil de cet appareil ?')){state.my=null;save(K.my,null);state.stats={views:0,calls:0};save(K.stats,state.stats);renderPro();renderList()}});
+      <div class="stats"><div class="stat"><b>${state.stats.calls}</b><span>Appels reçus</span></div><div class="stat"><b>${state.stats.views}</b><span>Vues du profil</span></div><div class="stat"><b>${mine.available&&rank?rank+'<sup style="font-size:12px">e</sup>':'—'}</b><span>Position · ${esc(state.origin.label)}</span></div></div>
+      <div><p class="eyebrow" style="margin-bottom:8px">Votre fiche, vue par les clients</p><div class="list">${cardHTML(mine)}</div></div>
+      <div style="display:flex;gap:8px"><button type="button" class="btn" id="editbtn">${ic('edit')}Modifier ma fiche</button><button type="button" class="btn ghost danger" id="delbtn">Supprimer la fiche</button></div>
+      <div class="note">${ic('info')}<span>Démo : votre fiche est enregistrée sur cet appareil uniquement. Dans la vraie app, elle sera visible par tous les clients de votre zone.</span></div>`;
+    $('#switch').addEventListener('click',()=>{mp.available=!mp.available;mp.since=mp.available?Date.now():0;persistAccounts();renderActivite();renderTabs();toast(mp.available?'Vous êtes maintenant visible comme Disponible.':'Vous êtes passé en Indisponible.')});
+    $('#editbtn').addEventListener('click',()=>{state.editing=true;renderActivite();window.scrollTo({top:0})});
+    $('#delbtn').addEventListener('click',()=>{if(confirm('Supprimer votre fiche ? Votre compte reste actif.')){acc.profile=null;persistAccounts();state.stats={views:0,calls:0};save(K.stats,state.stats);renderActivite();renderTabs()}});
     return;
   }
-  const m=state.my||{name:'',phone:'',zone:'nabeul',skills:[],desc:'',photo:''};
+  const m=mp||{name:acc.name,zone:'nabeul',skills:[],desc:'',photo:''};
   v.innerHTML=`
-    ${state.editing?'':`<div><h1>Recevez des appels quand vous êtes disponible.</h1><p class="lead">Gratuit. Pas de commission, pas d’intermédiaire : le client vous appelle directement.</p></div>
-    <div class="card steps">
-      <div class="step"><span class="n">1</span><div><b>Créez votre profil</b><span>Deux minutes, depuis votre téléphone.</span></div></div>
-      <div class="step"><span class="n">2</span><div><b>Passez en Disponible</b><span>Quand vous êtes prêt à prendre un chantier ou un dépannage.</span></div></div>
-      <div class="step"><span class="n">3</span><div><b>Recevez des appels</b><span>Les clients à proximité vous voient en premier.</span></div></div>
-    </div>`}
+    ${state.editing?'':`<div><h1>Bienvenue, ${esc(firstName(acc.name))}.</h1><p class="lead">Encore une étape : votre fiche. C’est ce que les clients verront avant de vous appeler.</p></div>`}
     <form class="form card" id="proform" novalidate>
-      <h2>${state.editing?'Modifier mon profil':'Créer mon profil'}</h2>
+      <h2>${state.editing?'Modifier ma fiche':'Ma fiche'}</h2>
       <div class="photo-row"><div class="avatar lg" id="photoprev" style="--h:${hue(m.name||'Vous')}">${m.photo?`<img src="${m.photo}" alt="">`:(m.name?esc(initials(m.name)):ic('cam'))}</div><label class="btn" for="f-photo" tabindex="0">${ic('cam')}Photo de profil</label><input type="file" id="f-photo" accept="image/*"></div>
       <div class="field" id="fw-name"><label for="f-name">Nom ou nom de l’entreprise</label><input id="f-name" value="${esc(m.name)}" placeholder="Ex. Ahmed Ben Salah" autocomplete="name"><span class="err">Indiquez votre nom.</span></div>
-      <div class="field" id="fw-phone"><label for="f-phone">Téléphone <em>· les clients vous appellent sur ce numéro</em></label><div class="tel-wrap"><span>+216</span><input id="f-phone" inputmode="tel" value="${esc(fmtTel(digits(m.phone)))}" placeholder="5x xxx xxx" autocomplete="tel-national"></div><span class="err">Numéro tunisien à 8 chiffres.</span></div>
-      <div class="field"><label for="f-zone">Zone d’intervention</label><select id="f-zone">${CITIES.map(c=>`<option value="${c.id}" ${c.id===m.zone?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
+      <div class="kv"><span>${ic('phone')} Les clients vous appellent au</span><b>+216 ${fmtTel(acc.phone)}</b></div>
+      <div class="field"><label for="f-zone">Zone d’intervention</label><select id="f-zone">${CITIES.map(c=>`<option value="${c.id}" ${c.id===m.zoneId||(c.name===m.zone)?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
       <div class="field" id="fw-skills"><label>Types de travaux</label><div class="chips wrap" id="fskills">${SKILLS.map(s=>`<button type="button" class="chip sel" data-fs="${esc(s)}" aria-pressed="${m.skills.includes(s)}">${esc(s)}</button>`).join('')}</div><span class="err">Choisissez au moins un type de travaux.</span></div>
       <div class="field"><label for="f-desc">Courte description <em>· optionnel</em></label><textarea id="f-desc" placeholder="Ex. Électricien depuis 10 ans, dépannage rapide sur Nabeul et Hammamet.">${esc(m.desc)}</textarea></div>
-      <div style="display:flex;gap:8px"><button type="submit" class="btn primary lg">${ic('check')}${state.editing?'Enregistrer':'Créer mon profil'}</button>${state.editing?'<button type="button" class="btn lg" id="cancel">Annuler</button>':''}</div>
+      <div style="display:flex;gap:8px"><button type="submit" class="btn primary lg">${ic('check')}${state.editing?'Enregistrer':'Publier ma fiche'}</button>${state.editing?'<button type="button" class="btn lg" id="cancel">Annuler</button>':''}</div>
     </form>`;
   let photo=m.photo||'';
   $('#f-photo').addEventListener('change',ev=>{const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas'),s=Math.min(img.width,img.height),S=192;c.width=c.height=S;c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,S,S);photo=c.toDataURL('image/jpeg',.8);$('#photoprev').innerHTML=`<img src="${photo}" alt="">`};img.src=r.result};r.readAsDataURL(f)});
   $('#f-name').addEventListener('input',e=>{if(!photo){const p=$('#photoprev');p.style.setProperty('--h',hue(e.target.value||'Vous'));p.innerHTML=e.target.value?esc(initials(e.target.value)):ic('cam')}});
   $('#fskills').addEventListener('click',e=>{const b=e.target.closest('[data-fs]');if(b)b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true')});
-  $('#cancel')?.addEventListener('click',()=>{state.editing=false;renderPro()});
+  $('#cancel')?.addEventListener('click',()=>{state.editing=false;renderActivite()});
   $('#proform').addEventListener('submit',e=>{
     e.preventDefault();
-    const name=$('#f-name').value.trim(),ph=digits($('#f-phone').value),skills=[...document.querySelectorAll('#fskills [aria-pressed="true"]')].map(b=>b.dataset.fs);
+    const name=$('#f-name').value.trim(),skills=[...document.querySelectorAll('#fskills [aria-pressed="true"]')].map(b=>b.dataset.fs);
     let ok=true;
     $('#fw-name').classList.toggle('invalid',!name);ok&&=!!name;
-    $('#fw-phone').classList.toggle('invalid',ph.length!==8);ok&&=ph.length===8;
     $('#fw-skills').classList.toggle('invalid',!skills.length);ok&&=!!skills.length;
     if(!ok){toast('Complétez les champs en rouge.');return}
-    const c=CITIES.find(x=>x.id===$('#f-zone').value);
-    const prev=state.my||{};
-    state.my={id:'me',name,phone:ph,telE164:'+216'+ph,zone:c.name,lat:c.lat+(Math.random()-.5)*.01,lng:c.lng+(Math.random()-.5)*.01,skills,desc:$('#f-desc').value.trim(),photo,rating:0,count:0,reviews:[],available:prev.available??true,since:prev.since??Date.now()};
-    save(K.my,state.my);state.editing=false;renderPro();renderList();
-    toast(prev.name?'Profil mis à jour.':'Profil créé. Vous êtes Disponible.');window.scrollTo({top:0});
+    const c=CITIES.find(x=>x.id===$('#f-zone').value), prev=mp||{};
+    acc.name=name;
+    acc.profile={id:'me',name,phone:acc.phone,telE164:'+216'+acc.phone,zoneId:c.id,zone:c.name,lat:prev.zoneId===c.id?prev.lat:c.lat+(Math.random()-.5)*.01,lng:prev.zoneId===c.id?prev.lng:c.lng+(Math.random()-.5)*.01,skills,desc:$('#f-desc').value.trim(),photo,rating:0,count:0,reviews:[],available:prev.available??true,since:prev.since??Date.now()};
+    persistAccounts();state.editing=false;renderActivite();renderTabs();renderHeader();
+    toast(prev.name?'Fiche mise à jour.':'Fiche publiée. Vous êtes Disponible.');window.scrollTo({top:0});
   });
 }
 
-/* ---------- store tab ---------- */
+/* ---------- store ---------- */
 function renderStore(){
   $('#storerows').innerHTML=`
     <a href="${STORE.maps}" target="_blank" rel="noopener">${ic('pin')}<span>${esc(STORE.addr)}</span>${ic('chev','arrow')}</a>
@@ -550,8 +768,35 @@ function renderStore(){
     <div>${ic('tag')}<span><b>Avantages pros</b> — remises et points fidélité pour les électriciens actifs sur l’app.</span></div>`;
 }
 
+/* ---------- account ---------- */
+function renderAccount(){
+  const v=$('#account'), m=me();
+  if(!m){
+    v.innerHTML=`<div class="card"><div class="acct-head"><div class="avatar lg" style="--h:#6E6E68">${ic('user')}</div><div><h2>Vous naviguez en visiteur</h2><p class="lead small">Vous pouvez voir et appeler les électriciens. Un compte permet de laisser des avis.</p></div></div></div>
+      <div style="display:flex;gap:8px"><button type="button" class="btn primary lg" data-auth="signup:client">Créer un compte</button><button type="button" class="btn lg" data-auth="login:client">Se connecter</button></div>
+      <div class="card"><div class="rows">
+        <button type="button" data-auth="signup:pro">${ic('bolt')}<span>Je suis électricien</span><span class="sub">Créer mon compte pro</span></button>
+        <div class="r">${ic('lang')}<span>Langue</span><span class="sub">Français · عربي bientôt</span></div>
+        <button type="button" id="quit">${ic('out')}<span>Quitter le mode visiteur</span></button>
+      </div></div>`;
+    $('#quit').addEventListener('click',logout);
+    return;
+  }
+  const pro=m.role==='pro';
+  v.innerHTML=`<div class="card"><div class="acct-head"><div class="avatar lg" style="--h:${hue(m.name)}">${m.profile?.photo?`<img src="${m.profile.photo}" alt="">`:esc(initials(m.name))}</div><div><h2>${esc(m.name)}</h2><p class="small tnum muted">+216 ${fmtTel(m.phone)}</p><span class="pill ${pro?'pro':''}" style="margin-top:6px">${pro?'Compte électricien':'Compte client'}</span></div></div></div>
+    <div class="card"><div class="rows">
+      ${pro?`<button type="button" data-tab="activite">${ic('edit')}<span>Ma fiche et ma disponibilité</span>${ic('chev','arrow')}</button>`:`<button type="button" id="become-pro">${ic('bolt')}<span>Je suis aussi électricien</span><span class="sub">Passer en compte pro</span></button>`}
+      <div class="r">${ic('lang')}<span>Langue</span><span class="sub">Français · عربي bientôt</span></div>
+      <a href="${STORE.fb}" target="_blank" rel="noopener">${ic('store')}<span>À propos de Log-ON</span>${ic('chev','arrow')}</a>
+      <button type="button" id="logout" class="danger">${ic('out')}<span>Se déconnecter</span></button>
+    </div></div>
+    <p class="small muted" style="text-align:center">Compte créé le ${new Date(m.createdAt).toLocaleDateString('fr-FR')} · Démo : les comptes sont enregistrés sur cet appareil.</p>`;
+  $('#logout').addEventListener('click',logout);
+  $('#become-pro')?.addEventListener('click',()=>{m.role='pro';persistAccounts();state.tab='activite';renderTabs();setTab('activite');toast('Votre compte est maintenant un compte électricien.')});
+}
+
 /* ---------- location ---------- */
-function setOrigin(o){state.origin=o;save(K.loc,o);$('#locname').textContent=o.label;renderList();renderCities()}
+function setOrigin(o){state.origin=o;save(K.loc,o);if(state.screen==='main')setTab(state.tab,true);renderCities()}
 function renderCities(){
   $('#citylist').innerHTML=CITIES.map(c=>`<button type="button" data-city="${c.id}" class="${state.origin.id===c.id?'on':''}">${ic(state.origin.id===c.id?'check':'pin')}${esc(c.name)}</button>`).join('');
 }
@@ -566,30 +811,29 @@ $('#geobtn').addEventListener('click',()=>{
 
 /* ---------- global events ---------- */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('button,a');if(!t)return;
+  const t=e.target.closest('button,a,[data-open]');
+  if(!t){const c=e.target.closest('[data-card]');if(c)openProfile(c.dataset.card);return}
+  if(t.dataset.guest!==undefined){enterGuest();return}
+  if(t.dataset.auth){const [mode,role]=t.dataset.auth.split(':');$('#profile').open&&$('#profile').close();startAuth(mode,role);return}
+  if(t.id==='auth-back'){const a=state.auth;if(a&&a.step!=='phone'){a.step=a.step==='name'?'code':'phone';renderAuth()}else go(state.session?'main':'welcome');return}
+  if(t.id==='acctbtn'){setTab('account');return}
   if(t.dataset.tab){setTab(t.dataset.tab);return}
   if(t.dataset.skill){state.skill=t.dataset.skill;renderSkillChips();renderList();return}
   if(t.id==='mode-dispo'){state.mode='dispo';renderList();return}
   if(t.id==='mode-all'){state.mode='all';renderList();return}
   if(t.dataset.open){openProfile(t.dataset.open);return}
   if(t.dataset.close){$('#'+t.dataset.close).close();return}
-  if(t.dataset.call){const el=DEMO.find(x=>x.id===t.dataset.call);toast(`Démo : dans la vraie app, ceci ouvre le téléphone avec le numéro de ${el.name.split(' ')[0]}.`);return}
+  if(t.dataset.call){const el=DEMO.find(x=>x.id===t.dataset.call);toast(`Démo : dans la vraie app, ceci ouvre le téléphone avec le numéro de ${firstName(el.name)}.`);return}
   if(t.dataset.wa){toast('Démo : ceci ouvrirait WhatsApp avec l’électricien.');return}
-  if(t.dataset.mycall){state.stats.calls++;save(K.stats,state.stats);if(state.tab==='pro')renderPro()}
+  if(t.dataset.mycall){state.stats.calls++;save(K.stats,state.stats);if(state.tab==='activite')renderActivite();return}
+  const c=t.closest('[data-card]');if(c&&!t.dataset.call&&!t.dataset.mycall)openProfile(c.dataset.card);
 });
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-open][role="button"]'))openProfile(e.target.dataset.open)});
 document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
-function setTab(t){
-  state.tab=t;
-  document.querySelectorAll('.tabbar [data-tab]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tab===t));
-  $('#view-clients').hidden=t!=='clients';$('#view-pro').hidden=t!=='pro';$('#view-store').hidden=t!=='store';
-  if(t==='pro')renderPro();
-  window.scrollTo({top:0});
-}
 
 /* ---------- boot ---------- */
-$('#locname').textContent=state.origin.label;
-renderSkillChips();renderList();renderStore();
+if(state.session){state.screen='main';state.tab=isPro()?'activite':'clients'}
+render();
 </script>
-
 </body>
 </html>
