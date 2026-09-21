@@ -509,7 +509,7 @@ function render(){
   $('#s-main').hidden=s!=='main';
   $('#tabbar').hidden=s!=='main';
   $('#app').classList.toggle('tabs',s==='main');
-  if(s==='auth') renderAuth();
+  if(s==='auth') renderAuth(); else $('#auth-body').innerHTML='';
   if(s==='main'){renderTabs();renderHeader();setTab(state.tab,true)}
   window.scrollTo({top:0});
 }
@@ -559,11 +559,11 @@ function renderAuth(){
   }
   else if(a.step==='name'){
     b.innerHTML=`<div><h1>${pro?'Comment les clients vous appellent-ils ?':'Comment vous appelez-vous ?'}</h1><p class="lead" style="margin-top:6px">${pro?'Votre nom ou le nom de votre entreprise, tel qu’il apparaîtra dans la liste.':'Votre prénom suffit. Il apparaîtra sur vos avis.'}</p></div>
-      <form class="form" id="f-name" novalidate>
+      <form class="form" id="f-aname" novalidate>
         <div class="field" id="fw-aname"><label for="a-name">${pro?'Nom ou nom de l’entreprise':'Prénom et nom'}</label><input id="a-name" autocomplete="name" placeholder="${pro?'Ex. Ahmed Ben Salah':'Ex. Rim Bouazizi'}" value="${esc(a.name)}" autofocus><span class="err">Indiquez votre nom.</span></div>
         <button type="submit" class="btn primary lg">${ic('check')}${pro?'Continuer vers mon profil':'Terminer'}</button>
       </form>`;
-    $('#f-name').addEventListener('submit',e=>{
+    $('#f-aname').addEventListener('submit',e=>{
       e.preventDefault();const name=$('#a-name').value.trim();
       if(!name){$('#fw-aname').classList.add('invalid');return}
       state.accounts[a.phone]={phone:a.phone,name,role:a.role,createdAt:Date.now(),profile:null};persistAccounts();
@@ -641,7 +641,8 @@ function renderRadar(items){
     const x=cx+r*Math.sin(θ), y=cy-r*Math.cos(θ);
     return `<g class="dot ${e.available?'':'off'} ${e.mine?'mine':''}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)}, ${fmtKm(e.dist)}"><circle class="halo" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16"/><circle class="core" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" fill="${e.available?'var(--ok)':'#6E6E68'}"/><text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" text-anchor="middle">${esc(initials(e.name))}</text></g>`;
   }).join('');
-  $('#radar').innerHTML=`${sweep}${rings}<circle cx="${cx}" cy="${cy}" r="${R}" class="ring"/><text class="lbl" x="${cx}" y="12" text-anchor="middle">N</text>${dots}<circle cx="${cx}" cy="${cy}" r="5" fill="#F2B233"/><circle cx="${cx}" cy="${cy}" r="9" fill="none" stroke="#F2B233" stroke-opacity=".5"/><text class="lbl" x="${cx}" y="${cy+22}" text-anchor="middle" style="fill:#F2B233">Vous</text>`;
+  $('#radar').innerHTML=`${sweep}${rings}<circle cx="${cx}" cy="${cy}" r="${R}" class="ring"/><text class="lbl" x="${cx}" y="12" text-anchor="middle">N</text>${dots}<circle cx="${cx}" cy="${cy}" r="5" fill="#F2B233"/><circle cx="${cx}" cy="${cy}" r="9" fill="none" stroke="#F2B233" stroke-opacity=".5"/>
+    <g class="legend"><circle cx="14" cy="${H-12}" r="4" fill="#F2B233"/><text class="lbl" x="22" y="${H-8.5}">Vous</text><circle cx="62" cy="${H-12}" r="4" fill="var(--ok)"/><text class="lbl" x="70" y="${H-8.5}">Disponible</text><circle cx="134" cy="${H-12}" r="4" fill="#6E6E68"/><text class="lbl" x="142" y="${H-8.5}">Indisponible</text></g>`;
 }
 function cardHTML(e){
   return `<article class="card el ${e.available?'':'off'}" data-card="${e.id}">
