@@ -14,7 +14,7 @@
 <title>Log-ON Électriciens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Dancing+Script:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Dancing+Script:wght@600&family=Tajawal:wght@400;500;700;800&display=swap">
 <style>
 :root{
   color-scheme:light dark;
@@ -24,6 +24,8 @@
   --hdr:#161616; --hdr-fg:#FFFFFF; --hdr-sub:rgba(255,255,255,.62); --hdr-line:rgba(255,255,255,.12); --hdr-pill:rgba(255,255,255,.1);
   --shadow:0 1px 2px rgba(23,23,23,.05),0 10px 28px rgba(23,23,23,.08);
   --radius:16px;
+  --font-body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-display:Outfit,"Nunito Sans",sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -41,9 +43,15 @@
   --hdr:#0E0E0E; --hdr-fg:#FFFFFF; --hdr-sub:rgba(255,255,255,.6); --hdr-line:rgba(255,255,255,.12); --hdr-pill:rgba(255,255,255,.1);
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
 }
+/* Arabic: one typeface for everything, no letter-spacing (it breaks joined letters), a little more line-height */
+[dir="rtl"]{--font-body:Tajawal,"Segoe UI",Tahoma,system-ui,sans-serif;--font-display:Tajawal,"Segoe UI",Tahoma,system-ui,sans-serif}
+[dir="rtl"] body{line-height:1.6}
+[dir="rtl"] .eyebrow,[dir="rtl"] .you,[dir="rtl"] .pill,[dir="rtl"] .wordmark small,[dir="rtl"] .tabbar button,[dir="rtl"] .welcome .by{letter-spacing:0}
+[dir="rtl"] .welcome .by{font-family:var(--font-display);font-weight:700;font-size:16px}
+[dir="rtl"] h1{font-weight:800}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg-outer);color:var(--ink);font-family:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg-outer);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 img{max-width:100%}
 [hidden]{display:none!important}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -52,7 +60,8 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ic{width:18px;height:18px;flex:none;vertical-align:-3px}
 .ic.fill{fill:currentColor;stroke:none}
-h1,h2,h3{font-family:Outfit,"Nunito Sans",sans-serif;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3{letter-spacing:0}
 h1{font-size:26px;line-height:1.12;font-weight:700}
 h2{font-size:19px;font-weight:600;line-height:1.2}
 h3{font-size:15.5px;font-weight:600}
@@ -62,14 +71,23 @@ p{margin:0}
 .muted{color:var(--muted)}
 .small{font-size:13px}
 .tnum{font-variant-numeric:tabular-nums}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
 
 .app{max-width:480px;margin:0 auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column}
 .app.tabs{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 @media (min-width:720px){.app{border-inline:1px solid var(--line)}}
 
+/* language pill */
+.langbtn{border:1px solid var(--hdr-line);background:var(--hdr-pill);color:#fff;border-radius:999px;padding:6px 12px;font-weight:800;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.langbtn .ic{width:15px;height:15px;color:var(--accent)}
+.langseg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px;gap:2px;margin-inline-start:auto}
+.langseg button{border:0;background:transparent;border-radius:999px;padding:5px 11px;font-weight:800;font-size:12.5px;color:var(--muted)}
+.langseg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
 /* ---------- welcome ---------- */
-.welcome{flex:1;background:var(--hdr);color:var(--hdr-fg);display:flex;flex-direction:column;gap:22px;padding:28px 20px 28px;background-image:radial-gradient(60% 40% at 50% 0%,rgba(242,178,51,.22),transparent 70%)}
-.welcome .glow{position:relative;width:96px;height:96px;margin:10px auto 0;display:grid;place-items:center;color:var(--accent)}
+.welcome{flex:1;background:var(--hdr);color:var(--hdr-fg);display:flex;flex-direction:column;gap:22px;padding:16px 20px 28px;background-image:radial-gradient(60% 40% at 50% 0%,rgba(242,178,51,.22),transparent 70%)}
+.welcome .topline{display:flex;justify-content:flex-end}
+.welcome .glow{position:relative;width:96px;height:96px;margin:0 auto;display:grid;place-items:center;color:var(--accent)}
 .welcome .glow::before{content:"";position:absolute;inset:-34px;border-radius:50%;background:radial-gradient(circle,rgba(242,178,51,.38),transparent 62%)}
 .welcome .glow .ic{width:72px;height:72px;position:relative;filter:drop-shadow(0 0 14px rgba(242,178,51,.55))}
 .welcome .titles{text-align:center}
@@ -87,45 +105,49 @@ p{margin:0}
 /* ---------- auth ---------- */
 .authbar{display:flex;align-items:center;gap:8px;padding:12px 12px 4px}
 .authbar button{border:0;background:var(--surface-2);width:38px;height:38px;border-radius:50%;display:grid;place-items:center}
+[dir="rtl"] .authbar button .ic{transform:scaleX(-1)}
 .auth{padding:12px 20px 32px;display:flex;flex-direction:column;gap:18px}
 .auth .form{gap:16px}
-.codebox{font-family:Outfit,sans-serif;font-size:32px;letter-spacing:.5em;text-align:center;padding:14px 0 14px .5em !important;font-weight:600}
+.codebox{font-family:var(--font-display);font-size:32px;letter-spacing:.5em;text-align:center;padding:14px 0 14px .5em !important;font-weight:600;direction:ltr}
 .hint{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:var(--accent-soft);font-size:13.5px;color:var(--ink)}
 .hint .ic{color:var(--accent);margin-top:1px}
-.hint b{font-family:Outfit,sans-serif;letter-spacing:.15em;font-size:15px}
+.hint b{font-family:var(--font-display);letter-spacing:.15em;font-size:15px;direction:ltr;unicode-bidi:isolate}
 .linkrow{display:flex;justify-content:center;gap:18px;font-size:13.5px}
 .linkrow button{border:0;background:none;font-weight:800;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;padding:4px}
 
 /* ---------- header ---------- */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--hdr);color:var(--hdr-fg);padding:10px 16px;display:flex;align-items:center;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-.logo{width:40px;height:40px;flex:none;border-radius:50%;box-shadow:0 0 0 1px var(--hdr-line)}
-.wordmark{font-family:Outfit,"Nunito Sans",sans-serif;font-weight:700;font-size:18px;letter-spacing:-.01em;line-height:1.1}
-.wordmark small{display:block;font-family:"Nunito Sans",sans-serif;font-weight:700;font-size:11px;color:var(--hdr-sub);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
-.acctbtn{border:1px solid var(--hdr-line);background:var(--hdr-pill);color:#fff;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:Outfit,sans-serif;font-weight:700;font-size:14px;flex:none;overflow:hidden}
+.logo{width:40px;height:40px;flex:none;border-radius:50%;box-shadow:0 0 0 1px var(--hdr-line);direction:ltr}
+.wordmark{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-.01em;line-height:1.1}
+.wordmark small{display:block;font-family:var(--font-body);font-weight:700;font-size:11px;color:var(--hdr-sub);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.acctbtn{border:1px solid var(--hdr-line);background:var(--hdr-pill);color:#fff;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:14px;flex:none;overflow:hidden}
 .acctbtn img{width:100%;height:100%;object-fit:cover}
 
 /* ---------- client home ---------- */
 .darkblock{background:var(--hdr);color:var(--hdr-fg);padding:4px 16px 16px;display:flex;flex-direction:column;gap:12px}
 .darkblock .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.darkblock .count{font-family:Outfit,sans-serif;font-weight:600;font-size:17px;line-height:1.2}
+.darkblock .count{font-family:var(--font-display);font-weight:600;font-size:17px;line-height:1.2}
 .darkblock .count b{color:var(--ok);font-weight:700}
-.darkblock .count span{display:block;font-family:"Nunito Sans",sans-serif;font-size:13px;color:var(--hdr-sub);font-weight:600}
+.darkblock .count span{display:block;font-family:var(--font-body);font-size:13px;color:var(--hdr-sub);font-weight:600}
 .locbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--hdr-line);background:var(--hdr-pill);color:#fff;border-radius:999px;padding:8px 10px 8px 9px;font-weight:700;font-size:13px;max-width:52%;white-space:nowrap}
 .locbtn span{overflow:hidden;text-overflow:ellipsis}
 .locbtn .ic{width:15px;height:15px;color:var(--accent)}
 .locbtn .chev{color:var(--hdr-sub);width:13px;height:13px}
-.radar{width:100%;height:auto;display:block;border-radius:18px;background:radial-gradient(circle at 50% 52%,rgba(242,178,51,.10),rgba(255,255,255,.02) 70%);border:1px solid var(--hdr-line)}
+.radar{width:100%;height:auto;display:block;border-radius:18px 18px 0 0;background:radial-gradient(circle at 50% 52%,rgba(242,178,51,.10),rgba(255,255,255,.02) 70%);border:1px solid var(--hdr-line);border-bottom:0;direction:ltr}
 .radar .ring{fill:none;stroke:rgba(255,255,255,.14)}
-.radar .lbl{fill:rgba(255,255,255,.55);font-size:9.5px;font-weight:700;font-family:"Nunito Sans",sans-serif}
+.radar .lbl{fill:rgba(255,255,255,.55);font-size:9.5px;font-weight:700;font-family:var(--font-body)}
 .radar .sweep{transform-box:view-box;transform-origin:160px 112px;animation:spin 9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .radar .dot{cursor:pointer}
-.radar .dot text{fill:#fff;font-size:8.5px;font-weight:800;font-family:"Nunito Sans",sans-serif;pointer-events:none}
+.radar .dot text{fill:#fff;font-size:8.5px;font-weight:800;font-family:var(--font-body);pointer-events:none}
 .radar .dot .halo{fill:var(--ok);opacity:.22}
 .radar .dot.off circle.core{fill:#6E6E68}
 .radar .dot.off .halo{display:none}
 .radar .dot.mine circle.core{stroke:var(--accent);stroke-width:2}
+.legend{display:flex;gap:14px;font-size:12px;font-weight:700;color:var(--hdr-sub);border:1px solid var(--hdr-line);border-top:0;border-radius:0 0 18px 18px;padding:8px 12px;margin-top:-12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
 .content{padding:16px;display:flex;flex-direction:column;gap:14px}
 
 /* segmented + chips */
@@ -148,14 +170,14 @@ p{margin:0}
 .el:active{transform:scale(.99)}
 @media (hover:hover){.el:hover{box-shadow:var(--shadow)}}
 .el.off{opacity:.7}
-.avatar{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-family:Outfit,sans-serif;font-weight:700;font-size:18px;color:#fff;overflow:hidden;background:var(--h,#5B6B7A);position:relative}
+.avatar{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:18px;color:#fff;overflow:hidden;background:var(--h,#5B6B7A);position:relative}
 .avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .avatar.lg{width:72px;height:72px;font-size:26px;border-radius:20px}
-.avatar .pip{position:absolute;right:-2px;bottom:-2px;width:14px;height:14px;border-radius:50%;background:var(--ok);border:2.5px solid var(--surface)}
+.avatar .pip{position:absolute;inset-inline-end:-2px;bottom:-2px;width:14px;height:14px;border-radius:50%;background:var(--ok);border:2.5px solid var(--surface)}
 .avatar .pip.off{background:var(--off)}
 .el-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.name{font-family:Outfit,sans-serif;font-weight:600;font-size:16px;line-height:1.2}
-.you{font-family:"Nunito Sans",sans-serif;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:2px}
+.name{font-family:var(--font-display);font-weight:600;font-size:16px;line-height:1.2}
+.you{font-family:var(--font-body);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:2px 6px;margin-inline-start:6px;vertical-align:2px}
 .status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;border-radius:999px;padding:4px 9px 4px 7px;white-space:nowrap;flex:none}
 .status.ok{background:var(--ok-soft);color:var(--ok)}
 .status.off{background:var(--off-soft);color:var(--off)}
@@ -184,13 +206,6 @@ p{margin:0}
 .empty h3{color:var(--ink);margin-bottom:6px}
 .empty .ic{width:28px;height:28px;color:var(--accent);margin-bottom:6px}
 
-/* steps */
-.steps{display:flex;flex-direction:column;gap:10px}
-.step{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start}
-.step .n{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:Outfit,sans-serif;font-weight:700;font-size:14px}
-.step b{display:block;font-weight:800}
-.step span{color:var(--ink-2);font-size:14px}
-
 /* form */
 .form{display:flex;flex-direction:column;gap:14px}
 .field{display:flex;flex-direction:column;gap:6px}
@@ -204,7 +219,7 @@ p{margin:0}
 .photo-row{display:flex;align-items:center;gap:12px}
 .photo-row input{display:none}
 .photo-row .btn{flex:none}
-.tel-wrap{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.tel-wrap{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden;direction:ltr}
 .tel-wrap span{padding:12px 12px;background:var(--surface-2);font-weight:800;color:var(--muted);border-right:1px solid var(--line)}
 .tel-wrap input{border:0 !important;border-radius:0 !important;letter-spacing:.04em}
 .kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:14px}
@@ -214,25 +229,27 @@ p{margin:0}
 .statuscard{border-radius:20px;padding:18px;color:#fff;background:var(--off);transition:background .25s ease;background-image:radial-gradient(70% 60% at 100% 0%,rgba(255,255,255,.14),transparent 70%)}
 .statuscard.on{background-color:var(--ok)}
 .statuscard .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.statuscard .big{font-family:Outfit,sans-serif;font-weight:700;font-size:26px;line-height:1.05;display:flex;align-items:center;gap:10px}
+.statuscard .big{font-family:var(--font-display);font-weight:700;font-size:26px;line-height:1.05;display:flex;align-items:center;gap:10px}
 .statuscard .big .dot{width:12px;height:12px;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
 .statuscard p{opacity:.94;margin-top:8px;font-size:14px}
 .switch{width:64px;height:36px;border-radius:999px;border:0;background:rgba(0,0,0,.28);position:relative;flex:none;transition:background .2s}
-.switch::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:transform .2s ease;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.switch::after{content:"";position:absolute;top:4px;inset-inline-start:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:transform .2s ease;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .switch[aria-checked="true"]{background:rgba(255,255,255,.35)}
 .switch[aria-checked="true"]::after{transform:translateX(28px)}
+[dir="rtl"] .switch[aria-checked="true"]::after{transform:translateX(-28px)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center}
-.stat b{display:block;font-family:Outfit,sans-serif;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.stat b{display:block;font-family:var(--font-display);font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
 .stat span{font-size:12px;color:var(--muted);font-weight:700}
 
 /* rows (store, account) */
 .rows{display:flex;flex-direction:column}
-.rows a,.rows button,.rows div.r{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--line);text-decoration:none;font-weight:700;border-left:0;border-right:0;border-bottom:0;background:none;text-align:left;width:100%;font-size:14.5px}
+.rows a,.rows button,.rows div.r{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--line);text-decoration:none;font-weight:700;border-left:0;border-right:0;border-bottom:0;background:none;text-align:start;width:100%;font-size:14.5px}
 .rows > :first-child{border-top:0}
 .rows .ic{color:var(--accent)}
-.rows .arrow{margin-left:auto;color:var(--muted);transform:rotate(-90deg)}
-.rows .sub{margin-left:auto;color:var(--muted);font-weight:600;font-size:13px}
+.rows .arrow{margin-inline-start:auto;color:var(--muted);transform:rotate(-90deg)}
+[dir="rtl"] .rows .arrow{transform:rotate(90deg)}
+.rows .sub{margin-inline-start:auto;color:var(--muted);font-weight:600;font-size:13px}
 .rows .danger{color:var(--off)}
 .rows .danger .ic{color:var(--off)}
 .storehead{display:flex;gap:14px;align-items:center}
@@ -252,7 +269,7 @@ p{margin:0}
 .tabbar button .ic{width:22px;height:22px}
 .tabbar button[aria-pressed="true"]{color:var(--ink)}
 .tabbar button[aria-pressed="true"] .ic{color:var(--accent)}
-.tabbar .live{position:absolute;top:6px;right:calc(50% - 16px);width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 2px var(--surface)}
+.tabbar .live{position:absolute;top:6px;inset-inline-end:calc(50% - 16px);width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 2px var(--surface)}
 
 /* dialogs */
 dialog{border:0;padding:0;background:var(--surface);color:var(--ink);width:100%;max-width:480px;margin:auto auto 0;border-radius:22px 22px 0 0;max-height:92dvh;box-shadow:var(--shadow)}
@@ -279,7 +296,7 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
 .starpick button.on{color:var(--accent)}
 .starpick .ic{width:30px;height:30px}
 .citylist{display:flex;flex-direction:column}
-.citylist button{border:0;background:transparent;text-align:left;padding:13px 4px;border-top:1px solid var(--line);font-weight:700;display:flex;align-items:center;gap:10px}
+.citylist button{border:0;background:transparent;text-align:start;padding:13px 4px;border-top:1px solid var(--line);font-weight:700;display:flex;align-items:center;gap:10px}
 .citylist button .ic{color:var(--muted)}
 .citylist button.on .ic{color:var(--ok)}
 .citylist button:first-child{border-top:0}
@@ -295,28 +312,29 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
 
   <!-- ===== welcome ===== -->
   <section id="s-welcome" class="welcome" hidden>
+    <div class="topline"><button type="button" class="langbtn" data-langtoggle><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h10M9 3v2c0 5-3 9-6 11M6 9c1 3 4 6 8 8M13 20l4-9 4 9M14.5 17h5"/></svg><span data-t="lang.other"></span></button></div>
     <div class="glow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.8.6 1.4 1.5 1.4 2.5V18h5v-1.3c0-1 .6-1.9 1.4-2.5A6.5 6.5 0 0 0 12 2.5z"/><path d="M9.5 21h5"/><path d="M12 7.5v4"/></svg></div>
     <div class="titles">
-      <span class="by">par Log-ON lighting</span>
-      <h1>Un électricien disponible,<br>près de chez vous.</h1>
-      <p class="tag">Nabeul et tout le Cap Bon. Appelez directement, sans intermédiaire.</p>
+      <span class="by" data-th="by"></span>
+      <h1 data-th="w.title"></h1>
+      <p class="tag" data-t="w.tag"></p>
     </div>
     <div class="door">
-      <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg>Je cherche un électricien</h2>
-      <p>Voyez qui est libre en ce moment autour de vous et appelez-le. Aucun compte nécessaire.</p>
-      <div class="row"><button type="button" class="btn primary lg" data-guest>Voir qui est disponible</button></div>
+      <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg><span data-t="w.client.h"></span></h2>
+      <p data-t="w.client.p"></p>
+      <div class="row"><button type="button" class="btn primary lg" data-guest data-t="w.client.btn"></button></div>
     </div>
     <div class="door">
-      <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>Je suis électricien</h2>
-      <p>Recevez des appels quand vous êtes disponible. Gratuit, pas de commission.</p>
-      <div class="row"><button type="button" class="btn light lg" data-auth="signup:pro">Créer mon compte</button><button type="button" class="btn onDark lg" data-auth="login:pro">Se connecter</button></div>
+      <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg><span data-t="w.pro.h"></span></h2>
+      <p data-t="w.pro.p"></p>
+      <div class="row"><button type="button" class="btn light lg" data-auth="signup:pro" data-t="w.pro.create"></button><button type="button" class="btn onDark lg" data-auth="login:pro" data-t="login"></button></div>
     </div>
-    <p class="foot">Déjà un compte client ? <button type="button" data-auth="login:client">Se connecter</button></p>
+    <p class="foot"><span data-t="w.foot"></span> <button type="button" data-auth="login:client" data-t="login"></button></p>
   </section>
 
   <!-- ===== auth ===== -->
   <section id="s-auth" hidden>
-    <div class="authbar"><button type="button" id="auth-back" aria-label="Retour"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button></div>
+    <div class="authbar"><button type="button" id="auth-back" data-ta="aria-label:back"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button></div>
     <div class="auth" id="auth-body"></div>
   </section>
 
@@ -331,9 +349,9 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
           <text x="48.2" y="34" text-anchor="start" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff">N</text>
           <text x="33" y="47" text-anchor="middle" font-family="'Dancing Script', cursive" font-weight="600" font-size="11" fill="#fff">lighting</text>
         </svg>
-        <div class="wordmark">Électriciens<small>par Log-ON · Nabeul</small></div>
+        <div class="wordmark"><span data-t="h.title"></span><small data-t="h.sub"></small></div>
       </div>
-      <button class="acctbtn" id="acctbtn" type="button" aria-label="Mon compte"></button>
+      <button class="acctbtn" id="acctbtn" type="button" data-ta="aria-label:h.account"></button>
     </header>
 
     <main id="view-clients" hidden>
@@ -342,16 +360,19 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
           <div class="count" id="radar-count"></div>
           <button class="locbtn" id="locbtn" type="button" aria-haspopup="dialog">
             <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
-            <span id="locname">Nabeul</span>
+            <span id="locname"></span>
             <svg class="ic chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
         </div>
-        <svg class="radar" id="radar" viewBox="0 0 320 224" role="img" aria-label="Électriciens autour de vous"></svg>
+        <div>
+          <svg class="radar" id="radar" viewBox="0 0 320 224" role="img" data-ta="aria-label:radar.aria"></svg>
+          <div class="legend"><span><i style="background:#F2B233"></i><span data-t="you"></span></span><span><i style="background:var(--ok)"></i><span data-t="status.ok"></span></span><span><i style="background:#6E6E68"></i><span data-t="status.off"></span></span></div>
+        </div>
       </div>
       <div class="content">
-        <div class="seg" role="group" aria-label="Filtrer par disponibilité">
-          <button type="button" id="mode-dispo" aria-pressed="true">Disponibles maintenant <span class="cnt" id="cnt-dispo">0</span></button>
-          <button type="button" id="mode-all" aria-pressed="false">Tous <span class="cnt" id="cnt-all">0</span></button>
+        <div class="seg" role="group">
+          <button type="button" id="mode-dispo" aria-pressed="true"><span data-t="c.dispo"></span> <span class="cnt" id="cnt-dispo">0</span></button>
+          <button type="button" id="mode-all" aria-pressed="false"><span data-t="c.all"></span> <span class="cnt" id="cnt-all">0</span></button>
         </div>
         <div class="chips" id="skillchips"></div>
         <div class="list" id="list"></div>
@@ -371,58 +392,153 @@ dialog::backdrop{background:rgba(10,10,10,.5)}
             <text x="48.2" y="34" text-anchor="start" font-family="Outfit, sans-serif" font-weight="600" font-size="13.5" fill="#fff">N</text>
             <text x="33" y="47" text-anchor="middle" font-family="'Dancing Script', cursive" font-weight="600" font-size="11" fill="#fff">lighting</text>
           </svg>
-          <div><h2>Log-ON lighting</h2><p class="lead small">Vente de matériel électrique, éclairage et décoration. Distributeur EGLO.</p></div>
+          <div><h2>Log-ON lighting</h2><p class="lead small" data-t="s.tag"></p></div>
         </div>
       </div>
       <div class="card"><div class="rows" id="storerows"></div></div>
-      <div class="card"><p class="eyebrow" style="margin-bottom:10px">Bientôt dans l'app</p><div class="soon" id="soon"></div></div>
+      <div class="card"><p class="eyebrow" style="margin-bottom:10px" data-t="s.soon"></p><div class="soon" id="soon"></div></div>
     </div></main>
 
     <main id="view-account" hidden><div class="content" id="account"></div></main>
   </div>
 </div>
 
-<nav class="tabbar" id="tabbar" aria-label="Navigation" hidden></nav>
+<nav class="tabbar" id="tabbar" data-ta="aria-label:nav" hidden></nav>
 
-<dialog id="profile" aria-label="Profil de l'électricien"></dialog>
-<dialog id="locdlg" aria-label="Choisir une zone">
+<dialog id="profile" data-ta="aria-label:p.aria"></dialog>
+<dialog id="locdlg" data-ta="aria-label:loc.aria">
   <div class="grab"></div>
-  <div class="sheet-head"><h2>Où êtes-vous ?</h2><button class="close" type="button" data-close="locdlg" aria-label="Fermer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sheet-head"><h2 data-t="loc.h"></h2><button class="close" type="button" data-close="locdlg" data-ta="aria-label:close"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="sheet-body">
-    <button class="btn dark lg" type="button" id="geobtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Utiliser ma position</button>
-    <p class="eyebrow">Ou choisir une ville</p>
+    <button class="btn dark lg" type="button" id="geobtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span data-t="loc.use"></span></button>
+    <p class="eyebrow" data-t="loc.or"></p>
     <div class="citylist" id="citylist"></div>
   </div>
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+/* ================= i18n ================= */
+const T={
+fr:{
+ 'lang.other':'عربي','by':'par Log-ON lighting','login':'Se connecter','back':'Retour','close':'Fermer','nav':'Navigation','you':'Vous',
+ 'w.title':'Un électricien disponible,<br>près de chez vous.','w.tag':'Nabeul et tout le Cap Bon. Appelez directement, sans intermédiaire.',
+ 'w.client.h':'Je cherche un électricien','w.client.p':'Voyez qui est libre en ce moment autour de vous et appelez-le. Aucun compte nécessaire.','w.client.btn':'Voir qui est disponible',
+ 'w.pro.h':'Je suis électricien','w.pro.p':'Recevez des appels quand vous êtes disponible. Gratuit, pas de commission.','w.pro.create':'Créer mon compte','w.foot':'Déjà un compte client ?',
+ 'a.signup.pro':'Créer mon compte électricien','a.signup':'Créer mon compte','a.phone.pro':'Les clients vous appelleront sur ce numéro.','a.phone.sub':'Entrez votre numéro de téléphone, vous recevrez un code par SMS.',
+ 'a.phone.label':'Numéro de téléphone','a.phone.err':'Numéro tunisien à 8 chiffres.','a.phone.noacc':'Aucun compte avec ce numéro sur cet appareil. Créez un compte.','a.phone.exists':'Ce numéro a déjà un compte. Connectez-vous.',
+ 'a.sms':'Recevoir le code par SMS','a.have':'Déjà un compte ?','a.none':'Pas encore de compte ?','a.create':'Créer un compte',
+ 'a.code.h':'Entrez le code','a.code.sub':'Un SMS a été envoyé au','a.code.err':'Code incorrect. Réessayez.','a.code.demo':'Démo : aucun SMS n’est vraiment envoyé. Entrez le code','a.code.aria':'Code à 4 chiffres',
+ 'a.verify':'Vérifier','a.resend':'Renvoyer le code','a.resent':'Code renvoyé (démo : {code}).','a.change':'Changer de numéro',
+ 'a.name.pro.h':'Comment les clients vous appellent-ils ?','a.name.h':'Comment vous appelez-vous ?','a.name.pro.sub':'Votre nom ou le nom de votre entreprise, tel qu’il apparaîtra dans la liste.','a.name.sub':'Votre prénom suffit. Il apparaîtra sur vos avis.',
+ 'a.name.pro.label':'Nom ou nom de l’entreprise','a.name.label':'Prénom et nom','a.name.ph.pro':'Ex. Ahmed Ben Salah','a.name.ph':'Ex. Rim Bouazizi','a.name.err':'Indiquez votre nom.','a.name.next.pro':'Continuer vers mon profil','a.name.done':'Terminer',
+ 'welcome.new':'Bienvenue, {name} !','welcome.back':'Content de vous revoir, {name}.',
+ 'h.title':'Électriciens','h.sub':'par Log-ON · Nabeul','h.account':'Mon compte',
+ 'radar.aria':'Électriciens autour de vous','c.within':'à moins de 15 km de {place}','c.dispo':'Disponibles maintenant','c.all':'Tous','skill.all':'Tous',
+ 'c.empty.h':'Personne n’est disponible pour « {skill} » en ce moment','c.empty.p':'Essayez « Tous » pour voir aussi les électriciens indisponibles, ou changez de zone.',
+ 'c.far':'Vous êtes loin de la zone de démonstration (Nabeul). Les distances sont calculées depuis {place}.','c.demo':'Profils fictifs pour la démonstration.','c.demo.pro':'Votre fiche apparaît ici avec un vrai bouton d’appel.','c.demo.client':'Un électricien inscrit apparaît ici avec un vrai bouton d’appel.',
+ 'status.ok':'Disponible','status.off':'Indisponible','new':'Nouveau','call':'Appeler','view':'Voir le profil','since':'depuis {time}','wa':'WhatsApp','km':'km','m':'m','north':'N',
+ 'p.aria':'Profil de l’électricien','p.eyebrow':'Profil','p.reviews.n':'· {n} avis','p.noreviews':'Pas encore d’avis','p.nodesc':'Aucune description.','p.skills':'Compétences','p.phone':'Téléphone','p.masked':'Numéro masqué sur les profils de démonstration.',
+ 'p.reviews':'Avis ({n})','p.first':'Soyez le premier à laisser un avis après une intervention.','p.leave':'Laisser un avis','p.leave.sub':'Après une intervention, notez {name} pour aider les prochains clients.','p.stars':'{n} étoile(s)','p.revph':'Ponctuel, propre, prix correct…','p.publish':'Publier l’avis',
+ 'p.needacc':'Créez un compte client (30 secondes) pour noter {name} après une intervention.','p.createclient':'Créer un compte client','p.thanks':'Merci, votre avis est publié.','p.now':'À l’instant','p.default':'Bonne intervention.',
+ 'p.democall':'Démo : dans la vraie app, ceci ouvre le téléphone avec le numéro de {name}.','p.demowa':'Démo : ceci ouvrirait WhatsApp avec l’électricien.',
+ 'act.on.p':'Les clients à proximité vous voient en vert et peuvent vous appeler.','act.since':' Disponible depuis {time}.','act.off.p':'Vous n’apparaissez pas dans « Disponibles maintenant ». Activez quand vous êtes prêt à intervenir.','act.switch':'Changer ma disponibilité',
+ 'act.calls':'Appels reçus','act.views':'Vues du profil','act.rank':'Position · {place}','act.preview':'Votre fiche, vue par les clients','act.edit':'Modifier ma fiche','act.delete':'Supprimer la fiche',
+ 'act.note':'Démo : votre fiche est enregistrée sur cet appareil uniquement. Dans la vraie app, elle sera visible par tous les clients de votre zone.','act.toast.on':'Vous êtes maintenant visible comme Disponible.','act.toast.off':'Vous êtes passé en Indisponible.','act.confirmdel':'Supprimer votre fiche ? Votre compte reste actif.',
+ 'f.welcome':'Bienvenue, {name}.','f.welcome.sub':'Encore une étape : votre fiche. C’est ce que les clients verront avant de vous appeler.','f.title':'Ma fiche','f.photo':'Photo de profil','f.name':'Nom ou nom de l’entreprise','f.name.err':'Indiquez votre nom.',
+ 'f.callat':'Les clients vous appellent au','f.zone':'Zone d’intervention','f.skills':'Types de travaux','f.skills.err':'Choisissez au moins un type de travaux.','f.desc':'Courte description','f.optional':'· optionnel','f.desc.ph':'Ex. Électricien depuis 10 ans, dépannage rapide sur Nabeul et Hammamet.',
+ 'f.save':'Enregistrer','f.publish':'Publier ma fiche','f.cancel':'Annuler','f.fix':'Complétez les champs en rouge.','f.updated':'Fiche mise à jour.','f.published':'Fiche publiée. Vous êtes Disponible.',
+ 's.tag':'Vente de matériel électrique, éclairage et décoration. Distributeur EGLO.','s.soon':'Bientôt dans l’app','s.addr':'Avenue Hédi Nouira, Nabeul',
+ 's.1.h':'Électricien partenaire Log-ON','s.1.p':'badge de confiance pour les pros vérifiés par le magasin.','s.2.h':'Matériel prêt en magasin','s.2.p':'l’électricien commande depuis l’app, passe le récupérer Avenue Hédi Nouira.',
+ 's.3.h':'Catalogue éclairage','s.3.p':'choisissez vos luminaires EGLO et faites-les installer par un électricien disponible.','s.4.h':'Avantages pros','s.4.p':'remises et points fidélité pour les électriciens actifs sur l’app.',
+ 'acc.guest.h':'Vous naviguez en visiteur','acc.guest.p':'Vous pouvez voir et appeler les électriciens. Un compte permet de laisser des avis.','acc.create':'Créer un compte','acc.ispro':'Je suis électricien','acc.ispro.sub':'Créer mon compte pro','acc.lang':'Langue','acc.quit':'Quitter le mode visiteur',
+ 'acc.pro':'Compte électricien','acc.client':'Compte client','acc.fiche':'Ma fiche et ma disponibilité','acc.become':'Je suis aussi électricien','acc.become.sub':'Passer en compte pro','acc.about':'À propos de Log-ON','acc.logout':'Se déconnecter',
+ 'acc.created':'Compte créé le {date} · Démo : les comptes sont enregistrés sur cet appareil.','acc.became':'Votre compte est maintenant un compte électricien.',
+ 'loc.aria':'Choisir une zone','loc.h':'Où êtes-vous ?','loc.use':'Utiliser ma position','loc.searching':'Recherche de votre position…','loc.or':'Ou choisir une ville','loc.mypos':'Ma position','loc.unavail':'Géolocalisation indisponible sur cet appareil.','loc.done':'Distances calculées depuis votre position.','loc.denied':'Position refusée ou indisponible — choisissez une ville.',
+ 'tab.activite':'Activité','tab.clients':'Électriciens','tab.store':'Log-ON','tab.account':'Compte','title':'Log-ON Électriciens',
+},
+ar:{
+ 'lang.other':'FR','by':'<span style="font-family:Tajawal,sans-serif;font-weight:700">من</span> Log-ON lighting','login':'تسجيل الدخول','back':'رجوع','close':'إغلاق','nav':'التنقل','you':'أنت',
+ 'w.title':'كهربائي متاح،<br>قريب منك.','w.tag':'نابل وكامل الوطن القبلي. اتصل مباشرة، بدون وسيط.',
+ 'w.client.h':'أبحث عن كهربائي','w.client.p':'شوف من هو متاح الآن بالقرب منك واتصل به. لا حاجة لحساب.','w.client.btn':'شوف من هو متاح',
+ 'w.pro.h':'أنا كهربائي','w.pro.p':'استقبل مكالمات عندما تكون متاحًا. مجانًا، بدون عمولة.','w.pro.create':'إنشاء حسابي','w.foot':'لديك حساب حريف؟',
+ 'a.signup.pro':'إنشاء حساب كهربائي','a.signup':'إنشاء حسابي','a.phone.pro':'سيتصل بك الحرفاء على هذا الرقم.','a.phone.sub':'أدخل رقم هاتفك، ستتلقى رمزًا عبر SMS.',
+ 'a.phone.label':'رقم الهاتف','a.phone.err':'رقم تونسي من 8 أرقام.','a.phone.noacc':'لا يوجد حساب بهذا الرقم على هذا الجهاز. أنشئ حسابًا.','a.phone.exists':'هذا الرقم لديه حساب بالفعل. سجّل الدخول.',
+ 'a.sms':'تلقّي الرمز عبر SMS','a.have':'لديك حساب؟','a.none':'ليس لديك حساب؟','a.create':'إنشاء حساب',
+ 'a.code.h':'أدخل الرمز','a.code.sub':'تم إرسال SMS إلى','a.code.err':'الرمز غير صحيح. حاول مجددًا.','a.code.demo':'تجربة: لا يتم إرسال SMS فعليًا. أدخل الرمز','a.code.aria':'رمز من 4 أرقام',
+ 'a.verify':'تحقّق','a.resend':'إعادة إرسال الرمز','a.resent':'تمت إعادة إرسال الرمز (تجربة: {code}).','a.change':'تغيير الرقم',
+ 'a.name.pro.h':'كيف يناديك الحرفاء؟','a.name.h':'ما اسمك؟','a.name.pro.sub':'اسمك أو اسم شركتك كما سيظهر في القائمة.','a.name.sub':'اسمك الأول يكفي. سيظهر على تقييماتك.',
+ 'a.name.pro.label':'الاسم أو اسم الشركة','a.name.label':'الاسم واللقب','a.name.ph.pro':'مثال: أحمد بن صالح','a.name.ph':'مثال: ريم بوعزيزي','a.name.err':'أدخل اسمك.','a.name.next.pro':'متابعة إلى بطاقتي','a.name.done':'إنهاء',
+ 'welcome.new':'مرحبًا {name}!','welcome.back':'سعداء بعودتك، {name}.',
+ 'h.title':'الكهربائيون','h.sub':'من Log-ON · نابل','h.account':'حسابي',
+ 'radar.aria':'الكهربائيون حولك','c.within':'على بعد أقل من 15 كم من {place}','c.dispo':'متاحون الآن','c.all':'الكل','skill.all':'الكل',
+ 'c.empty.h':'لا أحد متاح لـ «{skill}» حاليًا','c.empty.p':'جرّب «الكل» لرؤية الكهربائيين غير المتاحين أيضًا، أو غيّر المنطقة.',
+ 'c.far':'أنت بعيد عن منطقة التجربة (نابل). المسافات محسوبة من {place}.','c.demo':'بطاقات وهمية للتجربة.','c.demo.pro':'بطاقتك تظهر هنا مع زر اتصال حقيقي.','c.demo.client':'الكهربائي المسجّل يظهر هنا مع زر اتصال حقيقي.',
+ 'status.ok':'متاح','status.off':'غير متاح','new':'جديد','call':'اتصل','view':'عرض البطاقة','since':'منذ {time}','wa':'واتساب','km':'كم','m':'م','north':'ش',
+ 'p.aria':'بطاقة الكهربائي','p.eyebrow':'البطاقة','p.reviews.n':'· {n} تقييم','p.noreviews':'لا تقييمات بعد','p.nodesc':'لا يوجد وصف.','p.skills':'الاختصاصات','p.phone':'الهاتف','p.masked':'الرقم مخفي في بطاقات التجربة.',
+ 'p.reviews':'التقييمات ({n})','p.first':'كن أول من يترك تقييمًا بعد التدخّل.','p.leave':'اترك تقييمًا','p.leave.sub':'بعد التدخّل، قيّم {name} لمساعدة الحرفاء القادمين.','p.stars':'{n} نجوم','p.revph':'في الوقت، نظيف، سعر مناسب…','p.publish':'نشر التقييم',
+ 'p.needacc':'أنشئ حساب حريف (30 ثانية) لتقييم {name} بعد التدخّل.','p.createclient':'إنشاء حساب حريف','p.thanks':'شكرًا، تم نشر تقييمك.','p.now':'الآن','p.default':'تدخّل جيد.',
+ 'p.democall':'تجربة: في التطبيق الحقيقي، هذا يفتح الهاتف برقم {name}.','p.demowa':'تجربة: هذا سيفتح واتساب مع الكهربائي.',
+ 'act.on.p':'الحرفاء القريبون يرونك بالأخضر ويمكنهم الاتصال بك.','act.since':' متاح منذ {time}.','act.off.p':'لا تظهر في «متاحون الآن». فعّل عندما تكون جاهزًا للتدخّل.','act.switch':'تغيير حالتي',
+ 'act.calls':'مكالمات','act.views':'مشاهدات البطاقة','act.rank':'الترتيب · {place}','act.preview':'بطاقتك كما يراها الحرفاء','act.edit':'تعديل بطاقتي','act.delete':'حذف البطاقة',
+ 'act.note':'تجربة: بطاقتك محفوظة على هذا الجهاز فقط. في التطبيق الحقيقي، ستكون مرئية لكل حرفاء منطقتك.','act.toast.on':'أنت الآن ظاهر كمتاح.','act.toast.off':'أصبحت غير متاح.','act.confirmdel':'حذف بطاقتك؟ حسابك يبقى نشطًا.',
+ 'f.welcome':'مرحبًا {name}.','f.welcome.sub':'خطوة أخيرة: بطاقتك. هذا ما سيراه الحرفاء قبل الاتصال بك.','f.title':'بطاقتي','f.photo':'صورة','f.name':'الاسم أو اسم الشركة','f.name.err':'أدخل اسمك.',
+ 'f.callat':'يتصل بك الحرفاء على','f.zone':'منطقة التدخّل','f.skills':'أنواع الأشغال','f.skills.err':'اختر نوعًا واحدًا على الأقل.','f.desc':'وصف قصير','f.optional':'· اختياري','f.desc.ph':'مثال: كهربائي منذ 10 سنوات، إصلاح سريع في نابل والحمامات.',
+ 'f.save':'حفظ','f.publish':'نشر بطاقتي','f.cancel':'إلغاء','f.fix':'أكمل الحقول الحمراء.','f.updated':'تم تحديث البطاقة.','f.published':'تم نشر البطاقة. أنت متاح.',
+ 's.tag':'بيع المعدات الكهربائية والإنارة والديكور. موزّع EGLO.','s.soon':'قريبًا في التطبيق','s.addr':'شارع الهادي نويرة، نابل',
+ 's.1.h':'كهربائي شريك Log-ON','s.1.p':'شارة ثقة للمهنيين الذين تحققت منهم المغازة.','s.2.h':'معدات جاهزة في المغازة','s.2.p':'الكهربائي يطلب من التطبيق ويستلمها في شارع الهادي نويرة.',
+ 's.3.h':'كتالوج الإنارة','s.3.p':'اختر مصابيح EGLO واطلب تركيبها من كهربائي متاح.','s.4.h':'امتيازات للمهنيين','s.4.p':'تخفيضات ونقاط وفاء للكهربائيين النشطين على التطبيق.',
+ 'acc.guest.h':'أنت تتصفح كزائر','acc.guest.p':'يمكنك رؤية الكهربائيين والاتصال بهم. الحساب يسمح لك بترك تقييمات.','acc.create':'إنشاء حساب','acc.ispro':'أنا كهربائي','acc.ispro.sub':'إنشاء حساب مهني','acc.lang':'اللغة','acc.quit':'الخروج من وضع الزائر',
+ 'acc.pro':'حساب كهربائي','acc.client':'حساب حريف','acc.fiche':'بطاقتي وحالتي','acc.become':'أنا كهربائي أيضًا','acc.become.sub':'التحويل إلى حساب مهني','acc.about':'حول Log-ON','acc.logout':'تسجيل الخروج',
+ 'acc.created':'تم إنشاء الحساب في {date} · تجربة: الحسابات محفوظة على هذا الجهاز.','acc.became':'حسابك الآن حساب كهربائي.',
+ 'loc.aria':'اختيار منطقة','loc.h':'أين أنت؟','loc.use':'استخدام موقعي','loc.searching':'جارٍ البحث عن موقعك…','loc.or':'أو اختر مدينة','loc.mypos':'موقعي','loc.unavail':'تحديد الموقع غير متوفر على هذا الجهاز.','loc.done':'المسافات محسوبة من موقعك.','loc.denied':'تم رفض الموقع أو غير متوفر — اختر مدينة.',
+ 'tab.activite':'النشاط','tab.clients':'الكهربائيون','tab.store':'Log-ON','tab.account':'حسابي','title':'Log-ON الكهربائيون',
+}};
+const SKILLS=['Dépannage','Installation','Tableau électrique','Éclairage','Climatisation','Domotique','Interphone & vidéo','Mise en conformité'];
+const SKILL_AR={'Dépannage':'إصلاح الأعطال','Installation':'تركيب','Tableau électrique':'لوحة كهربائية','Éclairage':'إنارة','Climatisation':'تكييف','Domotique':'منزل ذكي','Interphone & vidéo':'إنترفون وفيديو','Mise en conformité':'مطابقة المعايير'};
+let lang='fr';
+const t=(k,v)=>{let s=(T[lang][k]??T.fr[k]??k);if(v)for(const key in v)s=s.split('{'+key+'}').join(v[key]);return s};
+const L=v=>v&&typeof v==='object'?(v[lang]??v.fr):v;
+const skill=k=>lang==='ar'?(SKILL_AR[k]||k):k;
+function countElec(n){
+  if(lang==='fr') return `<b>${n}</b> électricien${n>1?'s':''} disponible${n>1?'s':''}`;
+  if(n===0) return `<b>0</b> كهربائي متاح`; if(n===1) return `<b>1</b> كهربائي متاح`; if(n===2) return `<b>2</b> كهربائيان متاحان`; if(n<=10) return `<b>${n}</b> كهربائيين متاحين`; return `<b>${n}</b> كهربائيًا متاحًا`;
+}
+function applyStatic(){
+  document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.title=t('title');
+  document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));
+  document.querySelectorAll('[data-th]').forEach(el=>el.innerHTML=t(el.dataset.th));
+  document.querySelectorAll('[data-ta]').forEach(el=>{const [attr,key]=el.dataset.ta.split(':');el.setAttribute(attr,t(key))});
+}
+function setLang(l){lang=l;save(K.lang,l);applyStatic();render()}
+
 /* ================= data ================= */
 const CITIES=[
- {id:'nabeul',name:'Nabeul',lat:36.4561,lng:10.7376},
- {id:'darchaabane',name:'Dar Chaabane El Fehri',lat:36.4700,lng:10.7500},
- {id:'hammamet',name:'Hammamet',lat:36.4000,lng:10.6167},
- {id:'benikhiar',name:'Béni Khiar',lat:36.4700,lng:10.7833},
- {id:'korba',name:'Korba',lat:36.5786,lng:10.8581},
- {id:'grombalia',name:'Grombalia',lat:36.6000,lng:10.5000},
- {id:'kelibia',name:'Kélibia',lat:36.8475,lng:11.0939},
- {id:'tunis',name:'Tunis',lat:36.8065,lng:10.1815},
- {id:'sousse',name:'Sousse',lat:35.8256,lng:10.6369},
+ {id:'nabeul',name:{fr:'Nabeul',ar:'نابل'},lat:36.4561,lng:10.7376},
+ {id:'darchaabane',name:{fr:'Dar Chaabane El Fehri',ar:'دار شعبان الفهري'},lat:36.4700,lng:10.7500},
+ {id:'hammamet',name:{fr:'Hammamet',ar:'الحمامات'},lat:36.4000,lng:10.6167},
+ {id:'benikhiar',name:{fr:'Béni Khiar',ar:'بني خيار'},lat:36.4700,lng:10.7833},
+ {id:'korba',name:{fr:'Korba',ar:'قربة'},lat:36.5786,lng:10.8581},
+ {id:'grombalia',name:{fr:'Grombalia',ar:'قرمبالية'},lat:36.6000,lng:10.5000},
+ {id:'kelibia',name:{fr:'Kélibia',ar:'قليبية'},lat:36.8475,lng:11.0939},
+ {id:'tunis',name:{fr:'Tunis',ar:'تونس'},lat:36.8065,lng:10.1815},
+ {id:'sousse',name:{fr:'Sousse',ar:'سوسة'},lat:35.8256,lng:10.6369},
 ];
-const SKILLS=['Dépannage','Installation','Tableau électrique','Éclairage','Climatisation','Domotique','Interphone & vidéo','Mise en conformité'];
 const now=Date.now(), ago=m=>now-m*60000;
+const R=(who,stars,text,date)=>({who,stars,text,date});
+const D3={fr:'Il y a 3 jours',ar:'منذ 3 أيام'},D5={fr:'Il y a 5 jours',ar:'منذ 5 أيام'},W1={fr:'Il y a 1 semaine',ar:'منذ أسبوع'},W2={fr:'Il y a 2 semaines',ar:'منذ أسبوعين'},W3={fr:'Il y a 3 semaines',ar:'منذ 3 أسابيع'},M1={fr:'Il y a 1 mois',ar:'منذ شهر'},M2={fr:'Il y a 2 mois',ar:'منذ شهرين'};
 const DEMO=[
- {id:'d1',demo:true,name:'Ahmed Ben Salah',zone:'Dar Chaabane El Fehri',lat:36.4712,lng:10.7468,skills:['Dépannage','Installation','Tableau électrique'],desc:'Électricien bâtiment depuis 12 ans. Dépannage rapide sur Nabeul et environs, installations neuves et rénovation.',rating:4.8,count:23,available:true,since:ago(95),reviews:[{who:'Rim B.',stars:5,text:'Venu en 30 minutes pour une panne de tableau. Sérieux et propre.',date:'Il y a 3 jours'},{who:'Khaled M.',stars:5,text:'Installation complète de mon appartement, travail soigné.',date:'Il y a 2 semaines'},{who:'Sana T.',stars:4,text:'Bon travail, un peu en retard mais il a prévenu.',date:'Il y a 1 mois'}]},
- {id:'d2',demo:true,name:'Mohamed Trabelsi',zone:'Nabeul centre',lat:36.4530,lng:10.7330,skills:['Dépannage','Éclairage'],desc:'Dépannage électrique 7j/7, pose de luminaires et éclairage extérieur.',rating:4.6,count:15,available:true,since:ago(40),reviews:[{who:'Amine K.',stars:5,text:'Rapide et prix correct pour un court-circuit un dimanche.',date:'Il y a 5 jours'},{who:'Leila H.',stars:4,text:'Éclairage du jardin très bien installé.',date:'Il y a 3 semaines'}]},
- {id:'d3',demo:true,name:'Sami Gharbi',zone:'Hammamet',lat:36.4030,lng:10.6180,skills:['Installation','Domotique','Éclairage'],desc:'Spécialisé villas et maisons connectées : éclairage intelligent, volets, interphone.',rating:4.9,count:31,available:true,since:ago(180),reviews:[{who:'Nadia S.',stars:5,text:'Domotique de toute la villa, explications claires.',date:'Il y a 1 semaine'},{who:'Tarek B.',stars:5,text:'Très professionnel.',date:'Il y a 1 mois'}]},
- {id:'d4',demo:true,name:'Walid Jlassi',zone:'Béni Khiar',lat:36.4690,lng:10.7820,skills:['Dépannage','Climatisation'],desc:'Dépannage électrique et installation de climatiseurs. Devis gratuit.',rating:4.3,count:8,available:false,since:0,reviews:[{who:'Mounir A.',stars:4,text:'Clim installée dans la journée.',date:'Il y a 2 mois'}]},
- {id:'d5',demo:true,name:'Karim Mejri',zone:'Nabeul (Mrezga)',lat:36.4400,lng:10.7100,skills:['Tableau électrique','Mise en conformité','Installation'],desc:'Mise aux normes, remplacement de tableaux, attestations pour la STEG.',rating:4.7,count:12,available:true,since:ago(20),reviews:[{who:'Olfa R.',stars:5,text:'Tableau refait proprement, dossier STEG accepté.',date:'Il y a 2 semaines'}]},
- {id:'d6',demo:true,name:'Houssem Ayari',zone:'Korba',lat:36.5780,lng:10.8570,skills:['Dépannage','Installation'],desc:'Électricien général, disponible le soir et le week-end.',rating:4.5,count:9,available:false,since:0,reviews:[{who:'Fares D.',stars:5,text:'Ponctuel et efficace.',date:'Il y a 1 mois'}]},
- {id:'d7',demo:true,name:'Électricité Nabil & Fils',zone:'Hammamet Nord',lat:36.4210,lng:10.6620,skills:['Installation','Éclairage','Interphone & vidéo'],desc:'Entreprise familiale, 2 équipes. Chantiers neufs, hôtels et commerces.',rating:4.4,count:19,available:true,since:ago(240),reviews:[{who:'Hédi C.',stars:4,text:'Bonne équipe pour un local commercial.',date:'Il y a 3 semaines'}]},
- {id:'d8',demo:true,name:'Anis Chaabane',zone:'Grombalia',lat:36.5990,lng:10.5010,skills:['Dépannage','Installation','Climatisation'],desc:'Interventions Grombalia, Bou Argoub et Nabeul.',rating:4.2,count:6,available:true,since:ago(60),reviews:[{who:'Souad M.',stars:4,text:'Correct.',date:'Il y a 2 mois'}]},
- {id:'d9',demo:true,name:'Yassine Hamdi',zone:'Nabeul (Sidi Amor)',lat:36.4600,lng:10.7300,skills:['Éclairage','Domotique'],desc:'Éclairage design et LED, conseils pour salons et façades.',rating:5.0,count:4,available:false,since:0,reviews:[{who:'Ines L.',stars:5,text:'Superbe éclairage LED du salon.',date:'Il y a 1 semaine'}]},
+ {id:'d1',demo:true,name:{fr:'Ahmed Ben Salah',ar:'أحمد بن صالح'},zone:{fr:'Dar Chaabane El Fehri',ar:'دار شعبان الفهري'},lat:36.4712,lng:10.7468,skills:['Dépannage','Installation','Tableau électrique'],desc:{fr:'Électricien bâtiment depuis 12 ans. Dépannage rapide sur Nabeul et environs, installations neuves et rénovation.',ar:'كهربائي بناء منذ 12 سنة. إصلاح سريع في نابل وضواحيها، تركيبات جديدة وتجديد.'},rating:4.8,count:23,available:true,since:ago(95),reviews:[R({fr:'Rim B.',ar:'ريم ب.'},5,{fr:'Venu en 30 minutes pour une panne de tableau. Sérieux et propre.',ar:'جاء في 30 دقيقة لعطل في اللوحة. جدّي ونظيف.'},D3),R({fr:'Khaled M.',ar:'خالد م.'},5,{fr:'Installation complète de mon appartement, travail soigné.',ar:'تركيب كامل لشقتي، عمل متقن.'},W2),R({fr:'Sana T.',ar:'سناء ت.'},4,{fr:'Bon travail, un peu en retard mais il a prévenu.',ar:'عمل جيد، تأخر قليلًا لكنه أعلمني.'},M1)]},
+ {id:'d2',demo:true,name:{fr:'Mohamed Trabelsi',ar:'محمد الطرابلسي'},zone:{fr:'Nabeul centre',ar:'وسط نابل'},lat:36.4530,lng:10.7330,skills:['Dépannage','Éclairage'],desc:{fr:'Dépannage électrique 7j/7, pose de luminaires et éclairage extérieur.',ar:'إصلاح كهربائي 7/7، تركيب مصابيح وإنارة خارجية.'},rating:4.6,count:15,available:true,since:ago(40),reviews:[R({fr:'Amine K.',ar:'أمين ك.'},5,{fr:'Rapide et prix correct pour un court-circuit un dimanche.',ar:'سريع وسعر مناسب لماس كهربائي يوم الأحد.'},D5),R({fr:'Leila H.',ar:'ليلى ح.'},4,{fr:'Éclairage du jardin très bien installé.',ar:'إنارة الحديقة مركّبة بشكل ممتاز.'},W3)]},
+ {id:'d3',demo:true,name:{fr:'Sami Gharbi',ar:'سامي الغربي'},zone:{fr:'Hammamet',ar:'الحمامات'},lat:36.4030,lng:10.6180,skills:['Installation','Domotique','Éclairage'],desc:{fr:'Spécialisé villas et maisons connectées : éclairage intelligent, volets, interphone.',ar:'متخصص في الفيلات والمنازل الذكية: إنارة ذكية، ستائر، إنترفون.'},rating:4.9,count:31,available:true,since:ago(180),reviews:[R({fr:'Nadia S.',ar:'نادية س.'},5,{fr:'Domotique de toute la villa, explications claires.',ar:'منزل ذكي كامل للفيلا، شرح واضح.'},W1),R({fr:'Tarek B.',ar:'طارق ب.'},5,{fr:'Très professionnel.',ar:'محترف جدًا.'},M1)]},
+ {id:'d4',demo:true,name:{fr:'Walid Jlassi',ar:'وليد الجلاصي'},zone:{fr:'Béni Khiar',ar:'بني خيار'},lat:36.4690,lng:10.7820,skills:['Dépannage','Climatisation'],desc:{fr:'Dépannage électrique et installation de climatiseurs. Devis gratuit.',ar:'إصلاح كهربائي وتركيب مكيفات. عرض سعر مجاني.'},rating:4.3,count:8,available:false,since:0,reviews:[R({fr:'Mounir A.',ar:'منير ع.'},4,{fr:'Clim installée dans la journée.',ar:'تم تركيب المكيف في نفس اليوم.'},M2)]},
+ {id:'d5',demo:true,name:{fr:'Karim Mejri',ar:'كريم الماجري'},zone:{fr:'Nabeul (Mrezga)',ar:'نابل (المرازقة)'},lat:36.4400,lng:10.7100,skills:['Tableau électrique','Mise en conformité','Installation'],desc:{fr:'Mise aux normes, remplacement de tableaux, attestations pour la STEG.',ar:'مطابقة المعايير، تبديل اللوحات، شهادات للستاغ.'},rating:4.7,count:12,available:true,since:ago(20),reviews:[R({fr:'Olfa R.',ar:'ألفة ر.'},5,{fr:'Tableau refait proprement, dossier STEG accepté.',ar:'لوحة جديدة بشكل نظيف، ملف الستاغ مقبول.'},W2)]},
+ {id:'d6',demo:true,name:{fr:'Houssem Ayari',ar:'حسام العياري'},zone:{fr:'Korba',ar:'قربة'},lat:36.5780,lng:10.8570,skills:['Dépannage','Installation'],desc:{fr:'Électricien général, disponible le soir et le week-end.',ar:'كهربائي عام، متاح مساءً وفي عطلة نهاية الأسبوع.'},rating:4.5,count:9,available:false,since:0,reviews:[R({fr:'Fares D.',ar:'فارس د.'},5,{fr:'Ponctuel et efficace.',ar:'دقيق في المواعيد وفعّال.'},M1)]},
+ {id:'d7',demo:true,name:{fr:'Électricité Nabil & Fils',ar:'كهرباء نبيل وأبناؤه'},zone:{fr:'Hammamet Nord',ar:'الحمامات الشمالية'},lat:36.4210,lng:10.6620,skills:['Installation','Éclairage','Interphone & vidéo'],desc:{fr:'Entreprise familiale, 2 équipes. Chantiers neufs, hôtels et commerces.',ar:'شركة عائلية، فريقان. ورشات جديدة، فنادق ومحلات.'},rating:4.4,count:19,available:true,since:ago(240),reviews:[R({fr:'Hédi C.',ar:'هادي ش.'},4,{fr:'Bonne équipe pour un local commercial.',ar:'فريق جيد لمحل تجاري.'},W3)]},
+ {id:'d8',demo:true,name:{fr:'Anis Chaabane',ar:'أنيس شعبان'},zone:{fr:'Grombalia',ar:'قرمبالية'},lat:36.5990,lng:10.5010,skills:['Dépannage','Installation','Climatisation'],desc:{fr:'Interventions Grombalia, Bou Argoub et Nabeul.',ar:'تدخلات في قرمبالية وبوعرقوب ونابل.'},rating:4.2,count:6,available:true,since:ago(60),reviews:[R({fr:'Souad M.',ar:'سعاد م.'},4,{fr:'Correct.',ar:'مقبول.'},M2)]},
+ {id:'d9',demo:true,name:{fr:'Yassine Hamdi',ar:'ياسين الحمدي'},zone:{fr:'Nabeul (Sidi Amor)',ar:'نابل (سيدي عمر)'},lat:36.4600,lng:10.7300,skills:['Éclairage','Domotique'],desc:{fr:'Éclairage design et LED, conseils pour salons et façades.',ar:'إنارة عصرية وLED، نصائح للصالونات والواجهات.'},rating:5.0,count:4,available:false,since:0,reviews:[R({fr:'Ines L.',ar:'إيناس ل.'},5,{fr:'Superbe éclairage LED du salon.',ar:'إنارة LED رائعة للصالون.'},W1)]},
 ];
-const STORE={addr:'Avenue Hédi Nouira, Nabeul',tel:'72 231 330',telE164:'+21672231330',mail:'ste@log-on.tn',site:'log-on.tn',fb:'https://www.facebook.com/LOGONTN/',ig:'https://www.instagram.com/logontn/',maps:'https://maps.google.com/?q=Log-ON+Avenue+Hedi+Nouira+Nabeul'};
+const STORE={tel:'72 231 330',telE164:'+21672231330',mail:'ste@log-on.tn',site:'log-on.tn',fb:'https://www.facebook.com/LOGONTN/',ig:'https://www.instagram.com/logontn/',maps:'https://maps.google.com/?q=Log-ON+Avenue+Hedi+Nouira+Nabeul'};
 const DEMO_CODE='1234';
 
 /* ================= icons ================= */
@@ -449,57 +565,62 @@ const I={
  store:'<path d="M3 9l1.5-5h15L21 9M3 9h18M3 9v11h18V9M9 20v-6h6v6"/>',
  gauge:'<path d="M4 14a8 8 0 1 1 16 0"/><path d="M12 14l4-4"/><circle cx="12" cy="14" r="1.5"/>',
  out:'<path d="M10 4H5v16h5M14 8l4 4-4 4M8 12h10"/>',
- swap:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
  lang:'<path d="M4 5h10M9 3v2c0 5-3 9-6 11M6 9c1 3 4 6 8 8M13 20l4-9 4 9M14.5 17h5"/>',
  sms:'<rect x="3" y="4" width="18" height="14" rx="3"/><path d="M8 20l4-2 4 2M7 9h10M7 13h6"/>',
 };
 const ic=(n,cls='')=>`<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 
 /* ================= storage & state ================= */
-const K={acc:'logon.accounts',ses:'logon.session',rev:'logon.reviews',loc:'logon.loc',stats:'logon.stats'};
+const K={acc:'logon.accounts',ses:'logon.session',rev:'logon.reviews',loc:'logon.loc',stats:'logon.stats',lang:'logon.lang'};
 const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const state={
   screen:'welcome', tab:'clients', mode:'dispo', skill:'Tous', editing:false,
-  origin:load(K.loc,null)||{...CITIES[0],label:CITIES[0].name},
+  origin:load(K.loc,null)||{...CITIES[0],label:null},
   accounts:load(K.acc,{}), session:load(K.ses,null),
   reviews:load(K.rev,{}), stats:load(K.stats,{views:0,calls:0}),
   auth:null,
 };
+lang=load(K.lang,null)||((navigator.language||'').toLowerCase().startsWith('ar')?'ar':'fr');
+{const q=new URLSearchParams(location.search).get('lang');if(q==='ar'||q==='fr'){lang=q;save(K.lang,q)}}
 const me=()=>state.session&&!state.session.guest?state.accounts[state.session.phone]||null:null;
 const isPro=()=>me()?.role==='pro';
 const myProfile=()=>me()?.profile||null;
 const persistAccounts=()=>save(K.acc,state.accounts);
+const originLabel=()=>state.origin.id==='gps'?t('loc.mypos'):L((CITIES.find(c=>c.id===state.origin.id)||CITIES[0]).name);
 
 /* ================= helpers ================= */
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const R2D=Math.PI/180;
-function km(a,b){const R=6371,dLat=(b.lat-a.lat)*R2D,dLng=(b.lng-a.lng)*R2D,la1=a.lat*R2D,la2=b.lat*R2D;const h=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+function km(a,b){const Rk=6371,dLat=(b.lat-a.lat)*R2D,dLng=(b.lng-a.lng)*R2D,la1=a.lat*R2D,la2=b.lat*R2D;const h=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLng/2)**2;return 2*Rk*Math.asin(Math.sqrt(h))}
 function bearing(a,b){const φ1=a.lat*R2D,φ2=b.lat*R2D,Δλ=(b.lng-a.lng)*R2D;const y=Math.sin(Δλ)*Math.cos(φ2),x=Math.cos(φ1)*Math.sin(φ2)-Math.sin(φ1)*Math.cos(φ2)*Math.cos(Δλ);return Math.atan2(y,x)}
-const fmtKm=d=>d<1?`${Math.round(d*100)*10} m`:d<10?`${d.toFixed(1).replace('.',',')} km`:`${Math.round(d)} km`;
-const fmtTime=t=>new Date(t).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+const dec=n=>lang==='fr'?n.toFixed(1).replace('.',','):n.toFixed(1);
+const fmtKm=d=>d<1?`${Math.round(d*100)*10} ${t('m')}`:d<10?`${dec(d)} ${t('km')}`:`${Math.round(d)} ${t('km')}`;
+const locale=()=>lang==='ar'?'ar-TN':'fr-FR';
+const fmtTime=x=>new Date(x).toLocaleTimeString(locale(),{hour:'2-digit',minute:'2-digit'});
 const initials=n=>(n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
 const HUES=['#5B6B7A','#6E5B7A','#5B7A6A','#7A6A5B','#4F6F8F','#8A5E5E','#5E7A8A'];
-const hue=n=>HUES[[...(n||'')].reduce((a,c)=>a+c.charCodeAt(0),0)%HUES.length];
+const hue=n=>HUES[[...(String(n)||'')].reduce((a,c)=>a+c.charCodeAt(0),0)%HUES.length];
 const digits=s=>String(s||'').replace(/\D/g,'');
 const fmtTel=d=>d.length===8?`${d.slice(0,2)} ${d.slice(2,5)} ${d.slice(5)}`:d;
+const tel=d=>`<span class="ltr tnum">+216 ${fmtTel(d)}</span>`;
 const firstName=n=>(n||'').split(' ')[0];
-let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200)}
+let toastT;function toast(m){const x=$('#toast');x.textContent=m;x.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>x.classList.remove('show'),3200)}
 
 function allElectricians(){
-  const list=DEMO.map(e=>({...e}));
-  const mp=myProfile(); if(mp) list.push({...mp,mine:true});
+  const list=DEMO.map(e=>({...e,name:L(e.name),zone:L(e.zone),desc:L(e.desc),reviews:e.reviews.map(r=>({who:L(r.who),stars:r.stars,text:L(r.text),date:L(r.date)}))}));
+  const mp=myProfile(); if(mp) list.push({...mp,zone:L((CITIES.find(c=>c.id===mp.zoneId)||{}).name)||mp.zone,mine:true,hueKey:me().phone});
   return list.map(e=>{
     const extra=state.reviews[e.id]||[];
     const base=(e.rating||0)*(e.count||0), sum=extra.reduce((a,r)=>a+r.stars,0), count=(e.count||0)+extra.length;
-    return {...e,dist:km(state.origin,e),count,rating:count?(base+sum)/count:0,reviews:[...extra.map(r=>({...r,date:'À l’instant'})),...(e.reviews||[])]};
+    return {...e,dist:km(state.origin,e),count,rating:count?(base+sum)/count:0,reviews:[...extra.map(r=>({...r,date:t('p.now')})),...(e.reviews||[])]};
   });
 }
-const avatar=(e,lg='',pip=true)=>`<div class="avatar ${lg}" style="--h:${hue(e.name)}">${e.photo?`<img src="${e.photo}" alt="">`:esc(initials(e.name))}${pip?`<span class="pip ${e.available?'':'off'}"></span>`:''}</div>`;
-const statusPill=e=>e.available?`<span class="status ok"><span class="dot"></span>Disponible</span>`:`<span class="status off"><span class="dot"></span>Indisponible</span>`;
-const starRow=r=>`<span class="stars" aria-label="${r} sur 5">${[1,2,3,4,5].map(i=>ic('star','fill'+(i<=r?'':' dim'))).join('')}</span>`;
-const rating=e=>e.count?`<span>${ic('star','fill')} <b>${e.rating.toFixed(1).replace('.',',')}</b> <span class="muted">(${e.count})</span></span>`:`<span class="muted">Nouveau</span>`;
+const avatar=(e,lg='',pip=true)=>`<div class="avatar ${lg}" style="--h:${hue(e.hueKey||e.id)}">${e.photo?`<img src="${e.photo}" alt="">`:esc(initials(e.name))}${pip?`<span class="pip ${e.available?'':'off'}"></span>`:''}</div>`;
+const statusPill=e=>e.available?`<span class="status ok"><span class="dot"></span>${t('status.ok')}</span>`:`<span class="status off"><span class="dot"></span>${t('status.off')}</span>`;
+const starRow=r=>`<span class="stars" aria-label="${r}/5">${[1,2,3,4,5].map(i=>ic('star','fill'+(i<=r?'':' dim'))).join('')}</span>`;
+const rating=e=>e.count?`<span>${ic('star','fill')} <b>${dec(e.rating)}</b> <span class="muted">(${e.count})</span></span>`:`<span class="muted">${t('new')}</span>`;
 
 /* ================= screens ================= */
 function render(){
@@ -520,32 +641,32 @@ function startAuth(mode,role){state.auth={mode,role,step:'phone',phone:'',name:'
 function renderAuth(){
   const a=state.auth, pro=a.role==='pro', b=$('#auth-body');
   if(a.step==='phone'){
-    const title=a.mode==='signup'?(pro?'Créer mon compte électricien':'Créer mon compte'):'Se connecter';
-    b.innerHTML=`<div><h1>${title}</h1><p class="lead" style="margin-top:6px">${pro&&a.mode==='signup'?'Les clients vous appelleront sur ce numéro.':'Entrez votre numéro de téléphone, vous recevrez un code par SMS.'}</p></div>
+    const title=a.mode==='signup'?(pro?t('a.signup.pro'):t('a.signup')):t('login');
+    b.innerHTML=`<div><h1>${title}</h1><p class="lead" style="margin-top:6px">${pro&&a.mode==='signup'?t('a.phone.pro'):t('a.phone.sub')}</p></div>
       <form class="form" id="f-auth" novalidate>
-        <div class="field" id="fw-aphone"><label for="a-phone">Numéro de téléphone</label><div class="tel-wrap"><span>+216</span><input id="a-phone" inputmode="tel" autocomplete="tel-national" placeholder="5x xxx xxx" value="${esc(fmtTel(a.phone))}" autofocus></div><span class="err" id="a-err">Numéro tunisien à 8 chiffres.</span></div>
-        <button type="submit" class="btn primary lg">${ic('sms')}Recevoir le code par SMS</button>
+        <div class="field" id="fw-aphone"><label for="a-phone">${t('a.phone.label')}</label><div class="tel-wrap"><span>+216</span><input id="a-phone" inputmode="tel" autocomplete="tel-national" placeholder="5x xxx xxx" value="${esc(fmtTel(a.phone))}" autofocus></div><span class="err" id="a-err">${t('a.phone.err')}</span></div>
+        <button type="submit" class="btn primary lg">${ic('sms')}${t('a.sms')}</button>
       </form>
-      <div class="linkrow">${a.mode==='signup'?`<span class="muted">Déjà un compte ?</span><button type="button" data-switch="login">Se connecter</button>`:`<span class="muted">Pas encore de compte ?</span><button type="button" data-switch="signup">Créer un compte</button>`}</div>`;
+      <div class="linkrow">${a.mode==='signup'?`<span class="muted">${t('a.have')}</span><button type="button" data-switch="login">${t('login')}</button>`:`<span class="muted">${t('a.none')}</span><button type="button" data-switch="signup">${t('a.create')}</button>`}</div>`;
     $('#f-auth').addEventListener('submit',e=>{
       e.preventDefault();
       const ph=digits($('#a-phone').value), fw=$('#fw-aphone'), err=$('#a-err');
-      if(ph.length!==8){err.textContent='Numéro tunisien à 8 chiffres.';fw.classList.add('invalid');return}
+      if(ph.length!==8){err.textContent=t('a.phone.err');fw.classList.add('invalid');return}
       const exists=!!state.accounts[ph];
-      if(a.mode==='login'&&!exists){err.textContent='Aucun compte avec ce numéro sur cet appareil. Créez un compte.';fw.classList.add('invalid');return}
-      if(a.mode==='signup'&&exists){err.textContent='Ce numéro a déjà un compte. Connectez-vous.';fw.classList.add('invalid');return}
+      if(a.mode==='login'&&!exists){err.textContent=t('a.phone.noacc');fw.classList.add('invalid');return}
+      if(a.mode==='signup'&&exists){err.textContent=t('a.phone.exists');fw.classList.add('invalid');return}
       fw.classList.remove('invalid');a.phone=ph;a.step='code';renderAuth();
     });
     b.querySelector('[data-switch]').addEventListener('click',e=>{a.mode=e.target.dataset.switch;a.phone=digits($('#a-phone').value);renderAuth()});
   }
   else if(a.step==='code'){
-    b.innerHTML=`<div><h1>Entrez le code</h1><p class="lead" style="margin-top:6px">Un SMS a été envoyé au <b class="tnum">+216 ${fmtTel(a.phone)}</b>.</p></div>
+    b.innerHTML=`<div><h1>${t('a.code.h')}</h1><p class="lead" style="margin-top:6px">${t('a.code.sub')} <b>${tel(a.phone)}</b>.</p></div>
       <form class="form" id="f-code" novalidate>
-        <div class="field" id="fw-code"><input id="a-code" class="codebox" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" placeholder="••••" autofocus aria-label="Code à 4 chiffres"><span class="err">Code incorrect. Réessayez.</span></div>
-        <div class="hint">${ic('info')}<span>Démo : aucun SMS n’est vraiment envoyé. Entrez le code <b>${DEMO_CODE}</b>.</span></div>
-        <button type="submit" class="btn primary lg" id="a-verify">Vérifier</button>
+        <div class="field" id="fw-code"><input id="a-code" class="codebox" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" placeholder="••••" autofocus aria-label="${t('a.code.aria')}"><span class="err">${t('a.code.err')}</span></div>
+        <div class="hint">${ic('info')}<span>${t('a.code.demo')} <b>${DEMO_CODE}</b>.</span></div>
+        <button type="submit" class="btn primary lg" id="a-verify">${t('a.verify')}</button>
       </form>
-      <div class="linkrow"><button type="button" id="a-resend">Renvoyer le code</button><button type="button" id="a-change">Changer de numéro</button></div>`;
+      <div class="linkrow"><button type="button" id="a-resend">${t('a.resend')}</button><button type="button" id="a-change">${t('a.change')}</button></div>`;
     const input=$('#a-code');
     const verify=()=>{
       if(input.value!==DEMO_CODE){$('#fw-code').classList.add('invalid');input.select();return}
@@ -554,14 +675,14 @@ function renderAuth(){
     };
     input.addEventListener('input',()=>{$('#fw-code').classList.remove('invalid');if(input.value.length===4)verify()});
     $('#f-code').addEventListener('submit',e=>{e.preventDefault();verify()});
-    $('#a-resend').addEventListener('click',()=>toast('Code renvoyé (démo : '+DEMO_CODE+').'));
+    $('#a-resend').addEventListener('click',()=>toast(t('a.resent',{code:DEMO_CODE})));
     $('#a-change').addEventListener('click',()=>{a.step='phone';renderAuth()});
   }
   else if(a.step==='name'){
-    b.innerHTML=`<div><h1>${pro?'Comment les clients vous appellent-ils ?':'Comment vous appelez-vous ?'}</h1><p class="lead" style="margin-top:6px">${pro?'Votre nom ou le nom de votre entreprise, tel qu’il apparaîtra dans la liste.':'Votre prénom suffit. Il apparaîtra sur vos avis.'}</p></div>
+    b.innerHTML=`<div><h1>${pro?t('a.name.pro.h'):t('a.name.h')}</h1><p class="lead" style="margin-top:6px">${pro?t('a.name.pro.sub'):t('a.name.sub')}</p></div>
       <form class="form" id="f-aname" novalidate>
-        <div class="field" id="fw-aname"><label for="a-name">${pro?'Nom ou nom de l’entreprise':'Prénom et nom'}</label><input id="a-name" autocomplete="name" placeholder="${pro?'Ex. Ahmed Ben Salah':'Ex. Rim Bouazizi'}" value="${esc(a.name)}" autofocus><span class="err">Indiquez votre nom.</span></div>
-        <button type="submit" class="btn primary lg">${ic('check')}${pro?'Continuer vers mon profil':'Terminer'}</button>
+        <div class="field" id="fw-aname"><label for="a-name">${pro?t('a.name.pro.label'):t('a.name.label')}</label><input id="a-name" autocomplete="name" placeholder="${pro?t('a.name.ph.pro'):t('a.name.ph')}" value="${esc(a.name)}" autofocus><span class="err">${t('a.name.err')}</span></div>
+        <button type="submit" class="btn primary lg">${ic('check')}${pro?t('a.name.next.pro'):t('a.name.done')}</button>
       </form>`;
     $('#f-aname').addEventListener('submit',e=>{
       e.preventDefault();const name=$('#a-name').value.trim();
@@ -576,7 +697,7 @@ function finishLogin(phone,fresh=false){
   const acc=state.accounts[phone];
   state.tab=acc.role==='pro'?'activite':'clients';state.editing=false;state.auth=null;
   go('main');
-  toast(fresh?`Bienvenue, ${firstName(acc.name)} !`:`Content de vous revoir, ${firstName(acc.name)}.`);
+  toast(t(fresh?'welcome.new':'welcome.back',{name:firstName(acc.name)}));
 }
 function enterGuest(){state.session={guest:true};save(K.ses,state.session);state.tab='clients';go('main')}
 function logout(){state.session=null;save(K.ses,null);state.tab='clients';go('welcome')}
@@ -585,79 +706,76 @@ function logout(){state.session=null;save(K.ses,null);state.tab='clients';go('we
 function renderHeader(){
   const m=me(), b=$('#acctbtn');
   b.innerHTML=m?(m.profile?.photo?`<img src="${m.profile.photo}" alt="">`:esc(initials(m.name))):ic('user');
-  b.style.background=m?hue(m.name):'';
+  b.style.background=m?hue(m.phone):'';
 }
 function tabsFor(){
-  const t=[];
-  if(isPro()) t.push({id:'activite',label:'Activité',icon:'gauge',live:!!myProfile()?.available});
-  t.push({id:'clients',label:'Électriciens',icon:'bolt'});
-  t.push({id:'store',label:'Log-ON',icon:'store'});
-  t.push({id:'account',label:'Compte',icon:'user'});
-  return t;
+  const x=[];
+  if(isPro()) x.push({id:'activite',icon:'gauge',live:!!myProfile()?.available});
+  x.push({id:'clients',icon:'bolt'},{id:'store',icon:'store'},{id:'account',icon:'user'});
+  return x;
 }
 function renderTabs(){
-  $('#tabbar').innerHTML=tabsFor().map(t=>`<button type="button" data-tab="${t.id}" aria-pressed="${state.tab===t.id}">${ic(t.icon)}${t.label}${t.live?'<span class="live"></span>':''}</button>`).join('');
+  $('#tabbar').innerHTML=tabsFor().map(x=>`<button type="button" data-tab="${x.id}" aria-pressed="${state.tab===x.id}">${ic(x.icon)}${t('tab.'+x.id)}${x.live?'<span class="live"></span>':''}</button>`).join('');
 }
-function setTab(t,silent){
-  if(!tabsFor().some(x=>x.id===t)) t='clients';
-  state.tab=t;
-  document.querySelectorAll('#tabbar [data-tab]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tab===t));
-  ['clients','activite','store','account'].forEach(v=>$('#view-'+v).hidden=v!==t);
-  if(t==='clients'){renderSkillChips();renderList()}
-  if(t==='activite')renderActivite();
-  if(t==='store')renderStore();
-  if(t==='account')renderAccount();
+function setTab(x,silent){
+  if(!tabsFor().some(y=>y.id===x)) x='clients';
+  state.tab=x;
+  document.querySelectorAll('#tabbar [data-tab]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tab===x));
+  ['clients','activite','store','account'].forEach(v=>$('#view-'+v).hidden=v!==x);
+  if(x==='clients'){renderSkillChips();renderList()}
+  if(x==='activite')renderActivite();
+  if(x==='store')renderStore();
+  if(x==='account')renderAccount();
   if(!silent)window.scrollTo({top:0});
 }
 
 /* ---------- client home ---------- */
 function renderSkillChips(){
-  $('#skillchips').innerHTML=['Tous',...SKILLS].map(s=>`<button type="button" class="chip" data-skill="${esc(s)}" aria-pressed="${state.skill===s}">${esc(s)}</button>`).join('');
+  $('#skillchips').innerHTML=['Tous',...SKILLS].map(s=>`<button type="button" class="chip" data-skill="${esc(s)}" aria-pressed="${state.skill===s}">${s==='Tous'?t('skill.all'):esc(skill(s))}</button>`).join('');
 }
 function renderList(){
   const all=allElectricians(), dispo=all.filter(e=>e.available);
   $('#cnt-dispo').textContent=dispo.length;$('#cnt-all').textContent=all.length;
   $('#mode-dispo').setAttribute('aria-pressed',state.mode==='dispo');
   $('#mode-all').setAttribute('aria-pressed',state.mode==='all');
-  $('#locname').textContent=state.origin.label;
+  $('#locname').textContent=originLabel();
   let items=(state.mode==='dispo'?dispo:all).filter(e=>state.skill==='Tous'||e.skills.includes(state.skill));
   items.sort((a,b)=>(b.available-a.available)||(a.dist-b.dist));
   const near=dispo.filter(e=>e.dist<=15).length;
-  $('#radar-count').innerHTML=`<b>${near}</b> électricien${near>1?'s':''} disponible${near>1?'s':''}<span>à moins de 15 km de ${esc(state.origin.label)}</span>`;
+  $('#radar-count').innerHTML=`${countElec(near)}<span>${t('c.within',{place:esc(originLabel())})}</span>`;
   renderRadar(items);
   const far=items.length&&Math.min(...items.map(e=>e.dist))>120;
-  $('#list').innerHTML=items.length?items.map(cardHTML).join(''):`<div class="empty">${ic('bolt')}<h3>Personne n’est disponible pour « ${esc(state.skill)} » en ce moment</h3><p>Essayez « Tous » pour voir aussi les électriciens indisponibles, ou changez de zone.</p></div>`;
+  $('#list').innerHTML=items.length?items.map(cardHTML).join(''):`<div class="empty">${ic('bolt')}<h3>${t('c.empty.h',{skill:esc(skill(state.skill))})}</h3><p>${t('c.empty.p')}</p></div>`;
   $('#demonote').innerHTML=far
-    ?`${ic('info')}<span>Vous êtes loin de la zone de démonstration (Nabeul). Les distances sont calculées depuis ${esc(state.origin.label)}.</span>`
-    :`${ic('info')}<span>Profils fictifs pour la démonstration. ${isPro()?'Votre fiche apparaît ici avec un vrai bouton d’appel.':'Un électricien inscrit apparaît ici avec un vrai bouton d’appel.'}</span>`;
+    ?`${ic('info')}<span>${t('c.far',{place:esc(originLabel())})}</span>`
+    :`${ic('info')}<span>${t('c.demo')} ${isPro()?t('c.demo.pro'):t('c.demo.client')}</span>`;
 }
 function renderRadar(items){
-  const W=320,H=224,cx=160,cy=112,R=98,dmax=12;
-  const rOf=d=>R*Math.sqrt(Math.min(d,dmax)/dmax);
-  const rings=[2,5,10].map(d=>`<circle class="ring" cx="${cx}" cy="${cy}" r="${rOf(d).toFixed(1)}"/><text class="lbl" x="${cx+4}" y="${(cy-rOf(d)-3).toFixed(1)}">${d} km</text>`).join('');
-  const sweep=`<defs><linearGradient id="sw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F2B233" stop-opacity="0"/><stop offset="1" stop-color="#F2B233" stop-opacity=".22"/></linearGradient></defs><path class="sweep" d="M${cx} ${cy} L${cx} ${cy-R} A${R} ${R} 0 0 1 ${(cx+R*Math.sin(70*R2D)).toFixed(1)} ${(cy-R*Math.cos(70*R2D)).toFixed(1)} Z" fill="url(#sw)"/>`;
+  const W=320,H=224,cx=160,cy=112,Rr=98,dmax=12;
+  const rOf=d=>Rr*Math.sqrt(Math.min(d,dmax)/dmax);
+  const rings=[2,5,10].map(d=>`<circle class="ring" cx="${cx}" cy="${cy}" r="${rOf(d).toFixed(1)}"/><text class="lbl" x="${cx+4}" y="${(cy-rOf(d)-3).toFixed(1)}">${d} ${t('km')}</text>`).join('');
+  const sweep=`<defs><linearGradient id="sw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F2B233" stop-opacity="0"/><stop offset="1" stop-color="#F2B233" stop-opacity=".22"/></linearGradient></defs><path class="sweep" d="M${cx} ${cy} L${cx} ${cy-Rr} A${Rr} ${Rr} 0 0 1 ${(cx+Rr*Math.sin(70*R2D)).toFixed(1)} ${(cy-Rr*Math.cos(70*R2D)).toFixed(1)} Z" fill="url(#sw)"/>`;
   const dots=items.map(e=>{
     const r=rOf(e.dist), θ=bearing(state.origin,e);
     const x=cx+r*Math.sin(θ), y=cy-r*Math.cos(θ);
     return `<g class="dot ${e.available?'':'off'} ${e.mine?'mine':''}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)}, ${fmtKm(e.dist)}"><circle class="halo" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16"/><circle class="core" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" fill="${e.available?'var(--ok)':'#6E6E68'}"/><text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" text-anchor="middle">${esc(initials(e.name))}</text></g>`;
   }).join('');
-  $('#radar').innerHTML=`${sweep}${rings}<circle cx="${cx}" cy="${cy}" r="${R}" class="ring"/><text class="lbl" x="${cx}" y="12" text-anchor="middle">N</text>${dots}<circle cx="${cx}" cy="${cy}" r="5" fill="#F2B233"/><circle cx="${cx}" cy="${cy}" r="9" fill="none" stroke="#F2B233" stroke-opacity=".5"/>
-    <g class="legend"><circle cx="14" cy="${H-12}" r="4" fill="#F2B233"/><text class="lbl" x="22" y="${H-8.5}">Vous</text><circle cx="62" cy="${H-12}" r="4" fill="var(--ok)"/><text class="lbl" x="70" y="${H-8.5}">Disponible</text><circle cx="134" cy="${H-12}" r="4" fill="#6E6E68"/><text class="lbl" x="142" y="${H-8.5}">Indisponible</text></g>`;
+  $('#radar').innerHTML=`${sweep}${rings}<circle cx="${cx}" cy="${cy}" r="${Rr}" class="ring"/><text class="lbl" x="${cx}" y="12" text-anchor="middle">${t('north')}</text>${dots}<circle cx="${cx}" cy="${cy}" r="5" fill="#F2B233"/><circle cx="${cx}" cy="${cy}" r="9" fill="none" stroke="#F2B233" stroke-opacity=".5"/>`;
 }
 function cardHTML(e){
   return `<article class="card el ${e.available?'':'off'}" data-card="${e.id}">
     ${avatar(e)}
     <div>
-      <div class="el-head"><div class="name">${esc(e.name)}${e.mine?'<span class="you">Vous</span>':''}</div>${statusPill(e)}</div>
+      <div class="el-head"><div class="name">${esc(e.name)}${e.mine?`<span class="you">${t('you')}</span>`:''}</div>${statusPill(e)}</div>
       <div class="meta">${rating(e)}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
-      <div class="skills">${e.skills.map(esc).join(' · ')}</div>
-      <div class="actions">${callBtn(e,'primary')}<button type="button" class="btn" data-open="${e.id}">Voir le profil</button></div>
+      <div class="skills">${e.skills.map(s=>esc(skill(s))).join(' · ')}</div>
+      <div class="actions">${callBtn(e,'primary')}<button type="button" class="btn" data-open="${e.id}">${t('view')}</button></div>
     </div>
   </article>`;
 }
-function callBtn(e,cls,label='Appeler'){
-  if(e.demo) return `<button type="button" class="btn ${cls}" data-call="${e.id}">${ic('phone')}${label}</button>`;
-  return `<a class="btn ${cls}" href="tel:${e.telE164}" data-mycall="1">${ic('phone')}${label}</a>`;
+function callBtn(e,cls){
+  if(e.demo) return `<button type="button" class="btn ${cls}" data-call="${e.id}">${ic('phone')}${t('call')}</button>`;
+  return `<a class="btn ${cls}" href="tel:${e.telE164}" data-mycall="1">${ic('phone')}${t('call')}</a>`;
 }
 
 /* ---------- profile sheet ---------- */
@@ -665,35 +783,35 @@ function openProfile(id){
   const e=allElectricians().find(x=>x.id===id); if(!e) return;
   if(e.mine){state.stats.views++;save(K.stats,state.stats)}
   const d=$('#profile'), m=me();
-  const tel=e.demo?'5• ••• •••':fmtTel(digits(e.phone));
+  const phone=e.demo?'<span class="ltr">5• ••• •••</span>':tel(digits(e.phone));
   const reviewBox=e.mine?'':m
-    ?`<div class="card" style="padding:14px"><h3>Laisser un avis</h3><p class="small muted" style="margin:4px 0 10px">Après une intervention, notez ${esc(firstName(e.name))} pour aider les prochains clients.</p>
-      <div class="starpick" id="starpick" role="radiogroup" aria-label="Note">${[1,2,3,4,5].map(i=>`<button type="button" data-star="${i}" aria-label="${i} étoile${i>1?'s':''}">${ic('star','fill')}</button>`).join('')}</div>
-      <div class="field" style="margin-top:10px"><textarea id="revtext" placeholder="Ponctuel, propre, prix correct…" rows="2"></textarea></div>
-      <button type="button" class="btn dark block" id="revsend" style="margin-top:10px" disabled>Publier l’avis</button></div>`
-    :`<div class="card" style="padding:14px"><h3>Laisser un avis</h3><p class="small muted" style="margin:4px 0 10px">Créez un compte client (30 secondes) pour noter ${esc(firstName(e.name))} après une intervention.</p><button type="button" class="btn dark block" data-auth="signup:client">Créer un compte client</button></div>`;
+    ?`<div class="card" style="padding:14px"><h3>${t('p.leave')}</h3><p class="small muted" style="margin:4px 0 10px">${t('p.leave.sub',{name:esc(firstName(e.name))})}</p>
+      <div class="starpick" id="starpick" role="radiogroup">${[1,2,3,4,5].map(i=>`<button type="button" data-star="${i}" aria-label="${t('p.stars',{n:i})}">${ic('star','fill')}</button>`).join('')}</div>
+      <div class="field" style="margin-top:10px"><textarea id="revtext" placeholder="${t('p.revph')}" rows="2"></textarea></div>
+      <button type="button" class="btn dark block" id="revsend" style="margin-top:10px" disabled>${t('p.publish')}</button></div>`
+    :`<div class="card" style="padding:14px"><h3>${t('p.leave')}</h3><p class="small muted" style="margin:4px 0 10px">${t('p.needacc',{name:esc(firstName(e.name))})}</p><button type="button" class="btn dark block" data-auth="signup:client">${t('p.createclient')}</button></div>`;
   d.innerHTML=`<div class="grab"></div>
-  <div class="sheet-head"><span class="eyebrow">Profil</span><button class="close" type="button" data-close="profile" aria-label="Fermer">${ic('x')}</button></div>
+  <div class="sheet-head"><span class="eyebrow">${t('p.eyebrow')}</span><button class="close" type="button" data-close="profile" aria-label="${t('close')}">${ic('x')}</button></div>
   <div class="sheet-body">
-    <div class="phead">${avatar(e,'lg')}<div><h2>${esc(e.name)}${e.mine?'<span class="you">Vous</span>':''}</h2>
-      <div style="margin-top:6px">${statusPill(e)}${e.available&&e.since?`<span class="small muted" style="margin-left:8px">depuis ${fmtTime(e.since)}</span>`:''}</div>
-      <div class="meta">${e.count?`<span>${ic('star','fill')} <b>${e.rating.toFixed(1).replace('.',',')}</b> <span class="muted">· ${e.count} avis</span></span>`:`<span class="muted">Pas encore d’avis</span>`}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
+    <div class="phead">${avatar(e,'lg')}<div><h2>${esc(e.name)}${e.mine?`<span class="you">${t('you')}</span>`:''}</h2>
+      <div style="margin-top:6px">${statusPill(e)}${e.available&&e.since?`<span class="small muted" style="margin-inline-start:8px">${t('since',{time:fmtTime(e.since)})}</span>`:''}</div>
+      <div class="meta">${e.count?`<span>${ic('star','fill')} <b>${dec(e.rating)}</b> <span class="muted">${t('p.reviews.n',{n:e.count})}</span></span>`:`<span class="muted">${t('p.noreviews')}</span>`}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
     </div></div>
-    <p class="lead">${esc(e.desc)||'<span class="muted">Aucune description.</span>'}</p>
-    <div><p class="eyebrow" style="margin-bottom:8px">Compétences</p><div class="chips wrap">${e.skills.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div></div>
-    <div class="kv"><span class="eyebrow">Téléphone</span><b>${tel}</b></div>${e.demo?'<p class="small muted" style="margin-top:-8px">Numéro masqué sur les profils de démonstration.</p>':''}
-    <div><p class="eyebrow" style="margin-bottom:8px">Avis (${e.reviews.length})</p>
-      ${e.reviews.length?e.reviews.map(r=>`<div class="review"><div class="who"><span style="color:var(--ink)">${esc(r.who)}</span><span>${esc(r.date)}</span></div>${starRow(r.stars)}<p>${esc(r.text)}</p></div>`).join(''):'<p class="small muted">Soyez le premier à laisser un avis après une intervention.</p>'}
+    <p class="lead">${esc(e.desc)||`<span class="muted">${t('p.nodesc')}</span>`}</p>
+    <div><p class="eyebrow" style="margin-bottom:8px">${t('p.skills')}</p><div class="chips wrap">${e.skills.map(s=>`<span class="chip">${esc(skill(s))}</span>`).join('')}</div></div>
+    <div class="kv"><span class="eyebrow">${t('p.phone')}</span><b>${phone}</b></div>${e.demo?`<p class="small muted" style="margin-top:-8px">${t('p.masked')}</p>`:''}
+    <div><p class="eyebrow" style="margin-bottom:8px">${t('p.reviews',{n:e.reviews.length})}</p>
+      ${e.reviews.length?e.reviews.map(r=>`<div class="review"><div class="who"><span style="color:var(--ink)">${esc(r.who)}</span><span>${esc(r.date)}</span></div>${starRow(r.stars)}<p>${esc(r.text)}</p></div>`).join(''):`<p class="small muted">${t('p.first')}</p>`}
     </div>
     ${reviewBox}
   </div>
-  <div class="sheet-foot">${callBtn(e,'primary lg')}${e.demo?`<button type="button" class="btn lg" data-wa="${e.id}">${ic('chat')}WhatsApp</button>`:`<a class="btn lg" href="https://wa.me/${digits(e.telE164)}" target="_blank" rel="noopener">${ic('chat')}WhatsApp</a>`}</div>`;
+  <div class="sheet-foot">${callBtn(e,'primary lg')}${e.demo?`<button type="button" class="btn lg" data-wa="${e.id}">${ic('chat')}${t('wa')}</button>`:`<a class="btn lg" href="https://wa.me/${digits(e.telE164)}" target="_blank" rel="noopener">${ic('chat')}${t('wa')}</a>`}</div>`;
   let stars=0;
   d.querySelectorAll('[data-star]').forEach(b=>b.addEventListener('click',()=>{stars=+b.dataset.star;d.querySelectorAll('[data-star]').forEach(x=>x.classList.toggle('on',+x.dataset.star<=stars));d.querySelector('#revsend').disabled=false}));
   d.querySelector('#revsend')?.addEventListener('click',()=>{
-    const text=d.querySelector('#revtext').value.trim()||'Bonne intervention.';
+    const text=d.querySelector('#revtext').value.trim()||t('p.default');
     (state.reviews[id]=state.reviews[id]||[]).unshift({who:m.name,stars,text});
-    save(K.rev,state.reviews);toast('Merci, votre avis est publié.');renderList();openProfile(id);
+    save(K.rev,state.reviews);toast(t('p.thanks'));renderList();openProfile(id);
   });
   if(!d.open) d.showModal();
   d.querySelector('.sheet-body').scrollTop=0;
@@ -706,36 +824,37 @@ function renderActivite(){
   if(mp&&!state.editing){
     const all=allElectricians(), mine=all.find(e=>e.mine);
     const rank=all.filter(e=>e.available).sort((a,b)=>a.dist-b.dist).findIndex(e=>e.mine)+1;
+    const rankTxt=mine.available&&rank?(lang==='fr'?`${rank}<sup style="font-size:12px">${rank===1?'er':'e'}</sup>`:`${rank}`):'—';
     v.innerHTML=`
       <div class="statuscard ${mine.available?'on':''}">
-        <div class="row"><div class="big"><span class="dot"></span>${mine.available?'Disponible':'Indisponible'}</div><button type="button" class="switch" id="switch" role="switch" aria-checked="${mine.available}" aria-label="Changer ma disponibilité"></button></div>
-        <p>${mine.available?`Les clients à proximité vous voient en vert et peuvent vous appeler.${mine.since?` Disponible depuis ${fmtTime(mine.since)}.`:''}`:'Vous n’apparaissez pas dans « Disponibles maintenant ». Activez quand vous êtes prêt à intervenir.'}</p>
+        <div class="row"><div class="big"><span class="dot"></span>${mine.available?t('status.ok'):t('status.off')}</div><button type="button" class="switch" id="switch" role="switch" aria-checked="${mine.available}" aria-label="${t('act.switch')}"></button></div>
+        <p>${mine.available?`${t('act.on.p')}${mine.since?t('act.since',{time:fmtTime(mine.since)}):''}`:t('act.off.p')}</p>
       </div>
-      <div class="stats"><div class="stat"><b>${state.stats.calls}</b><span>Appels reçus</span></div><div class="stat"><b>${state.stats.views}</b><span>Vues du profil</span></div><div class="stat"><b>${mine.available&&rank?rank+'<sup style="font-size:12px">e</sup>':'—'}</b><span>Position · ${esc(state.origin.label)}</span></div></div>
-      <div><p class="eyebrow" style="margin-bottom:8px">Votre fiche, vue par les clients</p><div class="list">${cardHTML(mine)}</div></div>
-      <div style="display:flex;gap:8px"><button type="button" class="btn" id="editbtn">${ic('edit')}Modifier ma fiche</button><button type="button" class="btn ghost danger" id="delbtn">Supprimer la fiche</button></div>
-      <div class="note">${ic('info')}<span>Démo : votre fiche est enregistrée sur cet appareil uniquement. Dans la vraie app, elle sera visible par tous les clients de votre zone.</span></div>`;
-    $('#switch').addEventListener('click',()=>{mp.available=!mp.available;mp.since=mp.available?Date.now():0;persistAccounts();renderActivite();renderTabs();toast(mp.available?'Vous êtes maintenant visible comme Disponible.':'Vous êtes passé en Indisponible.')});
+      <div class="stats"><div class="stat"><b>${state.stats.calls}</b><span>${t('act.calls')}</span></div><div class="stat"><b>${state.stats.views}</b><span>${t('act.views')}</span></div><div class="stat"><b>${rankTxt}</b><span>${t('act.rank',{place:esc(originLabel())})}</span></div></div>
+      <div><p class="eyebrow" style="margin-bottom:8px">${t('act.preview')}</p><div class="list">${cardHTML(mine)}</div></div>
+      <div style="display:flex;gap:8px"><button type="button" class="btn" id="editbtn">${ic('edit')}${t('act.edit')}</button><button type="button" class="btn ghost danger" id="delbtn">${t('act.delete')}</button></div>
+      <div class="note">${ic('info')}<span>${t('act.note')}</span></div>`;
+    $('#switch').addEventListener('click',()=>{mp.available=!mp.available;mp.since=mp.available?Date.now():0;persistAccounts();renderActivite();renderTabs();toast(t(mp.available?'act.toast.on':'act.toast.off'))});
     $('#editbtn').addEventListener('click',()=>{state.editing=true;renderActivite();window.scrollTo({top:0})});
-    $('#delbtn').addEventListener('click',()=>{if(confirm('Supprimer votre fiche ? Votre compte reste actif.')){acc.profile=null;persistAccounts();state.stats={views:0,calls:0};save(K.stats,state.stats);renderActivite();renderTabs()}});
+    $('#delbtn').addEventListener('click',()=>{if(confirm(t('act.confirmdel'))){acc.profile=null;persistAccounts();state.stats={views:0,calls:0};save(K.stats,state.stats);renderActivite();renderTabs()}});
     return;
   }
-  const m=mp||{name:acc.name,zone:'nabeul',skills:[],desc:'',photo:''};
+  const m=mp||{name:acc.name,zoneId:'nabeul',skills:[],desc:'',photo:''};
   v.innerHTML=`
-    ${state.editing?'':`<div><h1>Bienvenue, ${esc(firstName(acc.name))}.</h1><p class="lead">Encore une étape : votre fiche. C’est ce que les clients verront avant de vous appeler.</p></div>`}
+    ${state.editing?'':`<div><h1>${t('f.welcome',{name:esc(firstName(acc.name))})}</h1><p class="lead">${t('f.welcome.sub')}</p></div>`}
     <form class="form card" id="proform" novalidate>
-      <h2>${state.editing?'Modifier ma fiche':'Ma fiche'}</h2>
-      <div class="photo-row"><div class="avatar lg" id="photoprev" style="--h:${hue(m.name||'Vous')}">${m.photo?`<img src="${m.photo}" alt="">`:(m.name?esc(initials(m.name)):ic('cam'))}</div><label class="btn" for="f-photo" tabindex="0">${ic('cam')}Photo de profil</label><input type="file" id="f-photo" accept="image/*"></div>
-      <div class="field" id="fw-name"><label for="f-name">Nom ou nom de l’entreprise</label><input id="f-name" value="${esc(m.name)}" placeholder="Ex. Ahmed Ben Salah" autocomplete="name"><span class="err">Indiquez votre nom.</span></div>
-      <div class="kv"><span>${ic('phone')} Les clients vous appellent au</span><b>+216 ${fmtTel(acc.phone)}</b></div>
-      <div class="field"><label for="f-zone">Zone d’intervention</label><select id="f-zone">${CITIES.map(c=>`<option value="${c.id}" ${c.id===m.zoneId||(c.name===m.zone)?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
-      <div class="field" id="fw-skills"><label>Types de travaux</label><div class="chips wrap" id="fskills">${SKILLS.map(s=>`<button type="button" class="chip sel" data-fs="${esc(s)}" aria-pressed="${m.skills.includes(s)}">${esc(s)}</button>`).join('')}</div><span class="err">Choisissez au moins un type de travaux.</span></div>
-      <div class="field"><label for="f-desc">Courte description <em>· optionnel</em></label><textarea id="f-desc" placeholder="Ex. Électricien depuis 10 ans, dépannage rapide sur Nabeul et Hammamet.">${esc(m.desc)}</textarea></div>
-      <div style="display:flex;gap:8px"><button type="submit" class="btn primary lg">${ic('check')}${state.editing?'Enregistrer':'Publier ma fiche'}</button>${state.editing?'<button type="button" class="btn lg" id="cancel">Annuler</button>':''}</div>
+      <h2>${state.editing?t('act.edit'):t('f.title')}</h2>
+      <div class="photo-row"><div class="avatar lg" id="photoprev" style="--h:${hue(acc.phone)}">${m.photo?`<img src="${m.photo}" alt="">`:(m.name?esc(initials(m.name)):ic('cam'))}</div><label class="btn" for="f-photo" tabindex="0">${ic('cam')}${t('f.photo')}</label><input type="file" id="f-photo" accept="image/*"></div>
+      <div class="field" id="fw-name"><label for="f-name">${t('f.name')}</label><input id="f-name" value="${esc(m.name)}" placeholder="${t('a.name.ph.pro')}" autocomplete="name"><span class="err">${t('f.name.err')}</span></div>
+      <div class="kv"><span>${ic('phone')} ${t('f.callat')}</span><b>${tel(acc.phone)}</b></div>
+      <div class="field"><label for="f-zone">${t('f.zone')}</label><select id="f-zone">${CITIES.map(c=>`<option value="${c.id}" ${c.id===m.zoneId?'selected':''}>${esc(L(c.name))}</option>`).join('')}</select></div>
+      <div class="field" id="fw-skills"><label>${t('f.skills')}</label><div class="chips wrap" id="fskills">${SKILLS.map(s=>`<button type="button" class="chip sel" data-fs="${esc(s)}" aria-pressed="${m.skills.includes(s)}">${esc(skill(s))}</button>`).join('')}</div><span class="err">${t('f.skills.err')}</span></div>
+      <div class="field"><label for="f-desc">${t('f.desc')} <em>${t('f.optional')}</em></label><textarea id="f-desc" placeholder="${t('f.desc.ph')}">${esc(m.desc)}</textarea></div>
+      <div style="display:flex;gap:8px"><button type="submit" class="btn primary lg">${ic('check')}${state.editing?t('f.save'):t('f.publish')}</button>${state.editing?`<button type="button" class="btn lg" id="cancel">${t('f.cancel')}</button>`:''}</div>
     </form>`;
   let photo=m.photo||'';
   $('#f-photo').addEventListener('change',ev=>{const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas'),s=Math.min(img.width,img.height),S=192;c.width=c.height=S;c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,S,S);photo=c.toDataURL('image/jpeg',.8);$('#photoprev').innerHTML=`<img src="${photo}" alt="">`};img.src=r.result};r.readAsDataURL(f)});
-  $('#f-name').addEventListener('input',e=>{if(!photo){const p=$('#photoprev');p.style.setProperty('--h',hue(e.target.value||'Vous'));p.innerHTML=e.target.value?esc(initials(e.target.value)):ic('cam')}});
+  $('#f-name').addEventListener('input',e=>{if(!photo){$('#photoprev').innerHTML=e.target.value?esc(initials(e.target.value)):ic('cam')}});
   $('#fskills').addEventListener('click',e=>{const b=e.target.closest('[data-fs]');if(b)b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true')});
   $('#cancel')?.addEventListener('click',()=>{state.editing=false;renderActivite()});
   $('#proform').addEventListener('submit',e=>{
@@ -744,97 +863,96 @@ function renderActivite(){
     let ok=true;
     $('#fw-name').classList.toggle('invalid',!name);ok&&=!!name;
     $('#fw-skills').classList.toggle('invalid',!skills.length);ok&&=!!skills.length;
-    if(!ok){toast('Complétez les champs en rouge.');return}
+    if(!ok){toast(t('f.fix'));return}
     const c=CITIES.find(x=>x.id===$('#f-zone').value), prev=mp||{};
     acc.name=name;
-    acc.profile={id:'me',name,phone:acc.phone,telE164:'+216'+acc.phone,zoneId:c.id,zone:c.name,lat:prev.zoneId===c.id?prev.lat:c.lat+(Math.random()-.5)*.01,lng:prev.zoneId===c.id?prev.lng:c.lng+(Math.random()-.5)*.01,skills,desc:$('#f-desc').value.trim(),photo,rating:0,count:0,reviews:[],available:prev.available??true,since:prev.since??Date.now()};
+    acc.profile={id:'me',name,phone:acc.phone,telE164:'+216'+acc.phone,zoneId:c.id,lat:prev.zoneId===c.id?prev.lat:c.lat+(Math.random()-.5)*.01,lng:prev.zoneId===c.id?prev.lng:c.lng+(Math.random()-.5)*.01,skills,desc:$('#f-desc').value.trim(),photo,rating:0,count:0,reviews:[],available:prev.available??true,since:prev.since??Date.now()};
     persistAccounts();state.editing=false;renderActivite();renderTabs();renderHeader();
-    toast(prev.name?'Fiche mise à jour.':'Fiche publiée. Vous êtes Disponible.');window.scrollTo({top:0});
+    toast(t(prev.name?'f.updated':'f.published'));window.scrollTo({top:0});
   });
 }
 
 /* ---------- store ---------- */
 function renderStore(){
   $('#storerows').innerHTML=`
-    <a href="${STORE.maps}" target="_blank" rel="noopener">${ic('pin')}<span>${esc(STORE.addr)}</span>${ic('chev','arrow')}</a>
-    <a href="tel:${STORE.telE164}">${ic('phone')}<span>${STORE.tel}</span>${ic('chev','arrow')}</a>
-    <a href="mailto:${STORE.mail}">${ic('mail')}<span>${STORE.mail}</span>${ic('chev','arrow')}</a>
-    <a href="https://${STORE.site}" target="_blank" rel="noopener">${ic('globe')}<span>${STORE.site}</span>${ic('chev','arrow')}</a>
-    <a href="${STORE.fb}" target="_blank" rel="noopener">${ic('globe')}<span>Facebook · Log-ON</span>${ic('chev','arrow')}</a>
-    <a href="${STORE.ig}" target="_blank" rel="noopener">${ic('globe')}<span>Instagram · @logontn</span>${ic('chev','arrow')}</a>`;
-  $('#soon').innerHTML=`
-    <div>${ic('shield')}<span><b>Électricien partenaire Log-ON</b> — badge de confiance pour les pros vérifiés par le magasin.</span></div>
-    <div>${ic('box')}<span><b>Matériel prêt en magasin</b> — l’électricien commande depuis l’app, passe le récupérer Avenue Hédi Nouira.</span></div>
-    <div>${ic('bulb')}<span><b>Catalogue éclairage</b> — choisissez vos luminaires EGLO et faites-les installer par un électricien disponible.</span></div>
-    <div>${ic('tag')}<span><b>Avantages pros</b> — remises et points fidélité pour les électriciens actifs sur l’app.</span></div>`;
+    <a href="${STORE.maps}" target="_blank" rel="noopener">${ic('pin')}<span>${t('s.addr')}</span>${ic('chev','arrow')}</a>
+    <a href="tel:${STORE.telE164}">${ic('phone')}<span class="ltr">${STORE.tel}</span>${ic('chev','arrow')}</a>
+    <a href="mailto:${STORE.mail}">${ic('mail')}<span class="ltr">${STORE.mail}</span>${ic('chev','arrow')}</a>
+    <a href="https://${STORE.site}" target="_blank" rel="noopener">${ic('globe')}<span class="ltr">${STORE.site}</span>${ic('chev','arrow')}</a>
+    <a href="${STORE.fb}" target="_blank" rel="noopener">${ic('globe')}<span class="ltr">Facebook · Log-ON</span>${ic('chev','arrow')}</a>
+    <a href="${STORE.ig}" target="_blank" rel="noopener">${ic('globe')}<span class="ltr">Instagram · @logontn</span>${ic('chev','arrow')}</a>`;
+  $('#soon').innerHTML=['shield','box','bulb','tag'].map((i,n)=>`<div>${ic(i)}<span><b>${t(`s.${n+1}.h`)}</b> — ${t(`s.${n+1}.p`)}</span></div>`).join('');
 }
 
 /* ---------- account ---------- */
+const langRow=()=>`<div class="r">${ic('lang')}<span>${t('acc.lang')}</span><span class="langseg"><button type="button" data-lang="fr" aria-pressed="${lang==='fr'}">Français</button><button type="button" data-lang="ar" aria-pressed="${lang==='ar'}">عربي</button></span></div>`;
 function renderAccount(){
   const v=$('#account'), m=me();
   if(!m){
-    v.innerHTML=`<div class="card"><div class="acct-head"><div class="avatar lg" style="--h:#6E6E68">${ic('user')}</div><div><h2>Vous naviguez en visiteur</h2><p class="lead small">Vous pouvez voir et appeler les électriciens. Un compte permet de laisser des avis.</p></div></div></div>
-      <div style="display:flex;gap:8px"><button type="button" class="btn primary lg" data-auth="signup:client">Créer un compte</button><button type="button" class="btn lg" data-auth="login:client">Se connecter</button></div>
+    v.innerHTML=`<div class="card"><div class="acct-head"><div class="avatar lg" style="--h:#6E6E68">${ic('user')}</div><div><h2>${t('acc.guest.h')}</h2><p class="lead small">${t('acc.guest.p')}</p></div></div></div>
+      <div style="display:flex;gap:8px"><button type="button" class="btn primary lg" data-auth="signup:client">${t('acc.create')}</button><button type="button" class="btn lg" data-auth="login:client">${t('login')}</button></div>
       <div class="card"><div class="rows">
-        <button type="button" data-auth="signup:pro">${ic('bolt')}<span>Je suis électricien</span><span class="sub">Créer mon compte pro</span></button>
-        <div class="r">${ic('lang')}<span>Langue</span><span class="sub">Français · عربي bientôt</span></div>
-        <button type="button" id="quit">${ic('out')}<span>Quitter le mode visiteur</span></button>
+        <button type="button" data-auth="signup:pro">${ic('bolt')}<span>${t('acc.ispro')}</span><span class="sub">${t('acc.ispro.sub')}</span></button>
+        ${langRow()}
+        <button type="button" id="quit">${ic('out')}<span>${t('acc.quit')}</span></button>
       </div></div>`;
     $('#quit').addEventListener('click',logout);
     return;
   }
   const pro=m.role==='pro';
-  v.innerHTML=`<div class="card"><div class="acct-head"><div class="avatar lg" style="--h:${hue(m.name)}">${m.profile?.photo?`<img src="${m.profile.photo}" alt="">`:esc(initials(m.name))}</div><div><h2>${esc(m.name)}</h2><p class="small tnum muted">+216 ${fmtTel(m.phone)}</p><span class="pill ${pro?'pro':''}" style="margin-top:6px">${pro?'Compte électricien':'Compte client'}</span></div></div></div>
+  v.innerHTML=`<div class="card"><div class="acct-head"><div class="avatar lg" style="--h:${hue(m.phone)}">${m.profile?.photo?`<img src="${m.profile.photo}" alt="">`:esc(initials(m.name))}</div><div><h2>${esc(m.name)}</h2><p class="small muted">${tel(m.phone)}</p><span class="pill ${pro?'pro':''}" style="margin-top:6px">${pro?t('acc.pro'):t('acc.client')}</span></div></div></div>
     <div class="card"><div class="rows">
-      ${pro?`<button type="button" data-tab="activite">${ic('edit')}<span>Ma fiche et ma disponibilité</span>${ic('chev','arrow')}</button>`:`<button type="button" id="become-pro">${ic('bolt')}<span>Je suis aussi électricien</span><span class="sub">Passer en compte pro</span></button>`}
-      <div class="r">${ic('lang')}<span>Langue</span><span class="sub">Français · عربي bientôt</span></div>
-      <a href="${STORE.fb}" target="_blank" rel="noopener">${ic('store')}<span>À propos de Log-ON</span>${ic('chev','arrow')}</a>
-      <button type="button" id="logout" class="danger">${ic('out')}<span>Se déconnecter</span></button>
+      ${pro?`<button type="button" data-tab="activite">${ic('edit')}<span>${t('acc.fiche')}</span>${ic('chev','arrow')}</button>`:`<button type="button" id="become-pro">${ic('bolt')}<span>${t('acc.become')}</span><span class="sub">${t('acc.become.sub')}</span></button>`}
+      ${langRow()}
+      <a href="${STORE.fb}" target="_blank" rel="noopener">${ic('store')}<span>${t('acc.about')}</span>${ic('chev','arrow')}</a>
+      <button type="button" id="logout" class="danger">${ic('out')}<span>${t('acc.logout')}</span></button>
     </div></div>
-    <p class="small muted" style="text-align:center">Compte créé le ${new Date(m.createdAt).toLocaleDateString('fr-FR')} · Démo : les comptes sont enregistrés sur cet appareil.</p>`;
+    <p class="small muted" style="text-align:center">${t('acc.created',{date:new Date(m.createdAt).toLocaleDateString(locale())})}</p>`;
   $('#logout').addEventListener('click',logout);
-  $('#become-pro')?.addEventListener('click',()=>{m.role='pro';persistAccounts();state.tab='activite';renderTabs();setTab('activite');toast('Votre compte est maintenant un compte électricien.')});
+  $('#become-pro')?.addEventListener('click',()=>{m.role='pro';persistAccounts();state.tab='activite';renderTabs();setTab('activite');toast(t('acc.became'))});
 }
 
 /* ---------- location ---------- */
 function setOrigin(o){state.origin=o;save(K.loc,o);if(state.screen==='main')setTab(state.tab,true);renderCities()}
 function renderCities(){
-  $('#citylist').innerHTML=CITIES.map(c=>`<button type="button" data-city="${c.id}" class="${state.origin.id===c.id?'on':''}">${ic(state.origin.id===c.id?'check':'pin')}${esc(c.name)}</button>`).join('');
+  $('#citylist').innerHTML=CITIES.map(c=>`<button type="button" data-city="${c.id}" class="${state.origin.id===c.id?'on':''}">${ic(state.origin.id===c.id?'check':'pin')}${esc(L(c.name))}</button>`).join('');
 }
 $('#locbtn').addEventListener('click',()=>{renderCities();$('#locdlg').showModal()});
-$('#citylist').addEventListener('click',e=>{const b=e.target.closest('[data-city]');if(!b)return;const c=CITIES.find(x=>x.id===b.dataset.city);setOrigin({...c,label:c.name});$('#locdlg').close()});
+$('#citylist').addEventListener('click',e=>{const b=e.target.closest('[data-city]');if(!b)return;const c=CITIES.find(x=>x.id===b.dataset.city);setOrigin({id:c.id,lat:c.lat,lng:c.lng});$('#locdlg').close()});
 $('#geobtn').addEventListener('click',()=>{
-  if(!navigator.geolocation){toast('Géolocalisation indisponible sur cet appareil.');return}
-  const b=$('#geobtn');b.disabled=true;b.textContent='Recherche de votre position…';
-  const reset=()=>{b.disabled=false;b.innerHTML=`${ic('target')}Utiliser ma position`};
-  navigator.geolocation.getCurrentPosition(p=>{reset();setOrigin({id:'gps',lat:p.coords.latitude,lng:p.coords.longitude,label:'Ma position'});$('#locdlg').close();toast('Distances calculées depuis votre position.')},()=>{reset();toast('Position refusée ou indisponible — choisissez une ville.')},{timeout:8000,maximumAge:60000});
+  if(!navigator.geolocation){toast(t('loc.unavail'));return}
+  const b=$('#geobtn');b.disabled=true;b.textContent=t('loc.searching');
+  const reset=()=>{b.disabled=false;b.innerHTML=`${ic('target')}<span>${t('loc.use')}</span>`};
+  navigator.geolocation.getCurrentPosition(p=>{reset();setOrigin({id:'gps',lat:p.coords.latitude,lng:p.coords.longitude});$('#locdlg').close();toast(t('loc.done'))},()=>{reset();toast(t('loc.denied'))},{timeout:8000,maximumAge:60000});
 });
 
 /* ---------- global events ---------- */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('button,a,[data-open]');
-  if(!t){const c=e.target.closest('[data-card]');if(c)openProfile(c.dataset.card);return}
-  if(t.dataset.guest!==undefined){enterGuest();return}
-  if(t.dataset.auth){const [mode,role]=t.dataset.auth.split(':');$('#profile').open&&$('#profile').close();startAuth(mode,role);return}
-  if(t.id==='auth-back'){const a=state.auth;if(a&&a.step!=='phone'){a.step=a.step==='name'?'code':'phone';renderAuth()}else go(state.session?'main':'welcome');return}
-  if(t.id==='acctbtn'){setTab('account');return}
-  if(t.dataset.tab){setTab(t.dataset.tab);return}
-  if(t.dataset.skill){state.skill=t.dataset.skill;renderSkillChips();renderList();return}
-  if(t.id==='mode-dispo'){state.mode='dispo';renderList();return}
-  if(t.id==='mode-all'){state.mode='all';renderList();return}
-  if(t.dataset.open){openProfile(t.dataset.open);return}
-  if(t.dataset.close){$('#'+t.dataset.close).close();return}
-  if(t.dataset.call){const el=DEMO.find(x=>x.id===t.dataset.call);toast(`Démo : dans la vraie app, ceci ouvre le téléphone avec le numéro de ${firstName(el.name)}.`);return}
-  if(t.dataset.wa){toast('Démo : ceci ouvrirait WhatsApp avec l’électricien.');return}
-  if(t.dataset.mycall){state.stats.calls++;save(K.stats,state.stats);if(state.tab==='activite')renderActivite();return}
-  const c=t.closest('[data-card]');if(c&&!t.dataset.call&&!t.dataset.mycall)openProfile(c.dataset.card);
+  const x=e.target.closest('button,a,[data-open]');
+  if(!x){const c=e.target.closest('[data-card]');if(c)openProfile(c.dataset.card);return}
+  if(x.dataset.langtoggle!==undefined){setLang(lang==='fr'?'ar':'fr');return}
+  if(x.dataset.lang){if(x.dataset.lang!==lang)setLang(x.dataset.lang);return}
+  if(x.dataset.guest!==undefined){enterGuest();return}
+  if(x.dataset.auth){const [mode,role]=x.dataset.auth.split(':');$('#profile').open&&$('#profile').close();startAuth(mode,role);return}
+  if(x.id==='auth-back'){const a=state.auth;if(a&&a.step!=='phone'){a.step=a.step==='name'?'code':'phone';renderAuth()}else go(state.session?'main':'welcome');return}
+  if(x.id==='acctbtn'){setTab('account');return}
+  if(x.dataset.tab){setTab(x.dataset.tab);return}
+  if(x.dataset.skill){state.skill=x.dataset.skill;renderSkillChips();renderList();return}
+  if(x.id==='mode-dispo'){state.mode='dispo';renderList();return}
+  if(x.id==='mode-all'){state.mode='all';renderList();return}
+  if(x.dataset.open){openProfile(x.dataset.open);return}
+  if(x.dataset.close){$('#'+x.dataset.close).close();return}
+  if(x.dataset.call){const el=DEMO.find(y=>y.id===x.dataset.call);toast(t('p.democall',{name:firstName(L(el.name))}));return}
+  if(x.dataset.wa){toast(t('p.demowa'));return}
+  if(x.dataset.mycall){state.stats.calls++;save(K.stats,state.stats);if(state.tab==='activite')renderActivite();return}
+  const c=x.closest('[data-card]');if(c&&!x.dataset.call&&!x.dataset.mycall)openProfile(c.dataset.card);
 });
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-open][role="button"]'))openProfile(e.target.dataset.open)});
 document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
 
 /* ---------- boot ---------- */
 if(state.session){state.screen='main';state.tab=isPro()?'activite':'clients'}
-render();
+applyStatic();render();
 </script>
 </body>
 </html>
