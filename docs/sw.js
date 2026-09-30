@@ -1,5 +1,5 @@
 /* Log-ON Électriciens — service worker: offline shell, network-first for everything */
-const CACHE='logon-shell-v1';
+const CACHE='logon-shell-v2';
 const SHELL=['./','./index.html','./style.css','./app.js','./store.js','./i18n.js','./data.js','./config.js','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});

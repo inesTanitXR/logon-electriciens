@@ -29,6 +29,7 @@
       <h1 data-th="w.title"></h1>
       <p class="tag" data-t="w.tag"></p>
     </div>
+    <div id="w-promo" hidden></div>
     <div class="door">
       <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg><span data-t="w.client.h"></span></h2>
       <p data-t="w.client.p"></p>
@@ -81,6 +82,7 @@
         <div class="chips" id="skillchips"></div>
         <div id="listnote"></div>
         <div class="list" id="list"></div>
+        <div id="devis-cta"></div>
         <div class="note" id="demonote" hidden></div>
       </div>
     </main>
@@ -94,8 +96,9 @@
           <div><h2>Log-ON lighting</h2><p class="lead small" data-t="s.tag"></p></div>
         </div>
       </div>
+      <div id="s-promo" hidden></div>
+      <div id="s-devis"></div>
       <div class="card"><div class="rows" id="storerows"></div></div>
-      <div class="card"><div class="vline" style="margin-bottom:6px"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg><span data-t="s.verif"></span></div><p class="lead small" data-t="s.verif.p"></p></div>
       <div class="card"><p class="eyebrow" style="margin-bottom:10px" data-t="s.soon"></p><div class="soon" id="soon"></div></div>
     </div></main>
 
@@ -107,6 +110,8 @@
 <nav class="tabbar" id="tabbar" data-ta="aria-label:nav" hidden></nav>
 
 <dialog id="profile" data-ta="aria-label:p.aria"></dialog>
+<dialog id="devisdlg" data-ta="aria-label:d.form.h"></dialog>
+<dialog id="devisview" data-ta="aria-label:d.aria"></dialog>
 <dialog id="mapdlg" data-ta="aria-label:map.open">
   <div class="grab"></div>
   <div class="sheet-head"><h2 id="maptitle"></h2><button class="close" type="button" data-close="mapdlg" data-ta="aria-label:close"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>

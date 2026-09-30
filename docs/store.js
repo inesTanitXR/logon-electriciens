@@ -1,6 +1,6 @@
 /* Data layer. Two implementations with the same interface:
    - Local: demo mode, everything in localStorage on this device
-   - Live:  Supabase (accounts, electricians, calls, reviews, photos, realtime)
+   - Live:  Supabase (accounts, electricians, calls, reviews, photos, devis, promo, realtime)
    The UI never talks to localStorage or Supabase directly. */
 window.LOGON_STORE=(function(){
   const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
@@ -14,11 +14,15 @@ window.LOGON_STORE=(function(){
     if(mode==='evening'){const e=new Date();e.setHours(EVENING_END,0,0,0);if(e.getTime()<now)e.setDate(e.getDate()+1);return {since:now,until:e.getTime()}}
     return {since:0,until:0};
   }
-  const fromRow=r=>({id:r.id,name:r.name,phone:r.phone,zoneId:r.zone_id,lat:r.lat,lng:r.lng,radiusKm:r.radius_km,skills:r.skills||[],desc:r.description||'',photo:r.photo_url||'',workPhotos:r.work_photos||[],mode:r.mode,since:r.available_since?Date.parse(r.available_since):0,until:r.available_until?Date.parse(r.available_until):0,verified:!!r.verified,rating:+r.rating||0,count:r.rating_count||0,createdAt:r.created_at?Date.parse(r.created_at):0});
+  const fromRow=r=>({id:r.id,name:r.name,phone:r.phone,zoneId:r.zone_id,lat:r.lat,lng:r.lng,radiusKm:r.radius_km,skills:r.skills||[],desc:r.description||'',photo:r.photo_url||'',workPhotos:r.work_photos||[],mode:r.mode,since:r.available_since?Date.parse(r.available_since):0,until:r.available_until?Date.parse(r.available_until):0,status:r.status||'pending',rating:+r.rating||0,count:r.rating_count||0,createdAt:r.created_at?Date.parse(r.created_at):0});
+  const devisFromRow=r=>({id:r.id,createdBy:r.created_by,submittedBy:r.submitted_by,electricianId:r.electrician_id,clientName:r.client_name,clientPhone:r.client_phone,note:r.note||'',photos:r.photos||[],delivery:r.delivery,zoneId:r.delivery_zone_id,status:r.status,adminNote:r.admin_note||'',createdAt:Date.parse(r.created_at),updatedAt:Date.parse(r.updated_at)});
+  const promoFromRow=r=>r?({active:!!r.active,titleFr:r.title_fr||'',titleAr:r.title_ar||'',textFr:r.text_fr||'',textAr:r.text_ar||'',image:r.image_url||'',endsOn:r.ends_on||'',updatedAt:r.updated_at?Date.parse(r.updated_at):0}):null;
+  const promoToRow=p=>({id:1,active:!!p.active,title_fr:p.titleFr||'',title_ar:p.titleAr||'',text_fr:p.textFr||'',text_ar:p.textAr||'',image_url:p.image||null,ends_on:p.endsOn||null});
+  const EMPTY_PROMO={active:false,titleFr:'',titleAr:'',textFr:'',textAr:'',image:'',endsOn:'',updatedAt:0};
   const toRow=(e,id)=>({id,name:e.name,phone:e.phone,zone_id:e.zoneId,lat:e.lat,lng:e.lng,radius_km:e.radiusKm,skills:e.skills,description:e.desc||'',photo_url:e.photo||null,work_photos:e.workPhotos||[],mode:e.mode||'off',available_since:e.since?new Date(e.since).toISOString():null,available_until:e.until?new Date(e.until).toISOString():null});
 
   /* ---------------- demo / local ---------------- */
-  const K={acc:'logon3.accounts',ses:'logon3.session',el:'logon3.electricians',rev:'logon3.reviews',calls:'logon3.calls'};
+  const K={acc:'logon3.accounts',ses:'logon3.session',el:'logon3.electricians',rev:'logon3.reviews',calls:'logon3.calls',devis:'logon3.devis',promo:'logon3.promo'};
   const Local={
     mode:'demo',
     accounts(){return LS.get(K.acc,{})}, saveAccounts(a){LS.set(K.acc,a)},
@@ -49,17 +53,19 @@ window.LOGON_STORE=(function(){
       await this.signOut();
     },
     async listElectricians(){
-      const demo=(window.LOGON_DEMO||[]).map(d=>({...d,demo:true}));
-      const mine=Object.values(LS.get(K.el,{}));
+      const u=this.session();
+      const demo=(window.LOGON_DEMO||[]).map(d=>({...d,demo:true,status:'approved'}));
+      const mine=Object.values(LS.get(K.el,{})).filter(e=>e.status==='approved'||(u&&e.id===u.id));
       const revs=LS.get(K.rev,[]);
       return [...demo,...mine].map(e=>{const extra=revs.filter(r=>r.electricianId===e.id);const base=(e.rating||0)*(e.count||0);const sum=extra.reduce((a,r)=>a+r.stars,0);const count=(e.count||0)+extra.length;return {...e,rating:count?(base+sum)/count:0,count}});
     },
     subscribe(){return ()=>{}},
     async getMyElectrician(){const u=this.session();if(!u||u.anonymous)return null;return LS.get(K.el,{})[u.id]||null},
-    async saveMyElectrician(e){const u=this.session();const all=LS.get(K.el,{});const prev=all[u.id]||{};all[u.id]={...prev,...e,id:u.id,phone:u.phone,verified:!!prev.verified,createdAt:prev.createdAt||Date.now()};LS.set(K.el,all);return all[u.id]},
+    async saveMyElectrician(e){const u=this.session();const all=LS.get(K.el,{});const prev=all[u.id]||{};const rec={...prev,...e,id:u.id,phone:u.phone,status:prev.status||'pending',createdAt:prev.createdAt||Date.now()};if(rec.status!=='approved'){rec.mode='off';rec.since=0;rec.until=0}all[u.id]=rec;LS.set(K.el,all);return rec},
     async deleteMyElectrician(){const u=this.session();const all=LS.get(K.el,{});delete all[u.id];LS.set(K.el,all)},
-    async setAvailability(mode){const e=await this.getMyElectrician();if(!e)return;Object.assign(e,{mode},availabilityWindow(mode));return this.saveMyElectrician(e)},
+    async setAvailability(mode){const e=await this.getMyElectrician();if(!e)return;if(e.status!=='approved')throw new Error('notapproved');Object.assign(e,{mode},availabilityWindow(mode));return this.saveMyElectrician(e)},
     async uploadPhoto(blob){return blobToDataUrl(blob)},
+    async uploadPromoImage(blob){return blobToDataUrl(blob)},
     async recordCall(electricianId,channel){await this.ensureAnon();const u=this.session();const calls=LS.get(K.calls,[]);calls.push({id:uid(),electricianId,callerId:u.id,channel,createdAt:Date.now()});LS.set(K.calls,calls.slice(-200))},
     async myCalls(){const u=this.session();if(!u)return[];return LS.get(K.calls,[]).filter(c=>c.callerId===u.id).sort((a,b)=>b.createdAt-a.createdAt)},
     async myCallsReceived(sinceMs){const u=this.session();if(!u)return 0;return LS.get(K.calls,[]).filter(c=>c.electricianId===u.id&&c.createdAt>=sinceMs).length},
@@ -78,7 +84,22 @@ window.LOGON_STORE=(function(){
       const mine=Object.values(LS.get(K.el,{})), calls=LS.get(K.calls,[]), revs=LS.get(K.rev,[]);
       return mine.map(e=>({...e,callsCount:calls.filter(c=>c.electricianId===e.id).length,reviewsCount:revs.filter(r=>r.electricianId===e.id).length}));
     },
-    async setVerified(id,v){const all=LS.get(K.el,{});if(all[id]){all[id].verified=v;LS.set(K.el,all)}},
+    async setStatus(id,status){const all=LS.get(K.el,{});if(all[id]){all[id].status=status;if(status!=='approved'){all[id].mode='off';all[id].since=0;all[id].until=0}LS.set(K.el,all)}},
+    /* devis */
+    async createDevis(d){
+      await this.ensureAnon();const u=this.session();
+      const photos=[];for(const b of d.photoBlobs||[])photos.push(await blobToDataUrl(b));
+      const rec={id:uid(),createdBy:u.id,submittedBy:d.submittedBy||'client',electricianId:d.electricianId||null,clientName:d.clientName||'',clientPhone:d.clientPhone,note:d.note||'',photos,delivery:d.delivery||'pickup',zoneId:d.zoneId||null,status:'received',adminNote:'',createdAt:Date.now(),updatedAt:Date.now()};
+      const all=LS.get(K.devis,[]);all.unshift(rec);LS.set(K.devis,all.slice(0,60));return rec;
+    },
+    async myDevis(){const u=this.session();if(!u)return[];return LS.get(K.devis,[]).filter(d=>d.createdBy===u.id||d.electricianId===u.id)},
+    async adminDevis(){return LS.get(K.devis,[])},
+    async setDevisStatus(id,status,adminNote){const all=LS.get(K.devis,[]);const d=all.find(x=>x.id===id);if(!d)return;d.status=status;if(adminNote!==undefined)d.adminNote=adminNote;d.updatedAt=Date.now();LS.set(K.devis,all);return d},
+    async cancelDevis(id){return this.setDevisStatus(id,'cancelled')},
+    async devisPhotoUrl(p){return p},
+    /* promo */
+    async getPromo(){return LS.get(K.promo,null)||EMPTY_PROMO},
+    async savePromo(p){const rec={...EMPTY_PROMO,...p,updatedAt:Date.now()};LS.set(K.promo,rec);return rec},
   };
 
   /* ---------------- live / Supabase ---------------- */
@@ -124,7 +145,7 @@ window.LOGON_STORE=(function(){
     async changePin(pin){const {error}=await this.sb.auth.updateUser({password:pin});if(error)throw error},
     async deleteAccount(){const {error}=await this.sb.rpc('delete_me');if(error)throw error;await this.signOut()},
     async listElectricians(){const {data,error}=await this.sb.from('electricians_public').select('*');if(error)throw error;return data.map(fromRow)},
-    subscribe(cb){const ch=this.sb.channel('electricians-live').on('postgres_changes',{event:'*',schema:'public',table:'electricians'},()=>cb()).subscribe();return ()=>this.sb.removeChannel(ch)},
+    subscribe(cb){const ch=this.sb.channel('logon-live').on('postgres_changes',{event:'*',schema:'public',table:'electricians'},()=>cb('electricians')).on('postgres_changes',{event:'*',schema:'public',table:'devis'},()=>cb('devis')).on('postgres_changes',{event:'*',schema:'public',table:'promo'},()=>cb('promo')).subscribe();return ()=>this.sb.removeChannel(ch)},
     async getMyElectrician(){if(!this.user||this.user.is_anonymous)return null;const {data}=await this.sb.from('electricians_public').select('*').eq('id',this.user.id).maybeSingle();return data?fromRow(data):null},
     async saveMyElectrician(e){const row=toRow({...e,phone:this.profile.phone},this.user.id);const {data,error}=await this.sb.from('electricians').upsert(row).select().single();if(error)throw error;const cur=await this.getMyElectrician();return cur||fromRow({...data,rating:0,rating_count:0})},
     async deleteMyElectrician(){const {error}=await this.sb.from('electricians').delete().eq('id',this.user.id);if(error)throw error},
@@ -136,7 +157,24 @@ window.LOGON_STORE=(function(){
     async listReviews(id){const {data}=await this.sb.from('reviews').select('*').eq('electrician_id',id).order('created_at',{ascending:false});return (data||[]).map(r=>({id:r.id,who:r.author_name,stars:r.stars,text:r.text,createdAt:Date.parse(r.created_at),authorId:r.author_id}))},
     async addReview(id,stars,text){const s=this.session();if(!s||s.anonymous)throw new Error('auth');const {error}=await this.sb.from('reviews').upsert({electrician_id:id,author_id:this.user.id,author_name:s.name,stars,text},{onConflict:'electrician_id,author_id'});if(error)throw error},
     async adminList(){const {data,error}=await this.sb.from('electricians_admin').select('*').order('created_at',{ascending:false});if(error)throw error;return data.map(r=>({...fromRow({...r,rating:0,rating_count:r.reviews_count}),callsCount:+r.calls_count,reviewsCount:+r.reviews_count}))},
-    async setVerified(id,v){const {error}=await this.sb.from('electricians').update({verified:v}).eq('id',id);if(error)throw error},
+    async setStatus(id,status){const {error}=await this.sb.from('electricians').update({status}).eq('id',id);if(error)throw error},
+    /* devis */
+    async createDevis(d){
+      await this.ensureAnon();if(!this.user)throw new Error('auth');
+      const photos=[];
+      for(const b of d.photoBlobs||[]){const path=`${this.user.id}/${Date.now()}-${photos.length}.jpg`;const {error}=await this.sb.storage.from('devis').upload(path,b,{contentType:'image/jpeg'});if(error)throw error;photos.push(path)}
+      const row={created_by:this.user.id,submitted_by:d.submittedBy||'client',electrician_id:d.electricianId||null,client_name:d.clientName||'',client_phone:d.clientPhone,note:d.note||'',photos,delivery:d.delivery||'pickup',delivery_zone_id:d.zoneId||null};
+      const {data,error}=await this.sb.from('devis').insert(row).select().single();if(error)throw error;return devisFromRow(data);
+    },
+    async myDevis(){if(!this.user)return[];const {data}=await this.sb.from('devis').select('*').or(`created_by.eq.${this.user.id},electrician_id.eq.${this.user.id}`).order('created_at',{ascending:false}).limit(50);return (data||[]).map(devisFromRow)},
+    async adminDevis(){const {data,error}=await this.sb.from('devis').select('*').order('created_at',{ascending:false}).limit(200);if(error)throw error;return data.map(devisFromRow)},
+    async setDevisStatus(id,status,adminNote){const patch={status};if(adminNote!==undefined)patch.admin_note=adminNote;const {data,error}=await this.sb.from('devis').update(patch).eq('id',id).select().single();if(error)throw error;return devisFromRow(data)},
+    async cancelDevis(id){const {error}=await this.sb.from('devis').update({status:'cancelled'}).eq('id',id);if(error)throw error},
+    async devisPhotoUrl(path){const {data,error}=await this.sb.storage.from('devis').createSignedUrl(path,3600);if(error)throw error;return data.signedUrl},
+    /* promo */
+    async getPromo(){const {data}=await this.sb.from('promo').select('*').eq('id',1).maybeSingle();return promoFromRow(data)||EMPTY_PROMO},
+    async savePromo(p){const {data,error}=await this.sb.from('promo').update(promoToRow(p)).eq('id',1).select().single();if(error)throw error;return promoFromRow(data)},
+    async uploadPromoImage(blob){const path=`promo/promo-${Date.now()}.jpg`;const {error}=await this.sb.storage.from('photos').upload(path,blob,{contentType:'image/jpeg',upsert:true});if(error)throw error;return this.sb.storage.from('photos').getPublicUrl(path).data.publicUrl},
   };
 
   const api={
@@ -150,12 +188,13 @@ window.LOGON_STORE=(function(){
     // effective availability at a given moment
     effective(e,at=Date.now()){
       if(!e||!e.mode||e.mode==='off')return 'off';
+      if(e.status&&e.status!=='approved')return 'off';
       if(!e.until||e.until<at)return 'off';
       if(e.mode==='now')return 'now';
       return new Date(at).getHours()>=18?'now':'evening';
     },
   };
-  ['session','ensureAnon','signUp','signIn','signOut','updateProfile','changePin','deleteAccount','listElectricians','subscribe','getMyElectrician','saveMyElectrician','deleteMyElectrician','setAvailability','uploadPhoto','recordCall','myCalls','myCallsReceived','listReviews','addReview','adminList','setVerified']
+  ['session','ensureAnon','signUp','signIn','signOut','updateProfile','changePin','deleteAccount','listElectricians','subscribe','getMyElectrician','saveMyElectrician','deleteMyElectrician','setAvailability','uploadPhoto','uploadPromoImage','recordCall','myCalls','myCallsReceived','listReviews','addReview','adminList','setStatus','createDevis','myDevis','adminDevis','setDevisStatus','cancelDevis','devisPhotoUrl','getPromo','savePromo']
     .forEach(m=>{api[m]=function(...a){return this.impl[m](...a)}});
   return api;
 })();

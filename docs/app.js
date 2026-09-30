@@ -1,7 +1,7 @@
 /* Log-ON Électriciens — UI */
 (function(){
 const T=window.LOGON_I18N, SKILLS=window.LOGON_SKILLS, SKILL_AR=window.LOGON_SKILL_AR, CITIES=window.LOGON_CITIES, Store=window.LOGON_STORE;
-const STORE_INFO={tel:'72 231 330',telE164:'+21672231330',mail:'ste@log-on.tn',site:'log-on.tn',fb:'https://www.facebook.com/LOGONTN/',ig:'https://www.instagram.com/logontn/',maps:'https://maps.google.com/?q=Log-ON+Avenue+Hedi+Nouira+Nabeul'};
+const STORE_INFO={tel:'72 231 330',telE164:'+21672231330',wa:'21672231330',mail:'ste@log-on.tn',site:'log-on.tn',fb:'https://www.facebook.com/LOGONTN/',ig:'https://www.instagram.com/logontn/',maps:'https://maps.google.com/?q=Log-ON+Avenue+Hedi+Nouira+Nabeul'};
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const K={lang:'logon.lang',loc:'logon3.loc',dismiss:'logon3.dismissed',cache:'logon3.cache'};
 
@@ -54,17 +54,20 @@ const I={
  map:'<path d="M9 4l6 2 6-2v14l-6 2-6-2-6 2V6z M9 4v14 M15 6v14"/>',
  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
  alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5h.01"/>',
+ doc:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
 };
 const ic=(n,cls='')=>`<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 
 /* ---------- state ---------- */
 const state={
-  screen:'welcome',tab:'clients',mode:'now',skill:'Tous',urgent:false,verifiedOnly:false,editing:false,
+  screen:'welcome',tab:'clients',mode:'now',skill:'Tous',urgent:false,editing:false,adminTab:'elec',promo:null,myDevis:[],adminDevis:[],adminElecs:[],
   origin:LS.get(K.loc,null)||{id:'nabeul',lat:CITIES[0].lat,lng:CITIES[0].lng},
   electricians:[],loaded:false,offline:false,myEl:null,myCalls:[],auth:null,unsub:null,pending:{avatar:null,work:[]},
 };
 const me=()=>Store.session();
 const isPro=()=>{const m=me();return !!m&&!m.anonymous&&m.role==='pro'};
+const isApproved=()=>!!state.myEl&&state.myEl.status==='approved';
+const fmtDate=x=>new Date(x).toLocaleDateString(locale(),{day:'numeric',month:'short'});
 const cityOf=id=>CITIES.find(c=>c.id===id)||CITIES[0];
 const originLabel=()=>state.origin.id==='gps'?t('loc.mypos'):L(cityOf(state.origin.id).name);
 
@@ -96,13 +99,13 @@ function view(){
   const m=me(), now=Date.now();
   return state.electricians.map(e=>{
     const eff=Store.effective(e,now);
-    return {...e,name:L(e.name),desc:L(e.desc),zone:L(cityOf(e.zoneId).name),eff,dist:km(state.origin,e),mine:!!m&&e.id===m.id,hueKey:e.demo?e.id:(e.phone||e.id)};
+    return {...e,name:L(e.name),desc:L(e.desc),zone:L(cityOf(e.zoneId).name),eff,dist:km(state.origin,e),mine:!!m&&e.id===m.id,approved:e.status==='approved',hueKey:e.demo?e.id:(e.phone||e.id)};
   });
 }
 const effRank={now:0,evening:1,off:2};
 const avatar=(e,lg='',pip=true)=>`<div class="avatar ${lg}" style="--h:${hue(e.hueKey||e.id)}">${e.photo?`<img src="${esc(e.photo)}" alt="">`:esc(initials(e.name))}${pip?`<span class="pip ${e.eff==='now'?'':e.eff==='evening'?'ev':'off'}"></span>`:''}</div>`;
 const statusPill=e=>e.eff==='now'?`<span class="status ok"><span class="dot"></span>${t('status.ok')}</span>`:e.eff==='evening'?`<span class="status ev"><span class="dot"></span>${t('status.evening')}</span>`:`<span class="status off"><span class="dot"></span>${t('status.off')}</span>`;
-const vbadge=e=>e.verified?`<span class="vbadge" title="${t('badge.verified.sub')}">${ic('shield')}${t('badge.verified')}</span>`:'';
+const vbadge=e=>e.approved?`<span class="vbadge" title="${t('badge.approved.sub')}">${ic('shield')}${t('badge.approved')}</span>`:'';
 const starRow=r=>`<span class="stars" aria-label="${r}/5">${[1,2,3,4,5].map(i=>ic('star','fill'+(i<=r?'':' dim'))).join('')}</span>`;
 const rating=e=>e.count?`<span>${ic('star','fill')} <b>${dec(e.rating)}</b> <span class="muted">(${e.count})</span></span>`:`<span class="muted">${t('new')}</span>`;
 const waLink=e=>`https://wa.me/216${digits(e.phone)}?text=${encodeURIComponent(t('wa.msg',{zone:originLabel()}))}`;
@@ -113,8 +116,19 @@ async function refresh(){
   state.loaded=true;
   state.myEl=isPro()?await Store.getMyElectrician().catch(()=>null):null;
   const m=me(); state.myCalls=m?await Store.myCalls().catch(()=>[]):[];
+  state.myDevis=m?await Store.myDevis().catch(()=>[]):[];
+  state.promo=await Store.getPromo().catch(()=>null);
+  if(m&&m.isAdmin){state.adminDevis=await Store.adminDevis().catch(()=>[]);state.adminElecs=await Store.adminList().catch(()=>[])}
   if(state.screen==='main')setTab(state.tab,true);
+  if(state.screen==='welcome')renderPromo('#w-promo');
 }
+const promoLive=()=>{const p=state.promo;if(!p||!p.active||!(p.titleFr||p.titleAr))return null;if(p.endsOn&&new Date(p.endsOn+'T23:59:59')<new Date())return null;return p};
+function promoHTML(p,dark){
+  const title=lang==='ar'?(p.titleAr||p.titleFr):(p.titleFr||p.titleAr), text=lang==='ar'?(p.textAr||p.textFr):(p.textFr||p.textAr);
+  return `<div class="promo ${dark?'dark':''}">${p.image?`<img src="${esc(p.image)}" alt="" loading="lazy">`:''}<div class="promo-body"><span class="eyebrow">${ic('tag')} ${t('pr.eyebrow')}</span><h3>${esc(title)}</h3>${text?`<p>${esc(text)}</p>`:''}${p.endsOn?`<span class="small muted">${t('pr.until',{date:new Date(p.endsOn+'T12:00:00').toLocaleDateString(locale(),{day:'numeric',month:'long'})})}</span>`:''}</div></div>`;
+}
+function renderPromo(sel){const box=$(sel);if(!box)return;const p=promoLive();box.innerHTML=p?promoHTML(p,sel==='#w-promo'):'';box.hidden=!p}
+const adminBadge=()=>{const m=me();if(!m||!m.isAdmin)return 0;return state.adminElecs.filter(e=>e.status==='pending').length+state.adminDevis.filter(d=>d.status==='received').length};
 
 /* ---------- screens ---------- */
 function render(){
@@ -123,6 +137,7 @@ function render(){
   $('#app').classList.toggle('tabs',s==='main');
   if(s==='auth')renderAuth();else $('#auth-body').innerHTML='';
   if(s==='main'){renderTabs();renderHeader();setTab(state.tab,true)}
+  if(s==='welcome')renderPromo('#w-promo');
   window.scrollTo({top:0});
 }
 function go(screen){state.screen=screen;render()}
@@ -204,16 +219,14 @@ function setTab(x,silent){
 /* ---------- client home ---------- */
 function renderSkillChips(){
   const chips=[`<button type="button" class="chip urgent" data-urgent aria-pressed="${state.urgent}">${ic('alert')} ${t('chip.urgent')}</button>`,
-    `<button type="button" class="chip vf" data-vf aria-pressed="${state.verifiedOnly}">${ic('shield')} ${t('chip.verified')}</button>`,
     ...['Tous',...SKILLS].map(s=>`<button type="button" class="chip" data-skill="${esc(s)}" aria-pressed="${state.skill===s}">${s==='Tous'?t('skill.all'):esc(skill(s))}</button>`)];
   $('#skillchips').innerHTML=chips.join('');
 }
 function filtered(){
-  const all=view();
+  const all=view().filter(e=>e.approved);
   let items=all.filter(e=>state.mode==='all'||(state.mode==='now'?e.eff==='now':e.eff!=='off'));
   if(state.skill!=='Tous')items=items.filter(e=>e.skills.includes(state.skill));
-  if(state.verifiedOnly)items=items.filter(e=>e.verified);
-  items.sort((a,b)=>(effRank[a.eff]-effRank[b.eff])||((b.verified?1:0)-(a.verified?1:0))||(a.dist-b.dist));
+  items.sort((a,b)=>(effRank[a.eff]-effRank[b.eff])||(a.dist-b.dist));
   return {all,items};
 }
 function renderList(){
@@ -234,6 +247,7 @@ function renderList(){
     $('#list').innerHTML=all.length?`<div class="empty">${ic('bolt')}<h3>${t('c.empty.h',{skill:esc(state.urgent?t('chip.urgent'):skill(state.skill))})}</h3><p>${t('c.empty.p')}</p></div>`
       :`<div class="empty">${ic('bolt')}<h3>${t('c.empty.live.h')}</h3><p>${t('c.empty.live.p')}</p><div style="margin-top:14px">${isPro()?`<button type="button" class="btn primary" data-tab="activite">${t('c.empty.live.cta')}</button>`:`<button type="button" class="btn primary" data-auth="signup:pro">${t('w.pro.create')}</button>`}</div></div>`;
   }else $('#list').innerHTML=items.map(cardHTML).join('');
+  $('#devis-cta').innerHTML=isPro()?'':devisCtaHTML();
   const far=items.length&&Math.min(...items.map(e=>e.dist))>120;
   const dn=$('#demonote');
   if(Store.mode==='demo'){dn.hidden=false;dn.innerHTML=far?`${ic('info')}<span>${t('c.far',{place:esc(originLabel())})}</span>`:`${ic('info')}<span>${t('c.demo')} ${isPro()?t('c.demo.pro'):t('c.demo.client')}</span>`}else dn.hidden=true;
@@ -308,7 +322,7 @@ async function openProfile(id){
       <div style="margin-top:6px">${statusPill(e)}${e.eff!=='off'&&e.until?`<span class="small muted" style="margin-inline-start:8px">${t('until',{time:fmtTime(e.until)})}</span>`:''}</div>
       <div class="meta">${e.count?`<span>${ic('star','fill')} <b>${dec(e.rating)}</b> <span class="muted">${t('p.reviews.n',{n:e.count})}</span></span>`:`<span class="muted">${t('p.noreviews')}</span>`}<span>${ic('pin','pin')} <b>${fmtKm(e.dist)}</b> · ${esc(e.zone)}</span></div>
     </div></div>
-    ${e.verified?`<div class="vline">${ic('shield')}<span>${t('badge.verified')} · <span class="muted" style="font-weight:600">${t('badge.verified.sub')}</span></span></div>`:''}
+    ${e.approved?`<div class="vline">${ic('shield')}<span>${t('badge.approved')} · <span class="muted" style="font-weight:600">${t('badge.approved.sub')}</span></span></div>`:''}
     <p class="lead">${esc(e.desc)||`<span class="muted">${t('p.nodesc')}</span>`}</p>
     ${e.workPhotos&&e.workPhotos.length?`<div><p class="eyebrow" style="margin-bottom:8px">${t('p.photos')}</p><div class="photostrip">${e.workPhotos.map(u=>`<img src="${esc(u)}" alt="" loading="lazy">`).join('')}</div></div>`:''}
     <div><p class="eyebrow" style="margin-bottom:8px">${t('p.skills')}</p><div class="chips wrap">${e.skills.map(s=>`<span class="chip">${esc(skill(s))}</span>`).join('')}</div></div>
@@ -352,6 +366,18 @@ async function renderActivite(){
     const eff=mine.eff, expired=mp.mode!=='off'&&(!mp.until||mp.until<Date.now());
     const rank=all.filter(e=>e.eff==='now').sort((a,b)=>a.dist-b.dist).findIndex(e=>e.mine)+1;
     const monthStart=new Date();monthStart.setDate(1);monthStart.setHours(0,0,0,0);
+    const ok=mp.status==='approved';
+    const statusCard=ok?`<div class="card" style="border-color:color-mix(in srgb,var(--ev) 50%,transparent)"><div class="vline" style="margin-bottom:4px">${ic('shield')}<span>${t('act.approved.h')}</span></div><p class="lead small">${t('act.approved.p')}</p></div>`
+      :`<div class="pendingcard ${mp.status==='refused'?'bad':''}"><div class="vline">${ic(mp.status==='refused'?'alert':'clock')}<span>${t(mp.status==='refused'?'act.refused.h':'act.pending.h')}</span></div><p>${t(mp.status==='refused'?'act.refused.p':'act.pending.p')}</p><a class="btn dark" href="tel:${STORE_INFO.telE164}">${ic('phone')}${t('act.pending.call')} · <span class="ltr">${STORE_INFO.tel}</span></a></div>`;
+    if(!ok){
+      v.innerHTML=`${statusCard}
+      <div><p class="eyebrow" style="margin-bottom:8px">${t('act.preview')}</p><div class="list">${cardHTML(mine)}</div></div>
+      <div style="display:flex;gap:8px"><button type="button" class="btn" id="editbtn">${ic('edit')}${t('act.edit')}</button><button type="button" class="btn ghost danger" id="delbtn">${t('act.delete')}</button></div>
+      ${Store.mode==='demo'?`<div class="note">${ic('info')}<span>${t('act.note')}</span></div>`:''}`;
+      $('#editbtn').addEventListener('click',()=>{state.editing=true;renderActivite();window.scrollTo({top:0})});
+      $('#delbtn').addEventListener('click',async()=>{if(confirm(t('act.confirmdel'))){await Store.deleteMyElectrician();await refresh();renderTabs()}});
+      return;
+    }
     v.innerHTML=`
       ${expired?`<div class="nudge"><h2>${t('act.expired.h')}</h2><p>${t('act.expired.p')}</p><div class="row"><button type="button" class="btn primary" data-setmode="now">${t('act.expired.yes')}</button><button type="button" class="btn onDark" data-setmode="off">${t('act.expired.no')}</button></div></div>`:''}
       <div class="statuscard ${eff==='now'?'on':''}" style="${eff==='evening'?'background-color:var(--ev)':''}">
@@ -363,7 +389,9 @@ async function renderActivite(){
         <button type="button" class="modebtn off" data-setmode="off" aria-pressed="${mp.mode==='off'||expired}"><span class="dot"></span><span><b>${t('act.mode.off')}</b><span>${t('act.mode.off.sub')}</span></span>${ic('check')}</button>
       </div>
       <div class="stats"><div class="stat"><b id="st-calls">…</b><span>${t('act.calls.month')}</span></div><div class="stat"><b>${mine.count||0}</b><span>${t('act.reviews')}</span></div><div class="stat"><b>${eff==='now'&&rank?(lang==='fr'?`${rank}<sup style="font-size:12px">${rank===1?'er':'e'}</sup>`:rank):'—'}</b><span>${t('act.rank',{place:esc(originLabel())})}</span></div></div>
-      <div class="card" style="border-color:${mp.verified?'color-mix(in srgb,var(--ev) 50%,transparent)':'var(--line)'}"><div class="vline" style="margin-bottom:4px;color:${mp.verified?'var(--ev)':'var(--ink)'}">${ic('shield')}<span>${mp.verified?t('act.verif.yes.h'):t('act.verif.no.h')}</span></div><p class="lead small">${mp.verified?t('act.verif.yes.p'):t('act.verif.no.p')}</p></div>
+      <button type="button" class="ctacard" data-devisnew="pro">${ic('doc')}<span><b>${t('d.cta.pro')}</b><span>${t('d.cta.pro.sub')}</span></span>${ic('chev','arrow')}</button>
+      ${state.myDevis.length?`<div><p class="eyebrow" style="margin-bottom:8px">${t('d.mine')}</p><div class="card"><div class="rows">${state.myDevis.slice(0,5).map(devisRowHTML).join('')}</div></div></div>`:''}
+      ${statusCard}
       <div><p class="eyebrow" style="margin-bottom:8px">${t('act.preview')}</p><div class="list">${cardHTML(mine)}</div></div>
       <div style="display:flex;gap:8px"><button type="button" class="btn" id="editbtn">${ic('edit')}${t('act.edit')}</button><button type="button" class="btn ghost danger" id="delbtn">${t('act.delete')}</button></div>
       ${Store.mode==='demo'?`<div class="note">${ic('info')}<span>${t('act.note')}</span></div>`:''}`;
@@ -376,7 +404,7 @@ async function renderActivite(){
 }
 async function setMode(mode){
   try{state.myEl=await Store.setAvailability(mode);await refresh();renderTabs();toast(t(mode==='now'?'act.toast.now':mode==='evening'?'act.toast.evening':'act.toast.off'))}
-  catch(e){console.error(e);toast(t('err.generic'))}
+  catch(e){console.error(e);toast(t(e&&e.message==='notapproved'?'act.notapproved':'err.generic'))}
 }
 let formMap=null,formMarker=null;
 function renderFicheForm(acc,mp){
@@ -425,15 +453,27 @@ function renderFicheForm(acc,mp){
       const rec={name,zoneId:$('#f-zone').value,lat:pos.lat,lng:pos.lng,radiusKm:+$('#f-radius').value,skills,desc:$('#f-desc').value.trim(),photo,workPhotos:work,mode:mp?mp.mode:'off',since:mp?mp.since:0,until:mp?mp.until:0};
       if(acc.name!==name)await Store.updateProfile({name});
       state.myEl=await Store.saveMyElectrician(rec);
-      if(!mp)state.myEl=await Store.setAvailability('now');
+      if(!mp&&state.myEl.status==='approved')state.myEl=await Store.setAvailability('now');
       state.editing=false;await refresh();renderTabs();renderHeader();
-      toast(t(mp?'f.updated':'f.published'));window.scrollTo({top:0});
+      toast(t(mp?'f.updated':state.myEl.status==='approved'?'f.published':'f.sent'));window.scrollTo({top:0});
     }catch(x){console.error(x);busy(btn,false);toast(t('err.generic'))}
   });
 }
 
 /* ---------- store ---------- */
+const devisCtaHTML=()=>`<button type="button" class="ctacard" data-devisnew="client">${ic('doc')}<span><b>${t('d.cta')}</b><span>${t('d.cta.sub')}</span></span>${ic('chev','arrow')}</button>`;
+const dStatusCls={received:'',quoted:'ev',confirmed:'ev',ready:'ok',delivered:'ok',cancelled:'off'};
+const dStatusPill=d=>`<span class="status ${dStatusCls[d.status]}"><span class="dot"></span>${t('d.status.'+d.status)}</span>`;
+function devisRowHTML(d){
+  const m=me(), mineAsPro=isPro()&&d.electricianId===m.id&&d.createdBy!==m.id;
+  const who=mineAsPro?t('d.for',{name:esc(d.clientName||fmtTel(d.clientPhone))}):d.electricianId?t('d.by',{name:esc(elecName(d.electricianId))}):t('d.by.unknown');
+  return `<button type="button" data-devis="${d.id}">${ic('doc')}<span><span style="display:block">${who}</span><span class="small muted" style="font-weight:600">${fmtDate(d.createdAt)} · ${t('d.photos.n',{n:d.photos.length})}</span></span><span style="margin-inline-start:auto">${dStatusPill(d)}</span></button>`;
+}
+function elecName(id){const e=state.electricians.find(x=>x.id===id)||state.adminElecs.find(x=>x.id===id);return e?L(e.name):'—'}
 function renderStore(){
+  renderPromo('#s-promo');
+  $('#s-devis').innerHTML=`${isPro()?`<button type="button" class="ctacard" data-devisnew="pro">${ic('doc')}<span><b>${t('d.cta.pro')}</b><span>${t('d.cta.pro.sub')}</span></span>${ic('chev','arrow')}</button>`:devisCtaHTML()}
+    ${state.myDevis.length?`<div><p class="eyebrow" style="margin:14px 0 8px">${t('d.mine')}</p><div class="card"><div class="rows">${state.myDevis.map(devisRowHTML).join('')}</div></div></div>`:''}`;
   $('#storerows').innerHTML=`
     <a href="${STORE_INFO.maps}" target="_blank" rel="noopener">${ic('pin')}<span>${t('s.addr')}</span>${ic('chev','arrow')}</a>
     <a href="tel:${STORE_INFO.telE164}">${ic('phone')}<span class="ltr">${STORE_INFO.tel}</span>${ic('chev','arrow')}</a>
@@ -441,7 +481,7 @@ function renderStore(){
     <a href="https://${STORE_INFO.site}" target="_blank" rel="noopener">${ic('globe')}<span class="ltr">${STORE_INFO.site}</span>${ic('chev','arrow')}</a>
     <a href="${STORE_INFO.fb}" target="_blank" rel="noopener">${ic('globe')}<span class="ltr">Facebook · Log-ON</span>${ic('chev','arrow')}</a>
     <a href="${STORE_INFO.ig}" target="_blank" rel="noopener">${ic('globe')}<span class="ltr">Instagram · @logontn</span>${ic('chev','arrow')}</a>`;
-  $('#soon').innerHTML=[['box',2],['bulb',3],['tag',4]].map(([i,n])=>`<div>${ic(i)}<span><b>${t(`s.${n}.h`)}</b> — ${t(`s.${n}.p`)}</span></div>`).join('');
+  $('#soon').innerHTML=[['bulb',3],['tag',4]].map(([i,n])=>`<div>${ic(i)}<span><b>${t(`s.${n}.h`)}</b> — ${t(`s.${n}.p`)}</span></div>`).join('');
 }
 
 /* ---------- account ---------- */
@@ -459,7 +499,7 @@ function renderAccount(){
   v.innerHTML=`<div class="card"><div class="acct-head"><div class="avatar lg" style="--h:${hue(m.phone)}">${state.myEl?.photo?`<img src="${esc(state.myEl.photo)}" alt="">`:esc(initials(m.name))}</div><div><h2>${esc(m.name)}</h2><p class="small muted">${tel(m.phone)}</p><span class="pill ${pro?'pro':''}" style="margin-top:6px">${pro?t('acc.pro'):t('acc.client')}</span></div></div></div>
     <div class="card"><div class="rows">
       ${pro?`<button type="button" data-tab="activite">${ic('edit')}<span>${t('acc.fiche')}</span>${ic('chev','arrow')}</button>`:`<button type="button" id="become-pro">${ic('bolt')}<span>${t('acc.become')}</span><span class="sub">${t('acc.become.sub')}</span></button>`}
-      ${m.isAdmin?`<button type="button" data-tab="admin">${ic('shield')}<span>${t('acc.admin')}</span>${ic('chev','arrow')}</button>`:''}
+      ${m.isAdmin?`<button type="button" data-tab="admin">${ic('shield')}<span>${t('acc.admin')}</span>${adminBadge()?`<span class="cnt">${adminBadge()}</span>`:''}${ic('chev','arrow')}</button>`:''}
       ${langRow()}
       <button type="button" id="pinbtn">${ic('key')}<span>${t('acc.pin')}</span>${ic('chev','arrow')}</button>
       <a href="${STORE_INFO.fb}" target="_blank" rel="noopener">${ic('store')}<span>${t('acc.about')}</span>${ic('chev','arrow')}</a>
@@ -475,12 +515,136 @@ function renderAccount(){
 $('#pinform').addEventListener('submit',async e=>{e.preventDefault();const pin=digits($('#p-pin').value);if(pin.length!==6){toast(t('a.pin.err'));return}try{await Store.changePin(pin);$('#pindlg').close();toast(t('acc.pin.done'))}catch(x){console.error(x);toast(t('err.generic'))}});
 
 /* ---------- admin ---------- */
+const D_STATUSES=['received','quoted','confirmed','ready','delivered','cancelled'];
 async function renderAdmin(){
-  const v=$('#admin');v.innerHTML=`<div><h1>${t('ad.title')}</h1><p class="lead">${t('ad.sub')}</p></div><div class="card" id="adlist"><p class="small muted">${t('loading')}</p></div>`;
-  let list=[];try{list=await Store.adminList()}catch(e){console.error(e);toast(t('err.generic'))}
-  const box=$('#adlist');if(!box)return;
-  box.innerHTML=list.length?list.map(e=>{const eff=Store.effective(e);return `<div class="adminrow"><div class="avatar" style="--h:${hue(e.phone||e.id)}">${e.photo?`<img src="${esc(e.photo)}" alt="">`:esc(initials(L(e.name)))}<span class="pip ${eff==='now'?'':eff==='evening'?'ev':'off'}"></span></div><div><div class="n">${esc(L(e.name))}</div><div class="s">${tel(digits(e.phone||''))} · ${esc(L(cityOf(e.zoneId).name))} · ${e.callsCount||0} ${t('ad.calls')} · ${e.reviewsCount||0} ${t('ad.reviews')}</div></div><div style="text-align:center"><button type="button" class="vswitch" role="switch" aria-checked="${!!e.verified}" data-verify="${e.id}" aria-label="${t('ad.verified')}"></button><div class="s">${t('ad.verified')}</div></div></div>`}).join('')
-    :`<p class="small muted">${t('ad.none')}</p>`;
+  const v=$('#admin');
+  const nPend=state.adminElecs.filter(e=>e.status==='pending').length, nNew=state.adminDevis.filter(d=>d.status==='received').length;
+  v.innerHTML=`<div><h1>${t('ad.title')}</h1><p class="lead">${t('ad.sub')}</p></div>
+    <div class="seg" role="group">${[['elec',nPend],['devis',nNew],['promo',0]].map(([k,n])=>`<button type="button" data-adtab="${k}" aria-pressed="${state.adminTab===k}">${t('ad.tab.'+k)}${n?` <span class="cnt">${n}</span>`:''}</button>`).join('')}</div>
+    <div id="adbody"><p class="small muted">${t('loading')}</p></div>`;
+  try{if(state.adminTab==='elec')state.adminElecs=await Store.adminList();else if(state.adminTab==='devis')state.adminDevis=await Store.adminDevis();else state.promo=await Store.getPromo()}catch(e){console.error(e);toast(t('err.generic'))}
+  const box=$('#adbody');if(!box)return;
+  if(state.adminTab==='elec')renderAdminElecs(box);else if(state.adminTab==='devis')renderAdminDevis(box);else renderAdminPromo(box);
+}
+function adminRow(e,actions){const eff=Store.effective(e);return `<div class="adminrow"><div class="avatar" style="--h:${hue(e.phone||e.id)}">${e.photo?`<img src="${esc(e.photo)}" alt="">`:esc(initials(L(e.name)))}<span class="pip ${eff==='now'?'':eff==='evening'?'ev':'off'}"></span></div><div><div class="n">${esc(L(e.name))}</div><div class="s">${tel(digits(e.phone||''))} · ${esc(L(cityOf(e.zoneId).name))} · ${fmtDate(e.createdAt)}${e.status==='approved'?` · ${e.callsCount||0} ${t('ad.calls')} · ${e.reviewsCount||0} ${t('ad.reviews')}`:''}</div><div class="s" style="margin-top:2px">${e.skills.map(x=>esc(skill(x))).join(' · ')}</div></div><div class="adacts">${actions}</div></div>`}
+function renderAdminElecs(box){
+  const list=state.adminElecs, pend=list.filter(e=>e.status==='pending'), ok=list.filter(e=>e.status==='approved'), no=list.filter(e=>e.status==='refused');
+  const call=e=>`<a class="btn" href="tel:+216${digits(e.phone||'')}" aria-label="${t('ad.call')}">${ic('phone')}</a>`;
+  box.innerHTML=`
+    <p class="eyebrow">${t('ad.pending')} · ${pend.length}</p>
+    <div class="card">${pend.length?pend.map(e=>adminRow(e,`${call(e)}<button type="button" class="btn primary" data-setstatus="${e.id}:approved">${ic('check')}${t('ad.approve')}</button><button type="button" class="btn ghost danger" data-setstatus="${e.id}:refused">${t('ad.refuse')}</button>`)).join(''):`<p class="small muted">${t('ad.nopending')}</p>`}</div>
+    <p class="eyebrow">${t('ad.approved')} · ${ok.length}</p>
+    <div class="card">${ok.length?ok.map(e=>adminRow(e,`${call(e)}<button type="button" class="btn ghost" data-setstatus="${e.id}:pending">${t('ad.suspend')}</button>`)).join(''):`<p class="small muted">${t('ad.none')}</p>`}</div>
+    ${no.length?`<p class="eyebrow">${t('ad.refused')} · ${no.length}</p><div class="card">${no.map(e=>adminRow(e,`${call(e)}<button type="button" class="btn" data-setstatus="${e.id}:approved">${t('ad.approve')}</button>`)).join('')}</div>`:''}`;
+}
+function renderAdminDevis(box){
+  const list=state.adminDevis, open=list.filter(d=>!['delivered','cancelled'].includes(d.status)), closed=list.filter(d=>['delivered','cancelled'].includes(d.status));
+  const row=d=>`<button type="button" class="adminrow devisrow" data-devis="${d.id}"><div class="avatar" style="--h:${hue(d.clientPhone)}">${ic('doc')}</div><div><div class="n">${esc(d.clientName||fmtTel(d.clientPhone))} <span class="small muted" style="font-weight:600">${tel(d.clientPhone)}</span></div><div class="s">${fmtDate(d.createdAt)} · ${d.electricianId?t('d.by',{name:esc(elecName(d.electricianId))}):t('d.by.unknown')}${d.submittedBy==='pro'?` · ${t('d.sentby.pro')}`:''} · ${d.delivery==='delivery'?t('d.deliver.short',{zone:esc(L(cityOf(d.zoneId||'nabeul').name))}):t('d.pickup.short')}</div></div>${dStatusPill(d)}</button>`;
+  box.innerHTML=`<p class="eyebrow">${t('ad.d.open')} · ${open.length}</p><div class="card">${open.length?open.map(row).join(''):`<p class="small muted">${t('ad.d.none')}</p>`}</div>
+    ${closed.length?`<p class="eyebrow">${t('ad.d.closed')} · ${closed.length}</p><div class="card">${closed.map(row).join('')}</div>`:''}`;
+}
+function renderAdminPromo(box){
+  const p=state.promo||{active:false,titleFr:'',titleAr:'',textFr:'',textAr:'',image:'',endsOn:''};
+  let img=p.image, pendingImg=null;
+  box.innerHTML=`<form class="form card" id="promoform" novalidate>
+    <div><h2>${t('ad.pr.h')}</h2><p class="lead small">${t('ad.pr.sub')}</p></div>
+    <label class="kv" style="cursor:pointer"><span>${t('ad.pr.active')}</span><input type="checkbox" id="pr-active" ${p.active?'checked':''} style="width:22px;height:22px"></label>
+    <div class="field" id="fw-prtitle"><label for="pr-tfr">${t('ad.pr.title.fr')}</label><input id="pr-tfr" value="${esc(p.titleFr)}"><span class="err">${t('ad.pr.title.err')}</span></div>
+    <div class="field"><label for="pr-tar">${t('ad.pr.title.ar')}</label><input id="pr-tar" dir="rtl" value="${esc(p.titleAr)}"></div>
+    <div class="field"><label for="pr-xfr">${t('ad.pr.text.fr')}</label><textarea id="pr-xfr" rows="2">${esc(p.textFr)}</textarea></div>
+    <div class="field"><label for="pr-xar">${t('ad.pr.text.ar')}</label><textarea id="pr-xar" dir="rtl" rows="2">${esc(p.textAr)}</textarea></div>
+    <div class="field"><label for="pr-ends">${t('ad.pr.ends')} <em>${t('f.optional')}</em></label><input type="date" id="pr-ends" value="${esc(p.endsOn||'')}"></div>
+    <div class="field"><label>${t('ad.pr.image')} <em>${t('f.optional')}</em></label><div class="thumbs" id="prthumb"></div><input type="file" id="pr-img" accept="image/*" hidden></div>
+    <button type="submit" class="btn primary lg" id="pr-save">${ic('check')}${t('f.save')}</button>
+  </form>
+  <div><p class="eyebrow" style="margin-bottom:8px">${t('act.preview')}</p><div id="pr-preview"></div></div>`;
+  const preview=()=>{const q={active:true,titleFr:$('#pr-tfr').value,titleAr:$('#pr-tar').value,textFr:$('#pr-xfr').value,textAr:$('#pr-xar').value,image:pendingImg?URL.createObjectURL(pendingImg):img,endsOn:$('#pr-ends').value};$('#pr-preview').innerHTML=(q.titleFr||q.titleAr)?promoHTML(q,false):`<p class="small muted">—</p>`};
+  const thumbs=()=>{const u=pendingImg?URL.createObjectURL(pendingImg):img;$('#prthumb').innerHTML=u?`<div class="thumb"><img src="${esc(u)}" alt=""><button type="button" id="pr-rm" aria-label="${t('ad.pr.image.rm')}">${ic('x')}</button></div>`:`<label class="thumb add" for="pr-img">${ic('plus')}${t('f.work.add')}</label>`;$('#pr-rm')?.addEventListener('click',()=>{img='';pendingImg=null;thumbs();preview()});preview()};
+  thumbs();
+  box.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',preview));
+  $('#pr-img').addEventListener('change',async ev=>{const f=ev.target.files[0];if(!f)return;try{pendingImg=await resizeImage(f,1200,.8)}catch(e){toast(t('err.generic'))}ev.target.value='';thumbs()});
+  $('#promoform').addEventListener('submit',async e=>{
+    e.preventDefault();const titleFr=$('#pr-tfr').value.trim();const active=$('#pr-active').checked;
+    if(active&&!titleFr&&!$('#pr-tar').value.trim()){$('#fw-prtitle').classList.add('invalid');return}
+    const btn=$('#pr-save');busy(btn,true);
+    try{if(pendingImg)img=await Store.uploadPromoImage(pendingImg);state.promo=await Store.savePromo({active,titleFr,titleAr:$('#pr-tar').value.trim(),textFr:$('#pr-xfr').value.trim(),textAr:$('#pr-xar').value.trim(),image:img,endsOn:$('#pr-ends').value||''});pendingImg=null;busy(btn,false);toast(t('ad.pr.saved'))}
+    catch(x){console.error(x);busy(btn,false);toast(t('err.generic'))}
+  });
+}
+
+/* ---------- devis: new ---------- */
+function openDevisForm(who){
+  const d=$('#devisdlg'), m=me(), pro=who==='pro', real=m&&!m.anonymous;
+  const pending=[];
+  const recent=[...new Map(state.myCalls.map(c=>[c.electricianId,c])).keys()].map(id=>view().find(e=>e.id===id)).filter(Boolean).slice(0,5);
+  d.innerHTML=`<div class="grab"></div>
+  <div class="sheet-head"><h2>${t('d.form.h')}</h2><button class="close" type="button" data-close="devisdlg" aria-label="${t('close')}">${ic('x')}</button></div>
+  <form class="sheet-body form" id="devisform" novalidate>
+    <p class="lead small" style="margin-top:-6px">${pro?t('d.form.pro.sub'):t('d.form.sub')}</p>
+    <div class="field" id="fw-dphotos"><label>${t('d.photos')} <em>· ${t('d.photos.sub')}</em></label><div class="thumbs" id="dthumbs"></div><input type="file" id="d-photos" accept="image/*" capture="environment" multiple hidden><span class="err">${t('d.photos.err')}</span></div>
+    ${pro?'':`<div class="field"><label for="d-elec">${t('d.elec')}</label><select id="d-elec">${recent.map(e=>`<option value="${e.id}">${esc(e.name)} · ${esc(e.zone)}</option>`).join('')}<option value="">${t('d.elec.other')}</option></select></div>`}
+    <div class="field" id="fw-dname"><label for="d-name">${pro?t('d.name.pro'):t('d.name')}</label><input id="d-name" value="${pro?'':esc(real?firstName(m.name):'')}" autocomplete="${pro?'off':'given-name'}"><span class="err">${t('a.name.err')}</span></div>
+    <div class="field" id="fw-dphone"><label for="d-phone">${pro?t('d.phone.pro'):t('d.phone')}</label><div class="tel-wrap"><span>+216</span><input id="d-phone" inputmode="tel" placeholder="5x xxx xxx" value="${pro?'':esc(real?fmtTel(m.phone):'')}"></div><span class="err">${t('d.phone.err')}</span></div>
+    <div class="field"><label for="d-note">${t('d.note')} <em>${t('f.optional')}</em></label><textarea id="d-note" rows="2" placeholder="${t('d.note.ph')}"></textarea></div>
+    <div class="field"><label>${t('d.delivery')}</label><div class="modes">
+      <button type="button" class="modebtn ok" data-dlv="pickup" aria-pressed="true">${ic('store')}<span><b>${t('d.pickup')}</b><span>${t('d.pickup.sub')}</span></span>${ic('check')}</button>
+      <button type="button" class="modebtn ok" data-dlv="delivery" aria-pressed="false">${ic('box')}<span><b>${t('d.deliver')}</b><span>${t('d.deliver.sub')}</span></span>${ic('check')}</button></div></div>
+    <div class="field" id="fw-dzone" hidden><label for="d-zone">${t('d.zone')}</label><select id="d-zone">${CITIES.map(c=>`<option value="${c.id}" ${c.id===state.origin.id?'selected':''}>${esc(L(c.name))}</option>`).join('')}</select></div>
+    <button type="submit" class="btn primary lg" id="d-send">${ic('check')}${t('d.send')}</button>
+  </form>`;
+  let delivery='pickup';
+  const thumbs=()=>{$('#dthumbs').innerHTML=pending.map((b,i)=>`<div class="thumb"><img src="${URL.createObjectURL(b)}" alt=""><button type="button" data-rmd="${i}" aria-label="${t('close')}">${ic('x')}</button></div>`).join('')+(pending.length<3?`<label class="thumb add" for="d-photos">${ic('cam')}${t('d.photos.add')}</label>`:'')};
+  thumbs();
+  $('#d-photos').addEventListener('change',async ev=>{for(const f of [...ev.target.files]){if(pending.length>=3)break;try{pending.push(await resizeImage(f,1400,.78))}catch(e){}}ev.target.value='';thumbs()});
+  $('#dthumbs').addEventListener('click',e=>{const b=e.target.closest('[data-rmd]');if(!b)return;pending.splice(+b.dataset.rmd,1);thumbs()});
+  d.querySelectorAll('[data-dlv]').forEach(b=>b.addEventListener('click',()=>{delivery=b.dataset.dlv;d.querySelectorAll('[data-dlv]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.dlv===delivery));$('#fw-dzone').hidden=delivery!=='delivery'}));
+  $('#devisform').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const name=$('#d-name').value.trim(), phone=digits($('#d-phone').value);
+    let ok=true;$('#fw-dphotos').classList.toggle('invalid',!pending.length);ok&&=!!pending.length;$('#fw-dname').classList.toggle('invalid',!name);ok&&=!!name;$('#fw-dphone').classList.toggle('invalid',phone.length!==8);ok&&=phone.length===8;
+    if(!ok){toast(t('f.fix'));return}
+    const btn=$('#d-send');busy(btn,true);
+    try{
+      const rec=await Store.createDevis({submittedBy:pro?'pro':'client',electricianId:pro?m.id:($('#d-elec')?.value||null),clientName:name,clientPhone:phone,note:$('#d-note').value.trim(),photoBlobs:pending,delivery,zoneId:delivery==='delivery'?$('#d-zone').value:null});
+      d.close();toast(t(pro?'d.sent.pro':'d.sent'));await refresh();openDevis(rec.id);
+    }catch(x){console.error(x);busy(btn,false);toast(t('err.generic'))}
+  });
+  d.showModal();
+}
+
+/* ---------- devis: detail ---------- */
+async function openDevis(id){
+  const m=me(), admin=!!m&&m.isAdmin;
+  const d=[...state.myDevis,...state.adminDevis].find(x=>x.id===id); if(!d)return;
+  const dlg=$('#devisview'), st=D_STATUSES.indexOf(d.status), steps=D_STATUSES.slice(0,5);
+  const mineAsPro=isPro()&&d.electricianId===m.id&&d.createdBy!==m.id;
+  const waClient=`https://wa.me/216${digits(d.clientPhone)}?text=${encodeURIComponent(t('ad.d.wa.msg',{name:d.clientName||''}))}`;
+  const waStore=`https://wa.me/${STORE_INFO.wa}?text=${encodeURIComponent(t('d.wa.msg',{ref:d.id.slice(0,6).toUpperCase()}))}`;
+  dlg.innerHTML=`<div class="grab"></div>
+  <div class="sheet-head"><span class="eyebrow">${t('d.aria')} · ${d.id.slice(0,6).toUpperCase()}</span><button class="close" type="button" data-close="devisview" aria-label="${t('close')}">${ic('x')}</button></div>
+  <div class="sheet-body">
+    <div class="row" style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2>${admin||mineAsPro?esc(d.clientName||fmtTel(d.clientPhone)):d.electricianId?t('d.by',{name:esc(elecName(d.electricianId))}):t('d.by.unknown')}</h2>${dStatusPill(d)}</div>
+    <p class="lead small" style="margin-top:-8px">${fmtDate(d.createdAt)} · ${d.delivery==='delivery'?t('d.deliver.short',{zone:esc(L(cityOf(d.zoneId||'nabeul').name))}):t('d.pickup.short')}${admin&&d.electricianId?` · ${t('d.by',{name:esc(elecName(d.electricianId))})}`:''}${d.submittedBy==='pro'?` · ${t('d.sentby.pro')}`:''}</p>
+    ${d.status!=='cancelled'?`<ol class="steps">${steps.map((k,i)=>`<li class="${i<st?'done':i===st?'cur':''}"><i></i><span>${t('d.status.'+k)}</span></li>`).join('')}</ol>`:''}
+    <div class="note">${ic('info')}<span>${t('d.status.'+d.status+'.p')}</span></div>
+    ${d.adminNote?`<div class="card" style="background:var(--accent-soft);border-color:transparent"><p class="eyebrow" style="margin-bottom:4px">${t('d.lognote')}</p><p>${esc(d.adminNote)}</p></div>`:''}
+    <div><p class="eyebrow" style="margin-bottom:8px">${t('d.photos')}</p><div class="photostrip" id="dphotos">${d.photos.map(()=>`<div class="thumb" style="width:132px;height:99px;flex:none"></div>`).join('')}</div></div>
+    ${d.note?`<div><p class="eyebrow" style="margin-bottom:4px">${t('d.note')}</p><p>${esc(d.note)}</p></div>`:''}
+    ${admin?`<div class="kv"><span class="eyebrow">${t('d.client')}</span><b>${tel(d.clientPhone)}</b></div>
+    <div class="form card" id="adform">
+      <div class="field"><label for="ad-status">${t('ad.d.status')}</label><select id="ad-status">${D_STATUSES.map(k=>`<option value="${k}" ${k===d.status?'selected':''}>${t('d.status.'+k)}</option>`).join('')}</select></div>
+      <div class="field"><label for="ad-note">${t('ad.d.note')}</label><textarea id="ad-note" rows="2" placeholder="${t('ad.d.note.ph')}">${esc(d.adminNote)}</textarea></div>
+      <button type="button" class="btn dark" id="ad-save">${ic('check')}${t('ad.d.save')}</button>
+    </div>`:''}
+  </div>
+  <div class="sheet-foot">${admin?`<a class="btn primary lg" href="${waClient}" target="_blank" rel="noopener">${ic('chat')}${t('ad.d.wa')}</a><a class="btn lg" href="tel:+216${digits(d.clientPhone)}">${ic('phone')}${t('ad.call')}</a>`
+    :`<a class="btn primary lg" href="${waStore}" target="_blank" rel="noopener">${ic('chat')}${t('d.contact')}</a>${['received','quoted'].includes(d.status)&&d.createdBy===m?.id?`<button type="button" class="btn lg ghost danger" id="d-cancel">${t('d.cancel')}</button>`:''}`}</div>`;
+  if(!dlg.open)dlg.showModal();dlg.querySelector('.sheet-body').scrollTop=0;
+  $('#d-cancel')?.addEventListener('click',async()=>{if(!confirm(t('d.cancel.confirm')))return;try{await Store.cancelDevis(d.id);toast(t('d.cancelled'));await refresh();openDevis(d.id)}catch(x){console.error(x);toast(t('err.generic'))}});
+  $('#ad-save')?.addEventListener('click',async ev=>{const btn=ev.currentTarget;busy(btn,true);try{await Store.setDevisStatus(d.id,$('#ad-status').value,$('#ad-note').value.trim());toast(t('ad.status.changed'));await refresh();openDevis(d.id)}catch(x){console.error(x);busy(btn,false);toast(t('err.generic'))}});
+  // photos (signed URLs in live mode)
+  const strip=dlg.querySelector('#dphotos');
+  d.photos.forEach(async(p,i)=>{try{const u=await Store.devisPhotoUrl(p);const slot=strip.children[i];if(slot)slot.innerHTML=`<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="" style="width:100%;height:100%;object-fit:cover"></a>`}catch(e){console.warn(e)}});
 }
 
 /* ---------- location ---------- */
@@ -509,10 +673,12 @@ document.addEventListener('click',e=>{
   if(x.dataset.tab){$('#profile').open&&$('#profile').close();setTab(x.dataset.tab);return}
   if(x.dataset.mode){state.mode=x.dataset.mode;if(x.dataset.mode!=='now')state.urgent=false;renderSkillChips();renderList();return}
   if(x.dataset.urgent!==undefined){state.urgent=!state.urgent;state.skill=state.urgent?'Dépannage':'Tous';if(state.urgent)state.mode='now';renderSkillChips();renderList();return}
-  if(x.dataset.vf!==undefined){state.verifiedOnly=!state.verifiedOnly;renderSkillChips();renderList();return}
   if(x.dataset.skill){state.skill=x.dataset.skill;state.urgent=false;renderSkillChips();renderList();return}
   if(x.dataset.setmode){setMode(x.dataset.setmode);return}
-  if(x.dataset.verify){const on=x.getAttribute('aria-checked')!=='true';x.setAttribute('aria-checked',on);Store.setVerified(x.dataset.verify,on).then(()=>refresh()).catch(err=>{console.error(err);x.setAttribute('aria-checked',!on);toast(t('err.generic'))});return}
+  if(x.dataset.setstatus){const [id,st]=x.dataset.setstatus.split(':');busy(x,true);Store.setStatus(id,st).then(()=>refresh()).then(()=>toast(t('ad.status.changed'))).catch(err=>{console.error(err);busy(x,false);toast(t('err.generic'))});return}
+  if(x.dataset.adtab){state.adminTab=x.dataset.adtab;renderAdmin();return}
+  if(x.dataset.devisnew!==undefined){$('#profile').open&&$('#profile').close();openDevisForm(x.dataset.devisnew);return}
+  if(x.dataset.devis){openDevis(x.dataset.devis);return}
   if(x.dataset.dismiss){const dm=LS.get(K.dismiss,{});dm[x.dataset.dismiss]=Date.now();LS.set(K.dismiss,dm);renderPrompt();return}
   if(x.dataset.open){if($('#mapdlg').open)$('#mapdlg').close();openProfile(x.dataset.open);return}
   if(x.dataset.close){$('#'+x.dataset.close).close();return}
@@ -528,6 +694,7 @@ setInterval(()=>{if(state.screen==='main'&&state.loaded){if(state.tab==='clients
 (async function boot(){
   applyStatic();
   await Store.init();
+  Store.getPromo().then(p=>{state.promo=p;renderPromo('#w-promo');if(state.screen==='main'&&state.tab==='store')renderPromo('#s-promo')}).catch(()=>{});
   const m=me();
   if(m){state.screen='main';state.tab=isPro()?'activite':'clients';render();await refresh();}
   else{render();refresh();}
